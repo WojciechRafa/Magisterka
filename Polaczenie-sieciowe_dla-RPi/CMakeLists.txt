@@ -20,8 +20,19 @@ add_executable(Magisterka main.cpp
 	Camera.hpp Camera.cpp
 	System.cpp System.hpp
 	Time_Object.cpp Time_Object.hpp
-	Custom_Data_IO.cpp Custom_Data_IO.hpp)
+	Custom_Data_IO.cpp Custom_Data_IO.hpp
+		Window.cpp
+		Window.hpp
+		Graphic_Warehouse.cpp
+		Graphic_Warehouse.hpp
+	Buttons_Field.hpp
+	Buttons_Field.cpp
+		Graphic_Manager.hpp
+		Graphic_Manager.cpp
+	Button.hpp
+		Button.cpp
+)
         
-target_link_libraries(Magisterka sfml-network sfml-system sfml-window ${OpenCV_LIBS}
+target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS}
 )
 #target_compile_options(Magisterka PRIVATE -Wall)
