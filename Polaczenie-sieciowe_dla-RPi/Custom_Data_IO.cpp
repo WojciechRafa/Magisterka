@@ -1,5 +1,5 @@
 //
-// Created by wpr on 29.12.22.
+// Created by wr on 12/27/22.
 //
 
 #include "Custom_Data_IO.hpp"
@@ -13,10 +13,6 @@ Custom_Data_IO::Custom_Data_IO(unsigned short port_, sf::IpAddress remote_dev_ip
 void Custom_Data_IO::update() {
     if(mode == Pernament_Connector::p_connector_mode::establish_connection){
         Pernament_Connector::update();
-        if(get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
-            update_period_microseconds = 50000;
-        }
-        // czas jest aktualziowany w Pernament_Connector::update();
     }else{
         // odbieranie
         sf::Packet received_packet;
@@ -24,34 +20,34 @@ void Custom_Data_IO::update() {
             update_recived(received_packet);
         }
 
-
         // nadawanie
         auto sended_packet = prepare_packet_to_send();
         auto status = send(sended_packet);
-
 
         // testowe wysyłanie i wyświetlanie
         static sf::Int32 data_int = 0;
         static float  data_float = 0;
 
-        auto status_1 = update_variable_by_name_int("Wiadomosc_int", data_int);
-        auto status_2 = update_variable_by_name_float("Wiadomosc_float", data_float);
+        auto recive_status_1 = update_variable_by_name_int("Wiadomosc_int", data_int);
+        auto recive_status_2 = update_variable_by_name_float("Wiadomosc_float", data_float);
 
-        if(not(status_1 and status_2))
+        if(not(recive_status_1 and recive_status_2))
             throw std::exception();
 
         data_int += 2;
         data_float += 1./3;
 
+        display_recived_data();
+
         last_update_time = clock.getElapsedTime().asMicroseconds();
     }
 }
 
-void Custom_Data_IO::add_sent_message(const Custom_Data_IO_Window::message& message) {
+void Custom_Data_IO::add_sended_message(Custom_Data_IO::message &&message) {
     sended_message_list.push_back(message);
 }
 
-void Custom_Data_IO::add_received_message(const Custom_Data_IO_Window::message& message) {
+void Custom_Data_IO::add_recived_message(Custom_Data_IO::message &&message) {
     recived_message_list.push_back(message);
 }
 
@@ -77,11 +73,12 @@ bool Custom_Data_IO::update_variable_by_name_float(const std::string& name, floa
     return false;
 }
 
-std::vector<Custom_Data_IO_Window::message> &Custom_Data_IO::get_recived_message_list() {
+std::vector<Custom_Data_IO::message> &Custom_Data_IO::get_recived_message_list() {
     return recived_message_list;
 }
 
 bool Custom_Data_IO::update_recived(sf::Packet &recived_packet) {
+//    auto size = recived_acket.getDataSize();
     while (not recived_packet.endOfPacket()){
 
         sf::Int32 id;
@@ -101,7 +98,7 @@ bool Custom_Data_IO::update_recived(sf::Packet &recived_packet) {
     return false;
 }
 
-Custom_Data_IO_Window::message *Custom_Data_IO::find_message_by_id_recived(sf::Int32 id) {
+Custom_Data_IO::message *Custom_Data_IO::find_message_by_id_recived(sf::Int32 id) {
     for(auto & message : recived_message_list){
         if(message.id == id){
             return &message;
@@ -122,6 +119,19 @@ sf::Packet Custom_Data_IO::prepare_packet_to_send() {
 
     return packet_to_send;
 }
+
+void Custom_Data_IO::display_recived_data() {
+    for(auto& message : recived_message_list){
+        std::cout<<message.name<<" id - "<<message.id<<" ";
+        if(message.is_int)
+            std::cout<<message.data_int<<std::endl;
+        else
+            std::cout<<message.data_float<<std::endl;
+    }
+}
+
+
+
 
 bool Custom_Data_IO::get_variable_by_name_int(const std::string &name, sf::Int32& value) {
     for(auto & i : sended_message_list){
@@ -167,7 +177,7 @@ bool Custom_Data_IO::get_variable_by_id_float(const std::string &name, float& va
     return false;
 }
 
-bool Custom_Data_IO::receive_n_time(sf::Packet &received_packet) {
+bool Custom_Data_IO::receive_n_time(sf::Packet & received_packet) {
     setBlocking(false);
 
     bool was_any_good_packet = false;

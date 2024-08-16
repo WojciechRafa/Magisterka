@@ -1,6 +1,7 @@
 //
-// Created by wr on 12/17/22.
+// Created by wr on 12/27/22.
 //
+
 
 #ifndef INZYNIERKA_TIME_OBJECT_HPP
 #define INZYNIERKA_TIME_OBJECT_HPP
@@ -16,16 +17,18 @@ public:
     explicit Time_Object(sf::Int64 update_period_microseconds_);
 
     virtual void update() = 0; // Aktualizować last_update_time
-    std::list<Time_Object&>* get_all_contaneted_time_object();
+    static std::list<Time_Object&>* get_all_contaneted_time_object();
 
-    bool need_update(); // wiele instancji może nadpisywać tą funkcję
+    virtual bool need_update(); // wiele instancji może nadpisywać tą funkcję
 protected:
     // WAŻNE ! Aktualizować last update time !
-    sf::Int64 update_period_microseconds = 100000;
+    sf::Int64 update_period_microseconds;
 
     sf::Clock clock; // TODO zmiana tego w static (problemy są z tym)
     sf::Int64 last_update_time = 0;
 };
+
+
 
 
 #endif //INZYNIERKA_TIME_OBJECT_HPP

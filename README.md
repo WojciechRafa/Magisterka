@@ -1,4 +1,4 @@
-# Projekt_Inzynierski_Nadajnik_Wersja_Podstawowa
+# Projekt_Inzynierski_Odbiornik_Wersja_Podstawowa
 
 Pozwala ona transfer obrazu z kamer oraz posiada przykładowe wykorzystanie klasy "Custom Data IO" w którym komputery wymieniają się zwiększającymi się wartościami typu "int" i "float".
 

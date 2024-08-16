@@ -1,235 +1,149 @@
 //
-// Created by wr on 12/12/22.
+// Created by wr on 12/27/22.
 //
 
 #include "System.hpp"
 
 System::System(sf::Int64 update_period_microseconds_):
-    update_period_microseconds(update_period_microseconds_),
-    graphic_warehouse("../Graphic_Warehouse"),
-    graphic(window,
-            graphic_warehouse,
-            connection_list,
-            50000
-            )
-{
+update_period_microseconds(update_period_microseconds_){
+    broadcast_connector = std::make_unique<Broadcast_Connector>(port);
 }
 
 bool System::update() {
+
     static sf::Clock clock;
     static sf::Int64 last_update_time_micro = clock.getElapsedTime().asMicroseconds();
 
-        sf::Int64 time_to_wait = update_period_microseconds - (clock.getElapsedTime().asMicroseconds() - last_update_time_micro);
-        if(time_to_wait > 0)
-            sf::sleep(sf::microseconds(time_to_wait));
+    sf::Int64 time_to_wait = update_period_microseconds - (clock.getElapsedTime().asMicroseconds() - last_update_time_micro);
+    if(time_to_wait > 0)
+        sf::sleep(sf::microseconds(time_to_wait));
 
-        last_update_time_micro = clock.getElapsedTime().asMicroseconds();
 
-        // aktualizacja czasowa:
+    last_update_time_micro = clock.getElapsedTime().asMicroseconds();
+
 
         std::list<Time_Object*> time_object_list;
 
-        if(graphic.need_update())
-            time_object_list.push_back(&graphic);
-
-        for(auto& connection: connection_list){
-            for(auto& time_object : connection->get_time_objects()){
-                if(time_object->need_update())
-                    time_object_list.push_back(time_object);
+        if(connection_state == Connection_State::broadcast_listen and broadcast_connector != nullptr) {
+            if (broadcast_connector->need_update()) {
+                time_object_list.push_back(broadcast_connector.get());
             }
-
         }
+
+        if(connection_state != Connection_State::broadcast_listen){
+            if(image_sender == nullptr or custom_data_io == nullptr)
+                throw std::exception();
+
+            if(image_sender -> need_update())
+                time_object_list.push_back(image_sender.get());
+
+            if(custom_data_io -> need_update())
+                time_object_list.push_back(custom_data_io.get());
+        }
+
 
         for(auto& time_object: time_object_list){
             time_object->update();
         }
 
 
-        //aktualizcaj nieczasowa (st - short time, skrót występujący w nazwach funkcji aby odróżnić je od update() który może zajmować pewien czas)
-        auto connection_to_remove = connection_list.end(); // end - odpowednil null-a
-        for(auto it = connection_list.begin(); it != connection_list.end(); it++){
-            auto status = it->get()->update_backend_st();
-            if(status == Button::Button_Message::turn_off_connection)
-                connection_to_remove = it;
+        // ST - short time
+        if(connection_state == Connection_State::broadcast_listen and
+           broadcast_connector != nullptr and
+           broadcast_connector->get_mode() == Broadcast_Connector::b_connector_mode::connection_confirmed){
+            remote_ip_address = broadcast_connector->get_remote_ip();
+
+            connection_state = Connection_State::both_wait_to_pernamant_connect;
+            image_sender = std::make_unique<Image_Sender>(port, remote_ip_address);
+            custom_data_io = std::make_unique<Custom_Data_IO>(port + 1, remote_ip_address);
+            configure_custom_data();
+
+            std::cout<<"Procedura zawiązywania polaczenia przez Broadcast zakonczona !"<<std::endl;
+            broadcast_connector = nullptr;
         }
-        if(connection_to_remove != connection_list.end())
-            connection_list.erase(connection_to_remove);
-
-    while (window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed){
-            window.close();
-            return true;
-        }
-    }
-
-    return execute_button_message(graphic.get_and_delate_actual_button_mesage());
-}
 
 
-bool System::execute_button_message(Button::Button_Message message) {
-    switch (message) {
-        case Button::Button_Message::nothing:
-            return false;
-        break;
-
-        case Button::Button_Message::turn_off_program:
-            window.close();
-            return true;
-        break;
-
-        case Button::Button_Message::create_new_screen:
-            if(connection_list.empty()) {
-                Custom_Data_IO_Window::message sended_message_1;
-                Custom_Data_IO_Window::message sended_message_2;
-
-                Custom_Data_IO_Window::message recived_message_1;
-                Custom_Data_IO_Window::message recived_message_2;
-
-                sended_message_1.is_int = true;
-                sended_message_1.name   = "Wiadomosc_int";
-                sended_message_1.id     = 1;
-
-                sended_message_2.is_int = false;
-                sended_message_2.name   = "Wiadomosc_float";
-                sended_message_2.id     = 2;
-
-                recived_message_1.is_int = true;
-                recived_message_1.name   = "Wiadomosc_int";
-                recived_message_1.id     = 1;
-
-                recived_message_2.is_int = false;
-                recived_message_2.name   = "Wiadomosc_float";
-                recived_message_2.id     = 2;
-
-
-                std::vector<Custom_Data_IO_Window::message> message_list_displayed = {recived_message_1, recived_message_2};
-                std::vector<Custom_Data_IO_Window::message> message_list_sended = {sended_message_1, sended_message_2};
-
-
-
-                auto connection = std::make_unique<Connection>(
-                        create_button_field_to_connection(),
-                        // dane
-                        sf::Vector2f(1050, 230),
-                        sf::Vector2f(200, 100),
-                        15,
-                        sf::Color::Magenta,
-                        message_list_displayed,
-                        message_list_sended,
-//                        kamera
-                        sf::Vector2f(10, 230),
-                        sf::Vector2f(1000, 600),
-                        graphic_warehouse,
-                        50238
-                );
-                // bez kamery
-//                auto connection = std::make_unique<Connection>(
-//                        // przyciski
-//                        create_button_field_to_connection(),
-//                        // dane
-//                        sf::Vector2f(10, 230),
-//                        sf::Vector2f(200, 100),
-//                        15,
-//                        sf::Color::Magenta,
-//                        message_list_displayed,
-//                        message_list_sended,
-//
-//                        graphic_warehouse,
-//                        50238
-//                );
-
-//                // bez danych liczbowych
-//                auto connection = std::make_unique<Connection>(
-//                        // przyciski
-//                        create_button_field_to_connection(),
-//                        // dane
-//                        message_list_displayed,
-//                        message_list_sended,
-////                        kamera
-//                        sf::Vector2f(10, 230),
-//                        sf::Vector2f(1000, 600),
-//                        graphic_warehouse,
-//                        50238
-//                );
-
-                connection_list.push_back(std::move(connection));
-
-            // usunięcie zaznaczenia przycisku
-
-
-
+        if(connection_state == Connection_State::both_wait_to_pernamant_connect){
+            if(image_sender->get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
+                connection_state = Connection_State::image_reciver_work;
+            }else if(custom_data_io -> get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
+                connection_state = Connection_State::custom_data_io_work;
             }
-            return false;
+        }else if (connection_state == Connection_State::custom_data_io_work){
+            if(image_sender->get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
+                connection_state = Connection_State::both_work;
+            }
+        }else if(connection_state == Connection_State::image_reciver_work){
+            if(custom_data_io -> get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
+                connection_state = Connection_State::custom_data_io_work;
+            }
+        }
 
-
-    }
     return false;
 }
 
-std::unique_ptr<Buttons_Field>  System::create_button_field_to_connection() {
-    sf::Vector2f button_field_pos = sf::Vector2f(10, 120);
-    sf::Vector2f button_field_size = sf::Vector2f(1100, 100);
-    sf::Color button_field_color = sf::Color::Cyan;
+void System::configure_custom_data() {
+    // stare
+    Custom_Data_IO::message sended_message_1;
+    Custom_Data_IO::message sended_message_2;
 
-    auto  buttons_field = std::make_unique<Buttons_Field>(
-                                    button_field_pos,
-                                            button_field_size,
-                                            button_field_color
-                                                 );
+    Custom_Data_IO::message recived_message_1;
+    Custom_Data_IO::message recived_message_2;
 
-    auto cancle_button = Button(sf::Vector2f(10, 10),
-                                buttons_field->getPosition(),
-                                sf::Vector2f(80, 80),
-                                Button::Button_Message::turn_off_connection,
-                                graphic_warehouse.get_texture("Cancel"));
+    sended_message_1.is_int = true;
+    sended_message_1.name   = "Wiadomosc_int";
+    sended_message_1.id     = 1;
 
-    auto broadcast_ip = Button(sf::Vector2f(110, 10),
-                               buttons_field->getPosition(),
-                               sf::Vector2f(80, 80),
-                               Button::Button_Message::broadcast_ip_process,
-                               graphic_warehouse.get_texture("Broadcast"));
+    sended_message_2.is_int = false;
+    sended_message_2.name   = "Wiadomosc_float";
+    sended_message_2.id     = 2;
 
-    auto connect_camera_view = Button(sf::Vector2f(220, 10),
-                                      buttons_field->getPosition(),
-                                      sf::Vector2f(80, 80),
-                                      Button::Button_Message::conection_establish_camera_view,
-                                      graphic_warehouse.get_texture("Connection_Camera_View"));
+    recived_message_1.is_int = true;
+    recived_message_1.name   = "Wiadomosc_int";
+    recived_message_1.id     = 1;
 
-    auto connect_custom_data = Button(sf::Vector2f(330, 10),
-                                      buttons_field->getPosition(),
-                                      sf::Vector2f(80, 80),
-                                      Button::Button_Message::conection_establish_custom_data,
-                                      graphic_warehouse.get_texture("Connection_Data_Exchange"));
+    recived_message_2.is_int = false;
+    recived_message_2.name   = "Wiadomosc_float";
+    recived_message_2.id     = 2;
 
-    auto set_camera_mode_const_20_fps = Button(sf::Vector2f(440, 10),
-                                               buttons_field->getPosition(),
-                                               sf::Vector2f(80, 80),
-                                               Button::Button_Message::set_camera_mode_const_20_fps,
-                                               graphic_warehouse.get_texture("20_fps"));
+    custom_data_io->add_sended_message(std::move(sended_message_1));
+    custom_data_io->add_sended_message(std::move(sended_message_2));
 
-    auto set_camera_mode_x1 = Button(sf::Vector2f(550, 10),
-                                     buttons_field->getPosition(),
-                                     sf::Vector2f(80, 80),
-                                     Button::Button_Message::set_camera_mode_x1,
-                                     graphic_warehouse.get_texture("x1"));
+    custom_data_io->add_recived_message(std::move(recived_message_1));
+    custom_data_io->add_recived_message(std::move(recived_message_2));
 
+//    Custom_Data_IO::message sended_message_1;
+//    Custom_Data_IO::message sended_message_2;
+//    Custom_Data_IO::message sended_message_3;
+//
+//    Custom_Data_IO::message recived_message_1;
+//    Custom_Data_IO::message recived_message_2;
+//
+//    sended_message_1.is_int = true;
+//    sended_message_1.name   = "Tryb_mocy_lewy_silnik"; // 1 - przód 0 - stop -1 - tył
+//    sended_message_1.id     = 1;
+//
+//    sended_message_2.is_int = true;
+//    sended_message_2.name   = "Tryb_mocy_prawy_silnik";
+//    sended_message_2.id     = 2;
+//
+//    sended_message_3.is_int = true;
+//    sended_message_3.name   = "Iterator"; // zwiększa regularnie swą wartość, informacja o tym chroni przed błędami
+//    sended_message_3.id     = 3;
+//
+//    recived_message_1.is_int = true;
+//    recived_message_1.name   = "Moc_lewy_silnik";
+//    recived_message_1.id     = 1;
+//
+//    recived_message_2.is_int = false;
+//    recived_message_2.name   = "Moc_prawy_silnik";
+//    recived_message_2.id     = 2;
+//
+//    custom_data_io->add_sended_message(std::move(sended_message_1));
+//    custom_data_io->add_sended_message(std::move(sended_message_2));
+//    custom_data_io->add_sended_message(std::move(sended_message_3));
+//
+//    custom_data_io->add_recived_message(std::move(recived_message_1));
+//    custom_data_io->add_recived_message(std::move(recived_message_2));
 
-    auto set_camera_mode_x0_5 = Button(sf::Vector2f(660, 10),
-                                       buttons_field->getPosition(),
-                                       sf::Vector2f(80, 80),
-                                       Button::Button_Message::set_camera_mode_x0_5,
-                                       graphic_warehouse.get_texture("x0_5"));
-
-
-    buttons_field->add_button(std::move(cancle_button));
-    buttons_field->add_button(std::move(broadcast_ip));
-    buttons_field->add_button(std::move(connect_camera_view));
-    buttons_field->add_button(std::move(connect_custom_data));
-
-    buttons_field->add_button(std::move(set_camera_mode_const_20_fps));
-    buttons_field->add_button(std::move(set_camera_mode_x1));
-    buttons_field->add_button(std::move(set_camera_mode_x0_5));
-
-    return std::move(buttons_field);
 }

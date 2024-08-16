@@ -1,45 +1,27 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.16)
 project(Magisterka)
+
+set(OpenCV_DIR   "/home/wr/Biblioteki/OpenCV/opencv-4.x/cmake")
 
 set(CMAKE_CXX_STANDARD 20)
 
+
 find_package(OpenCV REQUIRED)
+
 include_directories( ${OpenCV_INCLUDE_DIRS})
 
-add_executable(Magisterka
-        main.cpp
-        sended_struct.hpp
-        sended_struct.cpp
-        main_functions.hpp
-        Time.hpp
-        Broadcast_Connector.cpp
-        Broadcast_Connector.hpp
-        Pernament_Connector.cpp
-        Pernament_Connector.hpp
-        Window.cpp Window.hpp
-        Image_Receiver.cpp
-        Image_Receiver.hpp
-        Buttons_Field.cpp
-        Buttons_Field.hpp
-        Graphic_Warehouse.cpp
-        Graphic_Warehouse.hpp
-        Button.cpp
-        Button.hpp
-        System.cpp
-        System.hpp
-        Time_Object.cpp
-        Time_Object.hpp
-        Connection_Frontend.cpp
-        Connection_Frontend.hpp
-        Connection_Backend.cpp
-        Connection_Backend.hpp
-        Connection.cpp
-        Connection.hpp
-        Graphic_Manager.cpp
-        Graphic_Manager.hpp
-        Custom_Data_IO_Window.cpp
-        Custom_Data_IO_Window.hpp
-        Custom_Data_IO.cpp
-        Custom_Data_IO.hpp)
-
-target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS})
+add_executable(Magisterka main.cpp
+	main_functions.hpp
+	Sended_struct.hpp Sended_struct.cpp
+	Broadcast_connector.hpp Broadcast_connector.cpp
+	Pernament_Connector.hpp Pernament_Connector.cpp
+	Image_Sender.hpp Image_Sender.cpp
+	Time.hpp
+	Camera.hpp Camera.cpp
+	System.cpp System.hpp
+	Time_Object.cpp Time_Object.hpp
+	Custom_Data_IO.cpp Custom_Data_IO.hpp)
+        
+target_link_libraries(Magisterka sfml-network sfml-system sfml-window ${OpenCV_LIBS}
+)
+#target_compile_options(Magisterka PRIVATE -Wall)
