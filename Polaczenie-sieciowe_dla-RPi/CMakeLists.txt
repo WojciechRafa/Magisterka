@@ -31,6 +31,10 @@ add_executable(Magisterka main.cpp
 		Graphic_Manager.cpp
 	Button.hpp
 		Button.cpp
+		Small_window.cpp
+		Small_window.hpp
+        Image_source_typ.cpp
+        Image_source_typ.hpp
 )
         
 target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS}

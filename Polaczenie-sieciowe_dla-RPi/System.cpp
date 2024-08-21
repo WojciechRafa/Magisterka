@@ -9,9 +9,18 @@ System::System(sf::Int64 update_period_microseconds_):
     graphic_warehouse("../Graphic_Warehouse"),
     graphic(window,
         graphic_warehouse,
-    50000)
+    50000),
+    image_source(Image_source::Frame_switching::automatic),
+//    image_source("/home/wpr/Documents/AGH/Magisterka/Program/Video/cut_video/IMG_1264.mkv", Image_source::Frame_switching::automatic),
+    raw_picture_window(sf::Vector2f(300, 200), sf::Vector2f(10, 120))
     {
     broadcast_connector = std::make_unique<Broadcast_Connector>(port);
+
+    graphic.add_time_object_to_update(& raw_picture_window);
+    graphic.add_small_window_to_display(& raw_picture_window);
+
+    image_source.set_image_ptr(raw_picture);
+    raw_picture_window.set_image_ptr(raw_picture);
 }
 
 bool System::update() {
@@ -45,6 +54,11 @@ bool System::update() {
         if(custom_data_io -> need_update())
             time_object_list.push_back(custom_data_io.get());
     }
+
+    // get_new_frame
+    image_source.update();
+//    if(raw_picture->empty())
+//        std::cout<< "WELO \n";
 
     // graphic:
     if(graphic.need_update())
@@ -86,6 +100,7 @@ bool System::update() {
             connection_state = Connection_State::custom_data_io_work;
         }
     }
+
 
     while (window.pollEvent(event))
     {

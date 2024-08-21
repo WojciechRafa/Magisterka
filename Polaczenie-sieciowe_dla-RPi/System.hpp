@@ -16,6 +16,9 @@
 #include "Graphic_Warehouse.hpp"
 #include "Graphic_Manager.hpp"
 
+#include "Small_window.hpp"
+#include "Image_source_typ.hpp"
+
 class System {
 public:
     explicit System(sf::Int64 update_period_microseconds_ = 1000); // domyślne maksymalne tempo aktualizacji 1ms
@@ -49,6 +52,10 @@ private:
 
     Graphic_Manager graphic;
     bool execute_button_message(Button::Button_Message message);
+
+    Image_source image_source;
+    std::shared_ptr<cv::Mat> raw_picture = std::make_shared<cv::Mat>();
+    Small_window raw_picture_window;
 };
 
 
