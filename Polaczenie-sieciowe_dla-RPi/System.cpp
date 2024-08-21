@@ -21,6 +21,8 @@ System::System(sf::Int64 update_period_microseconds_):
 
     image_source.set_image_ptr(raw_picture);
     raw_picture_window.set_image_ptr(raw_picture);
+
+
 }
 
 bool System::update() {
