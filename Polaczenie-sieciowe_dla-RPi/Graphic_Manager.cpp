@@ -84,12 +84,13 @@ void Graphic_Manager::display() {
 
     for(auto small_window: small_windows){
         if(small_window != nullptr) {
-            sf::RectangleShape small_wind(small_window->getSize());
-            small_wind.setPosition(small_window->getPosition());
-            small_wind.setTexture(small_window->getTexture());
+            window.draw(* small_window);
 
-            window.draw(small_wind);
-
+            if(small_window->get_additional_graphic() != nullptr){
+                for(auto& graphic: *small_window->get_additional_graphic()){
+                    window.draw(*graphic);
+                }
+            }
         }
     }
 

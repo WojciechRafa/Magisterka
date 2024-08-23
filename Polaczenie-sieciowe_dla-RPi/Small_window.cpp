@@ -9,6 +9,8 @@
 Small_window::Small_window(sf::Vector2f size_,
                            sf::Vector2f pos,
                            sf::Color background_color,
+                           sf::Color outline_color,
+                           float outline_thickness,
                            int update_time) :
     Time_Object(update_time),
     size(size_)
@@ -17,6 +19,8 @@ Small_window::Small_window(sf::Vector2f size_,
     setSize(size);
 //    setColor(background_color);
     setFillColor(background_color);
+    setOutlineColor(outline_color);
+    setOutlineThickness(outline_thickness);
 }
 
 std::string getMatType(const cv::Mat& mat) {
@@ -57,18 +61,14 @@ void Small_window::update() {
 
             setTexture(&texture);
 
-            if (image_copy.type() != CV_8UC3) {
-                std::cerr << "Error: Image is not of type CV_8UC3." << std::endl;
-            }
-
-            std::cout << "Rows: " << image_cv_ptr->rows << std::endl;
-            std::cout << "Cols: " << image_cv_ptr->cols << std::endl;
-            std::cout << "Size: " << image_cv_ptr->size() << std::endl;
-            std::cout << "Channels: " << image_cv_ptr->channels() << std::endl;
-            std::cout << "Type: " << getMatType(*image_cv_ptr) << std::endl;
-            std::cout << "Step: " << image_cv_ptr->step << " bytes" << std::endl;
-            std::cout << "Element Size: " << image_cv_ptr->elemSize() << " bytes" << std::endl;
-            std::cout << "Is empty: " << std::boolalpha << image_cv_ptr->empty() << std::endl;
+//            std::cout << "Rows: " << image_cv_ptr->rows << std::endl;
+//            std::cout << "Cols: " << image_cv_ptr->cols << std::endl;
+//            std::cout << "Size: " << image_cv_ptr->size() << std::endl;
+//            std::cout << "Channels: " << image_cv_ptr->channels() << std::endl;
+//            std::cout << "Type: " << getMatType(*image_cv_ptr) << std::endl;
+//            std::cout << "Step: " << image_cv_ptr->step << " bytes" << std::endl;
+//            std::cout << "Element Size: " << image_cv_ptr->elemSize() << " bytes" << std::endl;
+//            std::cout << "Is empty: " << std::boolalpha << image_cv_ptr->empty() << std::endl;
 
             last_update_time = clock.getElapsedTime().asMicroseconds();
             return;
@@ -78,5 +78,21 @@ void Small_window::update() {
 }
 
 void Small_window::set_image_ptr(std::shared_ptr<cv::Mat> image_ptr_) {
-    image_cv_ptr = image_ptr_;
+    image_cv_ptr = std::move(image_ptr_);
+}
+
+void Small_window::set_additional_graphic(std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_) {
+    additional_graphic = std::move(additional_graphic_);
+}
+
+std::vector<std::unique_ptr<sf::Shape>>* Small_window::get_additional_graphic() {
+    return additional_graphic.get();
+//    additional_graphic_local.clear();
+
+//    for(auto& graphic: *additional_graphic){
+//        additional_graphic_local.push_back(std::make_unique<sf::Drawable>(*graphic));
+//        auto std::make_unique<sf::Shape>();
+//        additional_graphic_local.push_back()
+//    }
+//    return additional_graphic.get();
 }

@@ -11,19 +11,46 @@ System::System(sf::Int64 update_period_microseconds_):
         graphic_warehouse,
     50000),
     image_source(Image_source::Frame_switching::automatic),
+
 //    image_source("/home/wpr/Documents/AGH/Magisterka/Program/Video/cut_video/IMG_1264.mkv", Image_source::Frame_switching::automatic),
-    raw_picture_window(sf::Vector2f(300, 200), sf::Vector2f(10, 120))
+    raw_picture_window(standard_window_size, sf::Vector2f(10, 120)),
+    binarized_picture_window(standard_window_size, sf::Vector2f(320, 120)),
+    projections_window(standard_window_size, sf::Vector2f(630, 120), sf::Color::White),
+
+    projection_calculator(Projection_image_calculate::axes::z,
+                          Projection_image_calculate::axes::x,
+                          projections_window.getPosition(),
+                          standard_window_size,
+                          standard_window_size * 0.5f
+                          )
     {
     broadcast_connector = std::make_unique<Broadcast_Connector>(port);
-
-    graphic.add_time_object_to_update(& raw_picture_window);
-    graphic.add_small_window_to_display(& raw_picture_window);
 
     image_source.set_image_ptr(raw_picture);
     raw_picture_window.set_image_ptr(raw_picture);
 
+    binarized_picture_window.set_image_ptr(binarized_picture);
 
-}
+    binarization.set_input_image(raw_picture);
+    binarization.set_binarized_image(binarized_picture);
+//    binarization.set_centroids(centroids);
+//    binarization.set_stats(stats);
+    binarization.set_parameters(bin_parameters);
+
+//    projection_calculator.set_stats(stats);
+//    projection_calculator.set_centroids(centroids);
+    projection_calculator.set_parameters(bin_parameters);
+    projection_calculator.set_additional_graphic(projections);
+
+    projections_window.set_additional_graphic(projections);
+
+    graphic.add_time_object_to_update(& raw_picture_window);
+    graphic.add_small_window_to_display(& raw_picture_window);
+    graphic.add_time_object_to_update(& binarized_picture_window);
+    graphic.add_small_window_to_display(& binarized_picture_window);
+    graphic.add_time_object_to_update(&projections_window);
+    graphic.add_small_window_to_display(&projections_window);
+    }
 
 bool System::update() {
 
@@ -58,7 +85,9 @@ bool System::update() {
     }
 
     // get_new_frame
-    image_source.update();
+    time_object_list.push_back(&image_source);
+    time_object_list.push_back(&binarization);
+    time_object_list.push_back(&projection_calculator);
 //    if(raw_picture->empty())
 //        std::cout<< "WELO \n";
 
@@ -69,6 +98,7 @@ bool System::update() {
     for(auto& time_object: time_object_list){
         time_object->update();
     }
+    time_object_list.clear();
 
 
         // ST - short time

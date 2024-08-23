@@ -18,6 +18,8 @@
 
 #include "Small_window.hpp"
 #include "Image_source_typ.hpp"
+#include "Binarization.hpp"
+#include "Projection_image_calculate.hpp"
 
 class System {
 public:
@@ -44,7 +46,6 @@ private:
     std::unique_ptr<Custom_Data_IO> custom_data_io = nullptr;
 
     void configure_custom_data();
-
     // graphic:
     Window window;
     sf::Event event{};
@@ -53,9 +54,27 @@ private:
     Graphic_Manager graphic;
     bool execute_button_message(Button::Button_Message message);
 
+    const sf::Vector2f standard_window_size = sf::Vector2f(300, 200);
+
     Image_source image_source;
+    Binarization binarization;
+
     std::shared_ptr<cv::Mat> raw_picture = std::make_shared<cv::Mat>();
+    std::shared_ptr<cv::Mat> binarized_picture = std::make_shared<cv::Mat>();
+
     Small_window raw_picture_window;
+    Small_window binarized_picture_window;
+    Small_window projections_window;
+
+//    std::shared_ptr<cv::Mat> stats = std::make_shared<cv::Mat>();
+//    std::shared_ptr<cv::Mat> centroids = std::make_shared<cv::Mat>();
+    std::shared_ptr<Binarization::Binarized_parameters> bin_parameters =
+            std::make_shared<Binarization::Binarized_parameters>();
+
+    std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>>projections =
+            std::make_shared<std::vector<std::unique_ptr<sf::Shape>>>();
+
+    Projection_image_calculate projection_calculator;
 };
 
 

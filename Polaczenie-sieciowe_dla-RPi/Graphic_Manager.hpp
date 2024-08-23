@@ -17,7 +17,7 @@ public:
     Graphic_Manager(
             Window& window_,
             Graphic_Warehouse& graphic_warehouse_,
-            sf::Int64 update_period_microseconds_
+            sf::Int64 update_period_microseconds_ = 50000
             ); // w konstruktorze znajduje się międzyinnymi konfiguracja ekranu
 
     void update() override;
