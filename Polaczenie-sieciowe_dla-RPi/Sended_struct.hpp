@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Network.hpp>
+#include <opencv2/opencv.hpp>
 
 struct Control_message{
     sf::Int16 left_engine;
@@ -31,3 +32,5 @@ sf::Packet& operator <<(sf::Packet& packet, Image_and_number& image_and_number);
 
 sf::IpAddress get_ip(sf::Packet packet);
 
+sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);
+sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);

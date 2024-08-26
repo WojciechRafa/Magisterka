@@ -39,6 +39,8 @@ add_executable(Magisterka main.cpp
 		Binarization.hpp
 		Projection_image_calculate.cpp
 		Projection_image_calculate.hpp
+		Rays_sender.cpp
+		Rays_sender.hpp
 )
         
 target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS}
