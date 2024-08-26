@@ -25,8 +25,8 @@ private:
              "Broadcast",
             "20_fps",
             "x1",
-            "x0_5"
-
+            "x0_5",
+            "Rays"
             };
     std::vector<sf::Texture> texture_list;
 };

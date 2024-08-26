@@ -70,6 +70,11 @@ void Graphic_Manager::update() {
         connection->update_image();
     }
 
+    for (auto time_object_to_update: time_objects_to_update){
+        if(time_object_to_update != nullptr)
+            time_object_to_update->update();
+    }
+
     display();
 
     last_update_time = clock.getElapsedTime().asMicroseconds();
@@ -90,6 +95,20 @@ void Graphic_Manager::display() {
         }
     }
 
+    std::vector<sf::RectangleShape> small_wind_list;
+
+    for(auto small_window: small_windows){
+        if(small_window != nullptr) {
+            window.draw(* small_window);
+
+            if(small_window->get_additional_graphic() != nullptr){
+                for(auto& graphic: *small_window->get_additional_graphic()){
+                    window.draw(*graphic);
+                }
+            }
+        }
+    }
+
     window.display();
 }
 
@@ -99,3 +118,10 @@ Button::Button_Message Graphic_Manager::get_and_delate_actual_button_mesage() {
     return message_copy;
 }
 
+void Graphic_Manager::add_time_object_to_update(Time_Object *time_object_to_update_) {
+    time_objects_to_update.push_back(time_object_to_update_);
+}
+
+void Graphic_Manager::add_small_window_to_display(Small_window* small_window) {
+    small_windows.push_back(small_window);
+}

@@ -14,6 +14,10 @@ message_list_recived(message_list_recived_)
 {
 }
 
+Connection_Backend::Connection_Backend(unsigned short port_):
+        port(port_)
+{}
+
 const sf::Image* Connection_Backend::get_image() {
     if(image_receiver != nullptr){
         return image_receiver->get_image();
@@ -98,6 +102,31 @@ bool Connection_Backend::start_connection_custom_data() {
     return false;
 }
 
+bool Connection_Backend::start_connection_axes_ratio() {
+    if(connection_state == Connection_State::another_IP_knowed or
+       connection_state == Connection_State::only_custom_data_work
+            ){
+        image_receiver = std::make_unique<Image_Receiver>(port, remote_ip);
+
+        if(remote_ip != sf::IpAddress::None) {
+
+            connection_state = Connection_State::axes_ratio_work;
+//            if(connection_state == Connection_State::another_IP_knowed)
+//                connection_state = Connection_State::camera_view_connect_establishment_custom_data_not_work;
+//            else{
+//                connection_state = Connection_State::camera_view_connect_establishment_custom_data_work;
+//            }
+
+            return true;
+        }else{
+            std::cout<<"Adres IP urządzenia zdalnego jest nieznany \n";
+            connection_state = Connection_State::incorect_connect_request_IP_error;
+            return false;
+        }
+    }
+    return false;
+}
+
 std::vector<Time_Object *> Connection_Backend::get_time_object_list() {
     if(connection_state == Connection_State::broadcast){
         return {broadcast_connector.get()};
@@ -107,7 +136,7 @@ std::vector<Time_Object *> Connection_Backend::get_time_object_list() {
         connection_state == Connection_State::camera_view_connect_establishment_custom_data_not_work or
         connection_state == Connection_State::custom_data_connect_establishment_camera_view_work or
         connection_state == Connection_State::only_camera_view_work or
-        connection_state == Connection_State::both_work
+        connection_state == Connection_State::camera_view_and_custom_data_work
     ){
         time_object_list.push_back(image_receiver.get());
     }
@@ -116,9 +145,17 @@ std::vector<Time_Object *> Connection_Backend::get_time_object_list() {
             connection_state == Connection_State::custom_data_connect_establishment_camera_view_work or
             connection_state == Connection_State::camera_view_connect_establishment_custom_data_work or
             connection_state == Connection_State::only_custom_data_work or
-            connection_state == Connection_State::both_work
+            connection_state == Connection_State::camera_view_and_custom_data_work
             ){
         time_object_list.push_back(custom_data_io.get());
+    }
+
+    if(
+            connection_state == Connection_State::axes_ratio_establishment or
+            connection_state == Connection_State::axes_ratio_work
+
+            ){
+        time_object_list.push_back(rays_receiver.get());
     }
 
     return time_object_list;
@@ -146,7 +183,7 @@ void Connection_Backend::update_st() {
                 std::cout <<" Camera View - Procedura nawiązywania kontaktu zakończona" << std::endl;
 
                 if(connection_state == Connection_State::camera_view_connect_establishment_custom_data_work){
-                    connection_state = Connection_State::both_work;
+                    connection_state = Connection_State::camera_view_and_custom_data_work;
                 }else{
                     connection_state = Connection_State::only_camera_view_work;
                 }
@@ -163,7 +200,7 @@ void Connection_Backend::update_st() {
             std::cout <<" Custom Data - Procedura nawiązywania kontaktu zakończona" << std::endl;
 
             if(connection_state == Connection_State::custom_data_connect_establishment_camera_view_work){
-                connection_state = Connection_State::both_work;
+                connection_state = Connection_State::camera_view_and_custom_data_work;
             }else{
                 connection_state = Connection_State::only_custom_data_work;
             }
@@ -184,7 +221,7 @@ bool Connection_Backend::is_camera_view_work() {
            connection_state == Connection_State::camera_view_connect_establishment_custom_data_not_work or
            connection_state == Connection_State::custom_data_connect_establishment_camera_view_work or
            connection_state == Connection_State::only_camera_view_work or
-           connection_state == Connection_State::both_work;
+           connection_state == Connection_State::camera_view_and_custom_data_work;
 }
 
 bool Connection_Backend::is_custom_data_work() {
@@ -192,7 +229,12 @@ bool Connection_Backend::is_custom_data_work() {
             connection_state == Connection_State::custom_data_connect_establishment_camera_view_work or
             connection_state == Connection_State::custom_data_connect_establishment_camera_view_not_work or
             connection_state == Connection_State::only_custom_data_work or
-            connection_state == Connection_State::both_work;
+            connection_state == Connection_State::camera_view_and_custom_data_work;
+}
+
+bool Connection_Backend::is_custom_rays_receiver() {
+    return connection_state == Connection_State::axes_ratio_establishment or
+           connection_state == Connection_State::axes_ratio_work;
 }
 
 void Connection_Backend::set_camera_view_mode(Image_Receiver::Sender_Mode mode) {
@@ -201,4 +243,7 @@ void Connection_Backend::set_camera_view_mode(Image_Receiver::Sender_Mode mode) 
     }
 }
 
+void Connection_Backend::set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_) {
+    axes_ratio = std::move(axes_ratio_);
+}
 

@@ -70,6 +70,32 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
         backend(port,message_list_sended ,message_list_displayed)
 {}
 
+Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
+
+                       sf::Vector2f window_pos,
+                       sf::Vector2f window_size,
+                       Projection_image_calculator::axes axis_a,
+                       Projection_image_calculator::axes axis_b,
+
+                       Graphic_Warehouse& graphic_warehouse,
+                       unsigned short port):
+        frontend(
+                std::move(button_filed_),
+
+                window_pos,
+                window_size,
+                axis_a,
+                axis_b,
+
+                graphic_warehouse
+        ),
+        backend(port)
+
+{
+    axes_ratio = std::make_shared<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>>();
+    frontend.set_axes_ratio(axes_ratio);
+    backend.set_axes_ratio(axes_ratio);
+}
 
 
 
@@ -111,7 +137,11 @@ Button::Button_Message Connection::update_backend_st() {
     } else if(message == Button::Button_Message::conection_establish_custom_data){
         backend.start_connection_custom_data();
         frontend.set_button_mode(Button::Button_Message::broadcast_ip_process, false);
+    } else if(message == Button::Button_Message::conection_establish_rays){
+        backend.start_connection_axes_ratio();
+        frontend.set_button_mode(Button::Button_Message::broadcast_ip_process, false);
     }
+
     if(backend.is_camera_view_work()){
         if(message == Button::Button_Message::set_camera_mode_const_20_fps){
             backend.set_camera_view_mode(Image_Receiver::Sender_Mode::const_20_fps);
@@ -143,7 +173,13 @@ void Connection::update_image() {
     }
 }
 std::vector<Time_Object *> Connection::get_time_objects() {
-    return backend.get_time_object_list();
+    std::vector<Time_Object *> backed_time_objets = backend.get_time_object_list();
+    std::vector<Time_Object *> frontend_time_objets = frontend.get_time_object_list();
+
+    std::vector<Time_Object *> all_time_objects(backed_time_objets.size() + frontend_time_objets.size());
+
+    std::copy(backed_time_objets.begin(), backed_time_objets.end(), all_time_objects.begin());
+    std::copy(frontend_time_objets.begin(), frontend_time_objets.end(), all_time_objects.begin() + backed_time_objets.size());
+
+    return all_time_objects;
 }
-
-

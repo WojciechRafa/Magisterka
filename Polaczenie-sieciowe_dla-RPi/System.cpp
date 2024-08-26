@@ -11,8 +11,47 @@ System::System(sf::Int64 update_period_microseconds_):
             graphic_warehouse,
             connection_list,
             50000
-            )
+            ),
+
+    image_source(Image_source::Frame_switching::automatic),
+
+//    image_source("/home/wpr/Documents/AGH/Magisterka/Program/Video/cut_video/IMG_1264.mkv", Image_source::Frame_switching::automatic),
+    raw_picture_window(standard_window_size, sf::Vector2f(10, 120)),
+    binarized_picture_window(standard_window_size, sf::Vector2f(320, 120)),
+    projections_window(standard_window_size, sf::Vector2f(630, 120), sf::Color::White),
+
+    projection_calculator(Projection_image_calculator::axes::z,
+                          Projection_image_calculator::axes::x,
+                          projections_window.getPosition(),
+                          standard_window_size,
+                          standard_window_size * 0.5f
+    )
 {
+    image_source.set_image_ptr(raw_picture);
+    raw_picture_window.set_image_ptr(raw_picture);
+
+    binarized_picture_window.set_image_ptr(binarized_picture);
+
+    binarization.set_input_image(raw_picture);
+    binarization.set_binarized_image(binarized_picture);
+//    binarization.set_centroids(centroids);
+//    binarization.set_stats(stats);
+    binarization.set_parameters(bin_parameters);
+
+//    projection_calculators.set_stats(stats);
+//    projection_calculators.set_centroids(centroids);
+    projection_calculator.set_parameters(bin_parameters);
+    projection_calculator.set_additional_graphic(projections);
+
+    projections_window.set_additional_graphic(projections);
+
+    graphic.add_time_object_to_update(& raw_picture_window);
+    graphic.add_small_window_to_display(& raw_picture_window);
+    graphic.add_time_object_to_update(& binarized_picture_window);
+    graphic.add_small_window_to_display(& binarized_picture_window);
+    graphic.add_time_object_to_update(&projections_window);
+    graphic.add_small_window_to_display(&projections_window);
+
 }
 
 bool System::update() {
@@ -39,11 +78,15 @@ bool System::update() {
             }
 
         }
+        time_object_list.push_back(&image_source);
+        time_object_list.push_back(&binarization);
+        time_object_list.push_back(&projection_calculator);
 
         for(auto& time_object: time_object_list){
             time_object->update();
         }
 
+        time_object_list.clear();
 
         //aktualizcaj nieczasowa (st - short time, skrót występujący w nazwach funkcji aby odróżnić je od update() który może zajmować pewien czas)
         auto connection_to_remove = connection_list.end(); // end - odpowednil null-a
@@ -108,25 +151,29 @@ bool System::execute_button_message(Button::Button_Message message) {
 
 
 
-                auto connection = std::make_unique<Connection>(
-                        create_button_field_to_connection(),
-                        // dane
-                        sf::Vector2f(1050, 230),
-                        sf::Vector2f(200, 100),
-                        15,
-                        sf::Color::Magenta,
-                        message_list_displayed,
-                        message_list_sended,
-//                        kamera
-                        sf::Vector2f(10, 230),
-                        sf::Vector2f(1000, 600),
-                        graphic_warehouse,
-                        50238
-                );
+//                auto connection = std::make_unique<Connection>(
+//                        create_button_field_to_connection_with_camera_and_custom_data(),
+//                        // dane
+//                        sf::Vector2f(1050, 230),
+//                        sf::Vector2f(200, 100),
+//                        15,
+//                        sf::Color::Magenta,
+//                        message_list_displayed,
+//                        message_list_sended,
+////                        kamera
+//                        sf::Vector2f(10, 230),
+//                        sf::Vector2f(1000, 600),
+//                        graphic_warehouse,
+//                        50238
+//                );
+//                auto button_field = create_button_field_to_connection_with_camera_and_custom_data(sf::Vector2f(10, 420));
+                auto button_field = create_button_field_to_connection_with_rays(sf::Vector2f(10, 420));
+//                button_field->setPosition(button_field->getPosition() + sf::Vector2f(0, 300));
+
                 // bez kamery
 //                auto connection = std::make_unique<Connection>(
 //                        // przyciski
-//                        create_button_field_to_connection(),
+//                        std::move(button_field),
 //                        // dane
 //                        sf::Vector2f(10, 230),
 //                        sf::Vector2f(200, 100),
@@ -142,7 +189,7 @@ bool System::execute_button_message(Button::Button_Message message) {
 //                // bez danych liczbowych
 //                auto connection = std::make_unique<Connection>(
 //                        // przyciski
-//                        create_button_field_to_connection(),
+//                        create_button_field_to_connection_with_camera_and_custom_data(),
 //                        // dane
 //                        message_list_displayed,
 //                        message_list_sended,
@@ -152,6 +199,29 @@ bool System::execute_button_message(Button::Button_Message message) {
 //                        graphic_warehouse,
 //                        50238
 //                );
+
+                // rays
+
+//                Connection::Projection_window_parameters rays_window_parameters{
+//                        sf::Vector2f(0, 0),
+//                        sf::Vector2f(0, 0),
+//                        Projection_image_calculator::axes::z,
+//                        Projection_image_calculator::axes::x
+//                };
+
+                auto connection = std::make_unique<Connection>(
+                        // przyciski
+                        std::move(button_field),
+
+                        sf::Vector2f(10, 550),
+                        sf::Vector2f(200, 100),
+                        Projection_image_calculator::axes::z,
+                        Projection_image_calculator::axes::x,
+
+                        graphic_warehouse,
+                        50238
+                );
+
 
                 connection_list.push_back(std::move(connection));
 
@@ -167,8 +237,7 @@ bool System::execute_button_message(Button::Button_Message message) {
     return false;
 }
 
-std::unique_ptr<Buttons_Field>  System::create_button_field_to_connection() {
-    sf::Vector2f button_field_pos = sf::Vector2f(10, 120);
+std::unique_ptr<Buttons_Field>  System::create_button_field_to_connection_with_camera_and_custom_data(sf::Vector2f button_field_pos) {
     sf::Vector2f button_field_size = sf::Vector2f(1100, 100);
     sf::Color button_field_color = sf::Color::Cyan;
 
@@ -230,6 +299,42 @@ std::unique_ptr<Buttons_Field>  System::create_button_field_to_connection() {
     buttons_field->add_button(std::move(set_camera_mode_const_20_fps));
     buttons_field->add_button(std::move(set_camera_mode_x1));
     buttons_field->add_button(std::move(set_camera_mode_x0_5));
+
+    return std::move(buttons_field);
+}
+
+std::unique_ptr<Buttons_Field> System::create_button_field_to_connection_with_rays(sf::Vector2f button_field_pos) {
+    sf::Vector2f button_field_size = sf::Vector2f(1100, 100);
+    sf::Color button_field_color = sf::Color::Cyan;
+
+    auto  buttons_field = std::make_unique<Buttons_Field>(
+            button_field_pos,
+            button_field_size,
+            button_field_color
+    );
+
+    auto cancle_button = Button(sf::Vector2f(10, 10),
+                                buttons_field->getPosition(),
+                                sf::Vector2f(80, 80),
+                                Button::Button_Message::turn_off_connection,
+                                graphic_warehouse.get_texture("Cancel"));
+
+    auto broadcast_ip = Button(sf::Vector2f(110, 10),
+                               buttons_field->getPosition(),
+                               sf::Vector2f(80, 80),
+                               Button::Button_Message::broadcast_ip_process,
+                               graphic_warehouse.get_texture("Broadcast"));
+
+    auto rays_button = Button(sf::Vector2f(210, 10),
+                               buttons_field->getPosition(),
+                               sf::Vector2f(80, 80),
+                               Button::Button_Message::conection_establish_rays,
+                               graphic_warehouse.get_texture("Rays"));
+
+
+    buttons_field->add_button(std::move(cancle_button));
+    buttons_field->add_button(std::move(broadcast_ip));
+    buttons_field->add_button(std::move(rays_button));
 
     return std::move(buttons_field);
 }

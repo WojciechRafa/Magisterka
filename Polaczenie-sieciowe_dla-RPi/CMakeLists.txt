@@ -40,6 +40,17 @@ add_executable(Magisterka
         Custom_Data_IO_Window.cpp
         Custom_Data_IO_Window.hpp
         Custom_Data_IO.cpp
-        Custom_Data_IO.hpp)
+        Custom_Data_IO.hpp
+        Small_window.cpp
+        Small_window.hpp
+        Image_source_typ.cpp
+        Image_source_typ.hpp
+        Binarization.cpp
+        Binarization.hpp
+        Projection_image_calculator.cpp
+        Projection_image_calculator.hpp
+        Rays_receiver.cpp
+        Rays_receiver.hpp
+)
 
 target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS})

@@ -25,7 +25,6 @@ struct Image_and_number{
 };
 
 
-
 sf::Packet& operator <<(sf::Packet& packet, const Control_message& directions);
 sf::Packet& operator >>(sf::Packet& packet, Control_message& directions);
 
@@ -37,3 +36,6 @@ sf::Packet& operator <<(sf::Packet& packet, const sf::IpAddress& ip);
 sf::IpAddress get_ip(sf::Packet& packet);
 
 sf::Packet& operator >>(sf::Packet& packet, Image_and_number& Img_and_num);
+
+sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);
+sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);

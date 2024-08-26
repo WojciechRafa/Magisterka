@@ -17,6 +17,7 @@ public:
         broadcast_ip_process,
         conection_establish_camera_view,
         conection_establish_custom_data,
+        conection_establish_rays,
         set_camera_mode_const_20_fps,
         set_camera_mode_x1,
         set_camera_mode_x0_5

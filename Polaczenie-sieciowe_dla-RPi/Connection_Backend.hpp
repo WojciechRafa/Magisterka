@@ -10,16 +10,19 @@
 #include "Broadcast_Connector.hpp"
 #include "Image_Receiver.hpp"
 #include "Custom_Data_IO.hpp"
+#include "Rays_receiver.hpp"
 
 #include <SFML/Network.hpp>
+#include <opencv2/opencv.hpp>
 
 class Connection_Backend{
 public:
     explicit Connection_Backend(unsigned short port_,
                                 std::vector<Custom_Data_IO_Window::message>& message_list_recived_,
                                 std::vector<Custom_Data_IO_Window::message>& message_list_sended_
-
                                 );
+
+    explicit Connection_Backend(unsigned short port_);
 
     enum class Connection_State{
         primary,
@@ -33,15 +36,19 @@ public:
         custom_data_connect_establishment_camera_view_not_work,
         only_camera_view_work,
         only_custom_data_work,
-        both_work
+        camera_view_and_custom_data_work,
+        axes_ratio_establishment,
+        axes_ratio_work
     };
 
     std::vector<Time_Object*> get_time_object_list();
 
     // funkcje zwracają true przy powodzeniu
     bool start_looking_for_another_device();
+
     bool start_connection_camera_view();
     bool start_connection_custom_data();
+    bool start_connection_axes_ratio();
 
     void update_st();
 
@@ -55,6 +62,9 @@ public:
 
     bool is_camera_view_work();
     bool is_custom_data_work();
+    bool is_custom_rays_receiver();
+
+    void set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_);
 private:
     // Parametryzowanie stałych
     const sf::Int64 update_period_connection = 1000000;
@@ -68,11 +78,14 @@ private:
     std::unique_ptr<Broadcast_Connector> broadcast_connector = nullptr;
     std::unique_ptr<Image_Receiver> image_receiver = nullptr;
     std::unique_ptr<Custom_Data_IO> custom_data_io = nullptr;
+    std::unique_ptr<Rays_receiver> rays_receiver = nullptr;
 
     Connection_State connection_state = Connection_State::primary;
 
     std::vector<Custom_Data_IO_Window::message> message_list_recived;
     std::vector<Custom_Data_IO_Window::message> message_list_sended;
+
+    std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio = nullptr;
 };
 
 

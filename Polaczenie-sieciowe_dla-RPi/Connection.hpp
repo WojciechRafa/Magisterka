@@ -8,10 +8,21 @@
 #include "Connection_Frontend.hpp"
 #include "Connection_Backend.hpp"
 
+#include "Projection_image_calculator.hpp"
+#include "Projection_image_calculator.hpp"
+
 #include <list>
 
 class Connection {
 public:
+    struct Projection_window_parameters{
+        sf::Vector2f position = sf::Vector2f(0, 0);
+        sf::Vector2f size = sf::Vector2f(0, 0);
+        Projection_image_calculator::axes axis_a = Projection_image_calculator::axes::z;
+        Projection_image_calculator::axes axis_b = Projection_image_calculator::axes::x;
+        sf::Color background_color = sf::Color::White;
+    };
+
     [[maybe_unused]] Connection(
             std::unique_ptr<Buttons_Field> button_filed_,
 
@@ -56,6 +67,20 @@ public:
             unsigned short port
     );
 
+    // do wyświetlania potencjalnych punktow kamery
+    [[maybe_unused]] Connection(
+            std::unique_ptr<Buttons_Field> button_filed_,
+//            const std::vector<Projection_window_parameters>&,
+
+            sf::Vector2f window_pos,
+            sf::Vector2f window_size,
+            Projection_image_calculator::axes axis_a,
+            Projection_image_calculator::axes axis_b,
+
+            Graphic_Warehouse& graphic_warehouse,
+            unsigned short port
+    );
+
     std::vector<sf::Drawable*>  get_figures_list();
 
     //st - short time -  wykorzystywane
@@ -73,6 +98,10 @@ private:
     Connection_Backend backend;
 
     Button::Button_Message actual_button_mesage = Button::Button_Message::nothing;
+
+    std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio = nullptr;
+
+
 };
 
 

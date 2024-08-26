@@ -8,6 +8,8 @@
 #include "Buttons_Field.hpp"
 #include "Graphic_Warehouse.hpp"
 #include "Custom_Data_IO_Window.hpp"
+#include "Projection_image_calculator.hpp"
+#include "Small_window.hpp"
 
 #include <list>
 #include <vector>
@@ -50,6 +52,18 @@ public:
             Graphic_Warehouse& graphic_warehouse
     );
 
+
+    [[maybe_unused]] Connection_Frontend(
+            std::unique_ptr<Buttons_Field> buttons_field_,
+
+            sf::Vector2f window_pos,
+            sf::Vector2f window_size,
+            Projection_image_calculator::axes axis_a,
+            Projection_image_calculator::axes axis_b,
+
+            Graphic_Warehouse& graphic_warehouse
+    );
+
     std::vector<sf::Drawable*> get_figures_list();
 
     Button::Button_Message update_st(sf::Vector2i mouse_pos_relative_to_window);// zwraca informację o tym, czy połączenie ma być zakończone
@@ -62,6 +76,19 @@ public:
     bool custom_data_update_variable_by_name_float(const std::string& name, float value);
 
     void set_button_mode(Button::Button_Message button_type, bool mode);
+
+    void set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_);
+
+    void add_projection(sf::Vector2f size_,
+                        sf::Vector2f pos,
+                        Projection_image_calculator::axes axis_a,
+                        Projection_image_calculator::axes axis_b,
+                        sf::Color background_color= sf::Color::White,
+                        sf::Color outline_color= sf::Color::Black,
+                        float outline_thickness = 3,
+                        int update_time = 50000);
+
+    std::vector<Time_Object *> get_time_object_list();
 private:
 
     std::unique_ptr<Buttons_Field> buttons_field;
@@ -73,6 +100,13 @@ private:
     Button::Button_Message actual_button_mesage = Button::Button_Message::nothing;
 
     sf::Vector2f camera_view_target_size = sf::Vector2f(0, 0);
+
+    std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio = nullptr;
+    std::vector<Small_window> projections_windows_list;
+
+    std::vector<Projection_image_calculator> projection_calculators;
+    std::vector<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_of_small_window;
+
 };
 
 
