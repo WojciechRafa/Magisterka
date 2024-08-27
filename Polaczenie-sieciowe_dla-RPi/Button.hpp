@@ -11,15 +11,7 @@ class Button: public sf::RectangleShape {
 public:
     enum class Button_Message {
         nothing,
-//        create_new_screen,
         turn_off_program,
-//        turn_off_connection,
-//        broadcast_ip_process,
-//        conection_establish_camera_view,
-//        conection_establish_custom_data,
-//        set_camera_mode_const_20_fps,
-//        set_camera_mode_x1,
-//        set_camera_mode_x0_5
     };
 
     Button(sf::Vector2f position_,

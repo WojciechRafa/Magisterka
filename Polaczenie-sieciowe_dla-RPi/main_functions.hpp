@@ -29,8 +29,6 @@ inline void write_comunicate_sockte_status(sf::Socket::Status status){
 }
 
 inline void cv_Mat_2_sf_Image(cv::Mat& cv_img, sf::Image& sf_img){
-    //sf::Image sf_img;
-//    std::make_unsigned<sf::Image> sf_img;
     cv::Mat cv_img_a;
     cv::cvtColor(cv_img, cv_img_a, cv::COLOR_BGR2RGBA);
     sf_img.create(cv_img_a.cols, cv_img_a.rows, cv_img_a.ptr());

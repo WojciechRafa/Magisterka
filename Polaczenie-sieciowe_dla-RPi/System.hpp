@@ -5,10 +5,7 @@
 #ifndef INZYNIERKA_SYSTEM_HPP
 #define INZYNIERKA_SYSTEM_HPP
 
-#include "Image_Sender.hpp"
-#include "Custom_Data_IO.hpp"
 #include "Broadcast_connector.hpp"
-#include "Image_Sender.hpp"
 
 // graphic:
 #include "Window.hpp"
@@ -20,6 +17,7 @@
 #include "Image_source_typ.hpp"
 #include "Binarization.hpp"
 #include "Projection_image_calculate.hpp"
+#include "Rays_sender.hpp"
 
 class System {
 public:
@@ -42,8 +40,9 @@ private:
     sf::IpAddress remote_ip_address = sf::IpAddress::None;
 
     std::unique_ptr<Broadcast_Connector> broadcast_connector = nullptr;
-    std::unique_ptr<Image_Sender> image_sender = nullptr;
-    std::unique_ptr<Custom_Data_IO> custom_data_io = nullptr;
+    // std::unique_ptr<Image_Sender> image_sender = nullptr;
+    // std::unique_ptr<Custom_Data_IO> custom_data_io = nullptr;
+    std::unique_ptr<Rays_sender> ray_sender = nullptr;
 
     void configure_custom_data();
     // graphic:
@@ -66,15 +65,15 @@ private:
     Small_window binarized_picture_window;
     Small_window projections_window;
 
-//    std::shared_ptr<cv::Mat> stats = std::make_shared<cv::Mat>();
-//    std::shared_ptr<cv::Mat> centroids = std::make_shared<cv::Mat>();
     std::shared_ptr<Binarization::Binarized_parameters> bin_parameters =
             std::make_shared<Binarization::Binarized_parameters>();
 
+    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> vectors_list = {};
     std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>>projections =
             std::make_shared<std::vector<std::unique_ptr<sf::Shape>>>();
 
     Projection_image_calculate projection_calculator;
+
 };
 
 

@@ -9,7 +9,7 @@
 
 #include "Pernament_Connector.hpp"
 
-class Rays_sender: public Pernament_Connector{
+class Rays_sender final : public Pernament_Connector{
 public:
     Rays_sender(unsigned short port_, sf::IpAddress remote_dev_ip_);
     void update() override;
