@@ -34,16 +34,12 @@ System::System(sf::Int64 update_period_microseconds_):
 
     binarization.set_input_image(raw_picture);
     binarization.set_binarized_image(binarized_picture);
-//    binarization.set_centroids(centroids);
-//    binarization.set_stats(stats);
     binarization.set_parameters(bin_parameters);
 
-//    projection_calculators.set_stats(stats);
-//    projection_calculators.set_centroids(centroids);
     projection_calculator.set_parameters(bin_parameters);
-    projection_calculator.set_additional_graphic(projections);
+    projection_calculator.set_additional_graphic(&projections);
 
-    projections_window.set_additional_graphic(projections);
+    projections_window.set_additional_graphic(&projections);
 
     graphic.add_time_object_to_update(& raw_picture_window);
     graphic.add_small_window_to_display(& raw_picture_window);
@@ -166,9 +162,7 @@ bool System::execute_button_message(Button::Button_Message message) {
 //                        graphic_warehouse,
 //                        50238
 //                );
-//                auto button_field = create_button_field_to_connection_with_camera_and_custom_data(sf::Vector2f(10, 420));
                 auto button_field = create_button_field_to_connection_with_rays(sf::Vector2f(10, 420));
-//                button_field->setPosition(button_field->getPosition() + sf::Vector2f(0, 300));
 
                 // bez kamery
 //                auto connection = std::make_unique<Connection>(
@@ -200,14 +194,6 @@ bool System::execute_button_message(Button::Button_Message message) {
 //                        50238
 //                );
 
-                // rays
-
-//                Connection::Projection_window_parameters rays_window_parameters{
-//                        sf::Vector2f(0, 0),
-//                        sf::Vector2f(0, 0),
-//                        Projection_image_calculator::axes::z,
-//                        Projection_image_calculator::axes::x
-//                };
 
                 auto connection = std::make_unique<Connection>(
                         // przyciski
@@ -215,6 +201,7 @@ bool System::execute_button_message(Button::Button_Message message) {
 
                         sf::Vector2f(10, 550),
                         sf::Vector2f(200, 100),
+                        sf::Vector2f(100, 50),
                         Projection_image_calculator::axes::z,
                         Projection_image_calculator::axes::x,
 

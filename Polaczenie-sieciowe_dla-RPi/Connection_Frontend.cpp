@@ -90,13 +90,15 @@ Connection_Frontend::Connection_Frontend(std::unique_ptr<Buttons_Field> buttons_
 
                                          sf::Vector2f window_pos,
                                          sf::Vector2f window_size,
+                                         sf::Vector2f zero_point_pos,
                                          Projection_image_calculator::axes axis_a,
                                          Projection_image_calculator::axes axis_b,
+                                         std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_,
 
                                          Graphic_Warehouse &graphic_warehouse):
                                          buttons_field(std::move(buttons_field_))
                                          {
-                                             add_projection(window_size, window_pos, axis_a, axis_b);
+                                             add_projection(window_size, window_pos, zero_point_pos , axis_a, axis_b, rays_ratio_);
 
                                          }
 
@@ -107,8 +109,9 @@ Button::Button_Message Connection_Frontend::update_st(sf::Vector2i mouse_pos_rel
     return actual_button_mesage;
 }
 
-std::vector<sf::Drawable*> Connection_Frontend::get_figures_list() {
-    std::vector<sf::Drawable*>  list1;
+std::vector<sf::Drawable*>& Connection_Frontend::get_figures_list() {
+    static std::vector<sf::Drawable*>  list1;
+    list1.clear();
 
     if(camera_view != nullptr)
         list1.push_back(camera_view.get());
@@ -129,7 +132,7 @@ std::vector<sf::Drawable*> Connection_Frontend::get_figures_list() {
         auto list3 = custom_data_io_window->get_text_list();
         list1.insert(list1.end(), list3.begin(), list3.end());
     }
-    projections_windows_list;
+//    projections_windows_list;
 
     for(auto& projection: projections_windows_list){
         list1.push_back(&projection);
@@ -137,6 +140,11 @@ std::vector<sf::Drawable*> Connection_Frontend::get_figures_list() {
 
     return list1;
 }
+
+std::vector<std::vector<std::unique_ptr<sf::Shape>>> *Connection_Frontend::get_additional_graphic_lists() {
+    return &additional_graphic_of_small_window;
+}
+
 
 void Connection_Frontend::update_image(const sf::Image &new_image) {
 //    sf::Texture texture_local;
@@ -183,30 +191,41 @@ void Connection_Frontend::set_button_mode(Button::Button_Message button_type, bo
     buttons_field->set_button_mode(button_type, mode);
 }
 
-void Connection_Frontend::set_axes_ratio(
-        std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_) {
-    axes_ratio = std::move(axes_ratio_);
-}
+//void Connection_Frontend::set_axes_ratio(
+//        std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_) {
+//    axes_ratio = std::move(axes_ratio_);
+//}
 
-void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos,
+void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf::Vector2f zero_point_pos,
                                          Projection_image_calculator::axes axis_a,
                                          Projection_image_calculator::axes axis_b,
+                                         std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_,
                                          sf::Color background_color,
                                          sf::Color outline_color, float outline_thickness, int update_time) {
 
     std::vector<std::unique_ptr<sf::Shape>> additional_graphic_list;
 
+
+//    additional_graphic_of_small_window = std::ma
+
     Small_window new_window(size, pos, background_color, outline_color, outline_thickness, update_time);
-    new_window.set_additional_graphic(&additional_graphic_list);
+
+    additional_graphic_of_small_window.push_back(std::move(additional_graphic_list));
+    new_window.set_additional_graphic(&additional_graphic_of_small_window.back());
 
     Projection_image_calculator new_projection_calculator(
             axis_a,
             axis_b,
             pos,
             size,
-            size * 0.5f
+            zero_point_pos,
+            true,
+            rays_ratio_
     );
-    new_projection_calculator.set_additional_graphic(&additional_graphic_list);
+//    new_projection_calculator.set_additional_graphic(&additional_graphic_list);
+
+
+    new_projection_calculator.set_additional_graphic(&additional_graphic_of_small_window.back());
 
 
 //    projections_windows_list.emplace_back(size, pos, background_color, outline_color, outline_thickness, update_time);
@@ -239,3 +258,4 @@ std::vector<Time_Object *> Connection_Frontend::get_time_object_list() {
 
     return all_time_objects;
 }
+

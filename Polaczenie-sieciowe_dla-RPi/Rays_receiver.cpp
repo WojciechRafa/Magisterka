@@ -23,6 +23,9 @@ void Rays_receiver::update() {
         if(receive_n_time(received_packet)){
             vectors_list->clear();
             received_packet >> *vectors_list;
+
+            std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << "\nRozmiar wektora " << vectors_list->size() << std::endl;
+
         }
 
         last_update_time = clock.getElapsedTime().asMicroseconds();
@@ -54,7 +57,6 @@ bool Rays_receiver::receive_n_time(sf::Packet &received_packet) {
     return was_any_good_packet;
 }
 
-void Rays_receiver::set_vectors_list(
-        std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> vectors_list_) {
-    vectors_list = std::move(vectors_list_);
+void Rays_receiver::set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_) {
+    vectors_list = vectors_list_;
 }

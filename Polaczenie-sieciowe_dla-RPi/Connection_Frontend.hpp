@@ -58,13 +58,16 @@ public:
 
             sf::Vector2f window_pos,
             sf::Vector2f window_size,
+            sf::Vector2f zero_point_pos,
             Projection_image_calculator::axes axis_a,
             Projection_image_calculator::axes axis_b,
+            std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_,
 
             Graphic_Warehouse& graphic_warehouse
     );
 
-    std::vector<sf::Drawable*> get_figures_list();
+    std::vector<sf::Drawable*>& get_figures_list();
+    std::vector<std::vector<std::unique_ptr<sf::Shape>>>* get_additional_graphic_lists();
 
     Button::Button_Message update_st(sf::Vector2i mouse_pos_relative_to_window);// zwraca informację o tym, czy połączenie ma być zakończone
     void update_image(const sf::Image& new_image); // zwraca false przy braku nowego zdjęcia
@@ -77,12 +80,14 @@ public:
 
     void set_button_mode(Button::Button_Message button_type, bool mode);
 
-    void set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_);
+//    void set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_);
 
     void add_projection(sf::Vector2f size_,
                         sf::Vector2f pos,
+                        sf::Vector2f zero_point_pos,
                         Projection_image_calculator::axes axis_a,
                         Projection_image_calculator::axes axis_b,
+                        std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_,
                         sf::Color background_color= sf::Color::White,
                         sf::Color outline_color= sf::Color::Black,
                         float outline_thickness = 3,
@@ -105,7 +110,7 @@ private:
     std::vector<Small_window> projections_windows_list;
 
     std::vector<Projection_image_calculator> projection_calculators;
-    std::vector<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_of_small_window;
+    std::vector<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_of_small_window = {};
 
 };
 

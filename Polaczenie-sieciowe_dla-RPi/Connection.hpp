@@ -74,6 +74,8 @@ public:
 
             sf::Vector2f window_pos,
             sf::Vector2f window_size,
+            sf::Vector2f zero_point_pos,
+
             Projection_image_calculator::axes axis_a,
             Projection_image_calculator::axes axis_b,
 
@@ -81,7 +83,8 @@ public:
             unsigned short port
     );
 
-    std::vector<sf::Drawable*>  get_figures_list();
+    std::vector<sf::Drawable*>&  get_figures_list();
+    std::vector<std::vector<std::unique_ptr<sf::Shape>>>* get_additional_graphic_lists();
 
     //st - short time -  wykorzystywane
     Button::Button_Message update_backend_st();
@@ -99,7 +102,7 @@ private:
 
     Button::Button_Message actual_button_mesage = Button::Button_Message::nothing;
 
-    std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio = nullptr;
+    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> axes_ratio = {};
 
 
 };

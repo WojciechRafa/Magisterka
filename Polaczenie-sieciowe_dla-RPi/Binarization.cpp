@@ -13,8 +13,6 @@ void get_binary_diff(cv:: Mat& frame_1, cv:: Mat& frame_2, cv::Mat& result){
 }
 
 void Binarization::update() {
-//    stats = nullptr;
-//    centroids = nullptr;
     parameters->numb_labels = 0;
 
     if(input_image == nullptr or input_image->empty()){
@@ -40,8 +38,6 @@ void Binarization::update() {
 
         cv::Mat labels;
         cv::Mat a, b;
-//        stats = std::make_unique<cv::Mat>();
-//        centroids = std::make_unique<cv::Mat>();
 
         parameters->numb_labels = cv::connectedComponentsWithStats(and_result, labels, parameters->stats, parameters->centroids);
         parameters->numb_labels --; // first label is background, so it should be missed.
@@ -68,19 +64,3 @@ Binarization::Binarization(int change_time_):
 void Binarization::set_parameters(std::shared_ptr<Binarized_parameters> parameters_) {
     parameters = std::move(parameters_);
 }
-
-//void Binarization::set_stats(std::shared_ptr<cv::Mat> stats_) {
-//    stats = std::move(stats_);
-//}
-//
-//void Binarization::set_centroids(std::shared_ptr<cv::Mat> centroids_) {
-//    centroids = std::move(centroids_);
-//}
-
-//cv::Mat *Binarization::get_stats() {
-//    return stats.get();
-//}
-//
-//cv::Mat *Binarization::get_centroids() {
-//    return centroids.get();
-//}

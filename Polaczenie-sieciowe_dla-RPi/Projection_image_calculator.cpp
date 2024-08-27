@@ -214,7 +214,7 @@ void Projection_image_calculator::update() {
         }
 //        std::cout<<"Ilosc parametrow : " << parameters->numb_labels <<std::endl;
 
-    }else if(are_rays_from_slave){
+    }else if(rays_ratio != nullptr and are_rays_from_slave){
         for(auto& ray_vector : *rays_ratio){
 
             auto box_dir_3D_begin =std::get<0>(ray_vector);

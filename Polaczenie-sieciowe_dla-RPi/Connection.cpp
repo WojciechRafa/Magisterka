@@ -74,6 +74,8 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
 
                        sf::Vector2f window_pos,
                        sf::Vector2f window_size,
+                       sf::Vector2f zero_point_pos,
+
                        Projection_image_calculator::axes axis_a,
                        Projection_image_calculator::axes axis_b,
 
@@ -84,24 +86,27 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
 
                 window_pos,
                 window_size,
+                zero_point_pos,
                 axis_a,
                 axis_b,
+                &axes_ratio,
 
                 graphic_warehouse
         ),
-        backend(port)
-
+        backend(port, &axes_ratio)
 {
-    axes_ratio = std::make_shared<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>>();
-    frontend.set_axes_ratio(axes_ratio);
-    backend.set_axes_ratio(axes_ratio);
 }
 
 
 
-std::vector<sf::Drawable *> Connection::get_figures_list() {
+std::vector<sf::Drawable *>& Connection::get_figures_list() {
     return frontend.get_figures_list();
 }
+
+std::vector<std::vector<std::unique_ptr<sf::Shape>>> *Connection::get_additional_graphic_lists() {
+    return frontend.get_additional_graphic_lists();
+}
+
 
 Button::Button_Message Connection::update_frontend_st(sf::Vector2i mouse_pos_relative_to_window) {
     //wyświetlanie danych na ekranie
@@ -183,3 +188,4 @@ std::vector<Time_Object *> Connection::get_time_objects() {
 
     return all_time_objects;
 }
+

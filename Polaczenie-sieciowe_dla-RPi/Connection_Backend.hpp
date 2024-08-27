@@ -22,7 +22,7 @@ public:
                                 std::vector<Custom_Data_IO_Window::message>& message_list_sended_
                                 );
 
-    explicit Connection_Backend(unsigned short port_);
+    explicit Connection_Backend(unsigned short port_, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio_);
 
     enum class Connection_State{
         primary,
@@ -64,7 +64,7 @@ public:
     bool is_custom_data_work();
     bool is_custom_rays_receiver();
 
-    void set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_);
+//    void set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_);
 private:
     // Parametryzowanie stałych
     const sf::Int64 update_period_connection = 1000000;
@@ -85,7 +85,7 @@ private:
     std::vector<Custom_Data_IO_Window::message> message_list_recived;
     std::vector<Custom_Data_IO_Window::message> message_list_sended;
 
-    std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio = nullptr;
+    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio = nullptr;
 };
 
 

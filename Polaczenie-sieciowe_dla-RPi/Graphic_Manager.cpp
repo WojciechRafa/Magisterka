@@ -93,9 +93,15 @@ void Graphic_Manager::display() {
         for(auto& shape: connection->get_figures_list()){
             window.draw(*shape);
         }
+
+        for(auto& shape_list: *connection->get_additional_graphic_lists()){
+            for(auto & shape: shape_list) {
+                window.draw(*shape);
+            }
+        }
     }
 
-    std::vector<sf::RectangleShape> small_wind_list;
+//    std::vector<sf::RectangleShape> small_wind_list;
 
     for(auto small_window: small_windows){
         if(small_window != nullptr) {

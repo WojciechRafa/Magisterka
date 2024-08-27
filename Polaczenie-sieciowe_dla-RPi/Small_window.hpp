@@ -19,6 +19,8 @@ public:
                  float outline_thickness = 3,
                  int update_time = 50000);
 
+    ~Small_window() override = default;
+
     void update() override;
     void set_image_ptr(std::shared_ptr<cv::Mat> image_);
 

@@ -14,6 +14,7 @@ class Time_Object {
 public:
     Time_Object();
     explicit Time_Object(sf::Int64 update_period_microseconds_);
+    ~Time_Object() = default;
 
     virtual void update() = 0; // Aktualizować last_update_time
     std::list<Time_Object&>* get_all_contaneted_time_object();

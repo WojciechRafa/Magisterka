@@ -14,8 +14,9 @@ message_list_recived(message_list_recived_)
 {
 }
 
-Connection_Backend::Connection_Backend(unsigned short port_):
-        port(port_)
+Connection_Backend::Connection_Backend(unsigned short port_, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio_):
+        port(port_),
+        axes_ratio(axes_ratio_)
 {}
 
 const sf::Image* Connection_Backend::get_image() {
@@ -106,7 +107,8 @@ bool Connection_Backend::start_connection_axes_ratio() {
     if(connection_state == Connection_State::another_IP_knowed or
        connection_state == Connection_State::only_custom_data_work
             ){
-        image_receiver = std::make_unique<Image_Receiver>(port, remote_ip);
+        rays_receiver = std::make_unique<Rays_receiver>(port, remote_ip);
+        rays_receiver->set_vectors_list(axes_ratio);
 
         if(remote_ip != sf::IpAddress::None) {
 
@@ -205,6 +207,16 @@ void Connection_Backend::update_st() {
                 connection_state = Connection_State::only_custom_data_work;
             }
         }
+    }else if(   connection_state == Connection_State::axes_ratio_establishment or
+                connection_state == Connection_State::axes_ratio_work
+            ){
+        auto status = rays_receiver->get_mode();
+
+        if (status == Pernament_Connector::p_connector_mode::pernament_communication){
+
+            connection_state = Connection_State::axes_ratio_work;
+
+        }
     }
 }
 
@@ -243,7 +255,7 @@ void Connection_Backend::set_camera_view_mode(Image_Receiver::Sender_Mode mode) 
     }
 }
 
-void Connection_Backend::set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_) {
-    axes_ratio = std::move(axes_ratio_);
-}
+//void Connection_Backend::set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_) {
+//    axes_ratio = std::move(axes_ratio_);
+//}
 

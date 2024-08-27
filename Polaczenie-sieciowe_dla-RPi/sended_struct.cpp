@@ -88,4 +88,5 @@ sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec3d, cv
 
         axes_ratio.emplace_back(new_element_vec[0], new_element_vec[1], new_element_vec[2]);
     }
+    return packet;
 };
