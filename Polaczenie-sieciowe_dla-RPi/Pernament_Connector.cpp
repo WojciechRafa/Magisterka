@@ -3,7 +3,7 @@
 #include "Sended_struct.hpp"
 #include "main_functions.hpp"
 
-Pernament_Connector::Pernament_Connector(unsigned short port_, sf::IpAddress remote_dev_ip_):
+Permanent_Connector::Permanent_Connector(unsigned short port_, sf::IpAddress remote_dev_ip_):
 	port(port_),
 	remote_dev_ip(remote_dev_ip_){
 		
@@ -17,11 +17,11 @@ Pernament_Connector::Pernament_Connector(unsigned short port_, sf::IpAddress rem
 }
 
 
-Pernament_Connector::p_connector_mode Pernament_Connector::get_mode() {
+Permanent_Connector::p_connector_mode Permanent_Connector::get_mode() {
     return mode;
 }
 
-void Pernament_Connector::update() {
+void Permanent_Connector::update() {
 
     if(mode == p_connector_mode::establish_connection){
         bool is_block =isBlocking();

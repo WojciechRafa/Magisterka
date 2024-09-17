@@ -116,19 +116,19 @@ bool System::update() {
         broadcast_connector = nullptr;
     }
 
-
+    
     if(connection_state == Connection_State::both_wait_to_pernamant_connect){
-        if(image_sender->get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
+        if(image_sender->get_mode() == Permanent_Connector::p_connector_mode::pernament_communication){
             connection_state = Connection_State::image_reciver_work;
-        }else if(custom_data_io -> get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
+        }else if(custom_data_io -> get_mode() == Permanent_Connector::p_connector_mode::pernament_communication){
             connection_state = Connection_State::custom_data_io_work;
         }
     }else if (connection_state == Connection_State::custom_data_io_work){
-        if(image_sender->get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
+        if(image_sender->get_mode() == Permanent_Connector::p_connector_mode::pernament_communication){
             connection_state = Connection_State::both_work;
         }
     }else if(connection_state == Connection_State::image_reciver_work){
-        if(custom_data_io -> get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
+        if(custom_data_io -> get_mode() == Permanent_Connector::p_connector_mode::pernament_communication){
             connection_state = Connection_State::custom_data_io_work;
         }
     }

@@ -9,12 +9,14 @@
 
 #include "Pernament_Connector.hpp"
 
-class Rays_sender: public Pernament_Connector{
+class Rays_sender: public Permanent_Connector{
 public:
     Rays_sender(unsigned short port_, sf::IpAddress remote_dev_ip_);
     void update() override;
     void set_vectors_list_ptr(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_);
 private:
+    bool try_to_exchange_time();
+
     std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_ptr = nullptr;
 };
 

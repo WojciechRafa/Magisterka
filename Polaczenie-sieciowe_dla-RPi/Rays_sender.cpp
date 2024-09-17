@@ -5,14 +5,20 @@
 #include "Rays_sender.hpp"
 #include "Sended_struct.hpp"
 
-Rays_sender::Rays_sender(unsigned short port_, sf::IpAddress remote_dev_ip_) : Pernament_Connector(port_,
+Rays_sender::Rays_sender(unsigned short port_, sf::IpAddress remote_dev_ip_) : Permanent_Connector(port_,
                                                                                                    remote_dev_ip_) {
     update_period_microseconds = 500000;
 }
 
 void Rays_sender::update() {
-    if(mode == Pernament_Connector::p_connector_mode::establish_connection){
-        Pernament_Connector::update();
+    if(mode == Permanent_Connector::p_connector_mode::establish_connection){
+        Permanent_Connector::update();
+
+        auto status = tcp_listener.accept(*this);
+        if(status == sf::Socket::Status::Done) {
+
+        }
+
     }else{
         if(vectors_list_ptr == nullptr){
             std::cerr<<"vectors_list_ptr is nullptr \n";
@@ -31,4 +37,11 @@ void Rays_sender::update() {
 
 void Rays_sender::set_vectors_list_ptr(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_) {
     vectors_list_ptr = vectors_list_;
+}
+
+bool Rays_sender::try_to_exchange_time() {
+
+
+
+    return false;
 }
