@@ -113,6 +113,10 @@ Projection_image_calculate::set_additional_graphic(std::shared_ptr<std::vector<s
     projections = std::move(additional_graphic_);
 }
 
+void Projection_image_calculate::set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_){
+    vectors_list = vectors_list_;
+}
+
 std::unique_ptr<sf::RectangleShape>  Projection_image_calculate::get_ray(sf::Vector2f intersection,
                                                                          sf::Color color,
                                                                          float thickness) {
@@ -148,6 +152,7 @@ int Projection_image_calculate::get_axi_nr(Projection_image_calculate::axes axis
 
 void Projection_image_calculate::update() {
     projections->clear();
+    vectors_list->clear();
 
     if(parameters != nullptr){
 //        int number_of_labels = stats->rows;
@@ -161,6 +166,8 @@ void Projection_image_calculate::update() {
             auto box_dir_3D_begin = compute_3D_line(internal_parameters, static_cast<cv::Point2d>(box_pos));
             auto box_dir_3D_end = compute_3D_line(internal_parameters, static_cast<cv::Point2d>(box_pos + box_size));
             auto centroid_dir_3D = compute_3D_line(internal_parameters, centroid);
+
+            vectors_list->emplace_back(box_dir_3D_begin, box_dir_3D_end, centroid_dir_3D);
 
             float line_thickness = 0.5;
 

@@ -74,22 +74,14 @@ bool System::update() {
     }
 
     if(connection_state != Connection_State::broadcast_listen){
-        if(image_sender == nullptr or custom_data_io == nullptr)
-            throw std::exception();
+        time_object_list.push_back(ray_sender.get());
 
-        if(image_sender -> need_update())
-            time_object_list.push_back(image_sender.get());
-
-        if(custom_data_io -> need_update())
-            time_object_list.push_back(custom_data_io.get());
     }
 
     // get_new_frame
     time_object_list.push_back(&image_source);
     time_object_list.push_back(&binarization);
     time_object_list.push_back(&projection_calculator);
-//    if(raw_picture->empty())
-//        std::cout<< "WELO \n";
 
     // graphic:
     if(graphic.need_update())
@@ -108,15 +100,15 @@ bool System::update() {
         remote_ip_address = broadcast_connector->get_remote_ip();
 
         connection_state = Connection_State::both_wait_to_pernamant_connect;
-        image_sender = std::make_unique<Image_Sender>(port, remote_ip_address);
-        custom_data_io = std::make_unique<Custom_Data_IO>(port + 1, remote_ip_address);
-        configure_custom_data();
+
+        ray_sender = std::make_unique<Rays_sender>(port, remote_ip_address);
+        ray_sender->set_vectors_list_ptr(&vectors_list);
 
         std::cout<<"Procedura zawiązywania polaczenia przez Broadcast zakonczona !"<<std::endl;
         broadcast_connector = nullptr;
     }
 
-    
+
     if(connection_state == Connection_State::both_wait_to_pernamant_connect){
         if(image_sender->get_mode() == Permanent_Connector::p_connector_mode::pernament_communication){
             connection_state = Connection_State::image_reciver_work;
@@ -145,71 +137,6 @@ bool System::update() {
     return execute_button_message(graphic.get_and_delate_actual_button_mesage());
 }
 
-void System::configure_custom_data() {
-    // stare
-    Custom_Data_IO::message sended_message_1;
-    Custom_Data_IO::message sended_message_2;
-
-    Custom_Data_IO::message recived_message_1;
-    Custom_Data_IO::message recived_message_2;
-
-    sended_message_1.is_int = true;
-    sended_message_1.name   = "Wiadomosc_int";
-    sended_message_1.id     = 1;
-
-    sended_message_2.is_int = false;
-    sended_message_2.name   = "Wiadomosc_float";
-    sended_message_2.id     = 2;
-
-    recived_message_1.is_int = true;
-    recived_message_1.name   = "Wiadomosc_int";
-    recived_message_1.id     = 1;
-
-    recived_message_2.is_int = false;
-    recived_message_2.name   = "Wiadomosc_float";
-    recived_message_2.id     = 2;
-
-    custom_data_io->add_sended_message(std::move(sended_message_1));
-    custom_data_io->add_sended_message(std::move(sended_message_2));
-
-    custom_data_io->add_recived_message(std::move(recived_message_1));
-    custom_data_io->add_recived_message(std::move(recived_message_2));
-
-//    Custom_Data_IO::message sended_message_1;
-//    Custom_Data_IO::message sended_message_2;
-//    Custom_Data_IO::message sended_message_3;
-//
-//    Custom_Data_IO::message recived_message_1;
-//    Custom_Data_IO::message recived_message_2;
-//
-//    sended_message_1.is_int = true;
-//    sended_message_1.name   = "Tryb_mocy_lewy_silnik"; // 1 - przód 0 - stop -1 - tył
-//    sended_message_1.id     = 1;
-//
-//    sended_message_2.is_int = true;
-//    sended_message_2.name   = "Tryb_mocy_prawy_silnik";
-//    sended_message_2.id     = 2;
-//
-//    sended_message_3.is_int = true;
-//    sended_message_3.name   = "Iterator"; // zwiększa regularnie swą wartość, informacja o tym chroni przed błędami
-//    sended_message_3.id     = 3;
-//
-//    recived_message_1.is_int = true;
-//    recived_message_1.name   = "Moc_lewy_silnik";
-//    recived_message_1.id     = 1;
-//
-//    recived_message_2.is_int = false;
-//    recived_message_2.name   = "Moc_prawy_silnik";
-//    recived_message_2.id     = 2;
-//
-//    custom_data_io->add_sended_message(std::move(sended_message_1));
-//    custom_data_io->add_sended_message(std::move(sended_message_2));
-//    custom_data_io->add_sended_message(std::move(sended_message_3));
-//
-//    custom_data_io->add_recived_message(std::move(recived_message_1));
-//    custom_data_io->add_recived_message(std::move(recived_message_2));
-
-}
 
 bool System::execute_button_message(Button::Button_Message message) {
     switch (message) {
@@ -222,36 +149,6 @@ bool System::execute_button_message(Button::Button_Message message) {
             return true;
             break;
 
-//        case Button::Button_Message::create_new_screen:
-//            if(connection_list.empty()) {
-//                Custom_Data_IO_Window::message sended_message_1;
-//                Custom_Data_IO_Window::message sended_message_2;
-//
-//                Custom_Data_IO_Window::message recived_message_1;
-//                Custom_Data_IO_Window::message recived_message_2;
-//
-//                sended_message_1.is_int = true;
-//                sended_message_1.name   = "Wiadomosc_int";
-//                sended_message_1.id     = 1;
-//
-//                sended_message_2.is_int = false;
-//                sended_message_2.name   = "Wiadomosc_float";
-//                sended_message_2.id     = 2;
-//
-//                recived_message_1.is_int = true;
-//                recived_message_1.name   = "Wiadomosc_int";
-//                recived_message_1.id     = 1;
-//
-//                recived_message_2.is_int = false;
-//                recived_message_2.name   = "Wiadomosc_float";
-//                recived_message_2.id     = 2;
-//
-//
-//                std::vector<Custom_Data_IO_Window::message> message_list_displayed = {recived_message_1, recived_message_2};
-//                std::vector<Custom_Data_IO_Window::message> message_list_sended = {sended_message_1, sended_message_2};
-//
-//
-//
 //                auto connection = std::make_unique<Connection>(
 //                        create_button_field_to_connection(),
 //                        // dane

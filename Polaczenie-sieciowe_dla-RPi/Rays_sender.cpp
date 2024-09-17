@@ -27,8 +27,8 @@ void Rays_sender::update() {
         // nadawanie
         sf::Packet sended_packet;
 
-        sended_packet << vectors_list_ptr;
-
+        sended_packet << *vectors_list_ptr;
+        std::cout<<"Rozmiar danych " << sended_packet.getDataSize()<<"\n";
         auto status = send(sended_packet);
 
         last_update_time = clock.getElapsedTime().asMicroseconds();
