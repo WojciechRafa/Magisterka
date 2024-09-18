@@ -101,7 +101,7 @@ bool System::update() {
 
         connection_state = Connection_State::both_wait_to_pernamant_connect;
 
-        ray_sender = std::make_unique<Rays_sender>(port, remote_ip_address);
+        ray_sender = std::make_unique<Rays_sender>(port, remote_ip_address, clock);
         ray_sender->set_vectors_list_ptr(&vectors_list);
 
         std::cout<<"Procedura zawiązywania polaczenia przez Broadcast zakonczona !"<<std::endl;
