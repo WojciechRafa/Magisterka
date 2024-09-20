@@ -7,7 +7,7 @@
 
 #include "Pernament_Connector.hpp"
 
-class Custom_Data_IO: public Pernament_Connector{
+class Custom_Data_IO: public Permanent_Connector{
 public:
     struct message{
         sf::Int32 id;

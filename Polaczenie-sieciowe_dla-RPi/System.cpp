@@ -43,6 +43,7 @@ System::System(sf::Int64 update_period_microseconds_):
     projection_calculator.set_additional_graphic(projections);
 
     projections_window.set_additional_graphic(projections);
+    projection_calculator.set_vectors_list(&vectors_list);
 
     graphic.add_time_object_to_update(& raw_picture_window);
     graphic.add_small_window_to_display(& raw_picture_window);
@@ -107,24 +108,6 @@ bool System::update() {
         std::cout<<"Procedura zawiązywania polaczenia przez Broadcast zakonczona !"<<std::endl;
         broadcast_connector = nullptr;
     }
-
-
-    if(connection_state == Connection_State::both_wait_to_pernamant_connect){
-        if(image_sender->get_mode() == Permanent_Connector::p_connector_mode::pernament_communication){
-            connection_state = Connection_State::image_reciver_work;
-        }else if(custom_data_io -> get_mode() == Permanent_Connector::p_connector_mode::pernament_communication){
-            connection_state = Connection_State::custom_data_io_work;
-        }
-    }else if (connection_state == Connection_State::custom_data_io_work){
-        if(image_sender->get_mode() == Permanent_Connector::p_connector_mode::pernament_communication){
-            connection_state = Connection_State::both_work;
-        }
-    }else if(connection_state == Connection_State::image_reciver_work){
-        if(custom_data_io -> get_mode() == Permanent_Connector::p_connector_mode::pernament_communication){
-            connection_state = Connection_State::custom_data_io_work;
-        }
-    }
-
 
     while (window.pollEvent(event))
     {

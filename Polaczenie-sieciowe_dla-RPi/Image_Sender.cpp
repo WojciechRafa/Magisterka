@@ -4,7 +4,7 @@
 #include <iostream>
 
 Image_Sender::Image_Sender(unsigned short port_, sf::IpAddress remote_dev_ip_):
-Pernament_Connector(port_, remote_dev_ip_)
+Permanent_Connector(port_, remote_dev_ip_)
 {
     update_period_microseconds = 500000; // na pierwszym etapie aktualziacja jest co 0,5s
 
@@ -14,7 +14,7 @@ Pernament_Connector(port_, remote_dev_ip_)
 }
 
 void Image_Sender::update() {
-    if(mode == Pernament_Connector::p_connector_mode::establish_connection){
+    if(mode == Permanent_Connector::p_connector_mode::establish_connection){
         update_establish_connection_mode();
     }else{
         update_pernament_communication_mode();
@@ -34,7 +34,7 @@ bool Image_Sender::update_image_and_number() {
 }
 
 bool Image_Sender::need_update() {
-    if(mode == Pernament_Connector::p_connector_mode::establish_connection)
+    if(mode == Permanent_Connector::p_connector_mode::establish_connection)
         return Time_Object::need_update();
     else{
 
@@ -43,8 +43,8 @@ bool Image_Sender::need_update() {
 }
 
 void Image_Sender::update_establish_connection_mode() {
-    Pernament_Connector::update(); // funkcja ta aktualizuje zegar
-    if(mode == Pernament_Connector::p_connector_mode::pernament_communication){
+    Permanent_Connector::update(); // funkcja ta aktualizuje zegar
+    if(mode == Permanent_Connector::p_connector_mode::pernament_communication){
         update_period_microseconds = 50000;
         update_image_and_number();
     }

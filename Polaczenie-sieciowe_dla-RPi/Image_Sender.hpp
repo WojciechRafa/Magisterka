@@ -8,7 +8,7 @@
 
 
 
-class Image_Sender: public Pernament_Connector{
+class Image_Sender: public Permanent_Connector{
 public:
     enum class Sender_Mode{
         const_20_fps,
