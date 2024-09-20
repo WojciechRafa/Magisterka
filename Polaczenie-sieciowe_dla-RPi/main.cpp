@@ -14,7 +14,7 @@
 #include "Time.hpp"
 
 #include "Broadcast_Connector.hpp"
-#include "Pernament_Connector.hpp"
+#include "Permanent_Connector.hpp"
 #include "Image_Receiver.hpp"
 
 #include "System.hpp"

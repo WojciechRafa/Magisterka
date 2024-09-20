@@ -58,6 +58,8 @@ private:
     std::vector<std::unique_ptr<sf::Shape>> projections = std::vector<std::unique_ptr<sf::Shape>>();
 
     Projection_image_calculator projection_calculator;
+
+    sf::Clock clock;
 };
 
 

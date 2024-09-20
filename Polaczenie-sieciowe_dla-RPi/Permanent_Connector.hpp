@@ -14,20 +14,23 @@
 #include "Time_Object.hpp"
 
 
-class Pernament_Connector: public sf::TcpSocket, public Time_Object{
+class Permanent_Connector: public sf::TcpSocket, public Time_Object{
 public:
     enum class p_connector_mode{
+        disconnected,
         establish_connection,
-        pernament_communication
+        permanent_communication
     };
 
-    Pernament_Connector(unsigned short port_, sf::IpAddress remote_dev_ip_);
-    Pernament_Connector() = default;
+    Permanent_Connector(unsigned short port_, sf::IpAddress remote_dev_ip_);
+    Permanent_Connector() = default;
 
     void set_port_and_remote_ip(unsigned short port_, sf::IpAddress remote_dev_ip_);
 
     void update() override ;
     p_connector_mode get_mode();
+
+    void disconnect();
 private:
     unsigned short port = 0;
     sf::IpAddress remote_dev_ip;

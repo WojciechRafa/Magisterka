@@ -6,17 +6,22 @@
 
 Connection_Backend::Connection_Backend(unsigned short port_,
                                        std::vector<Custom_Data_IO_Window::message>& message_list_sended_,
-                                       std::vector<Custom_Data_IO_Window::message>& message_list_recived_
+                                       std::vector<Custom_Data_IO_Window::message>& message_list_recived_,
+                                       sf::Clock& clock_
                                        ):
 port(port_),
 message_list_sended(message_list_sended_),
-message_list_recived(message_list_recived_)
+message_list_recived(message_list_recived_),
+clock(clock_)
 {
 }
 
-Connection_Backend::Connection_Backend(unsigned short port_, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio_):
+Connection_Backend::Connection_Backend(unsigned short port_,
+                                       std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio_,
+                                       sf::Clock& clock_):
         port(port_),
-        axes_ratio(axes_ratio_)
+        axes_ratio(axes_ratio_),
+        clock(clock_)
 {}
 
 const sf::Image* Connection_Backend::get_image() {
@@ -105,9 +110,8 @@ bool Connection_Backend::start_connection_custom_data() {
 
 bool Connection_Backend::start_connection_axes_ratio() {
     if(connection_state == Connection_State::another_IP_knowed or
-       connection_state == Connection_State::only_custom_data_work
-            ){
-        rays_receiver = std::make_unique<Rays_receiver>(port, remote_ip);
+       connection_state == Connection_State::only_custom_data_work){
+        rays_receiver = std::make_unique<Rays_receiver>(port, remote_ip, clock);
         rays_receiver->set_vectors_list(axes_ratio);
 
         if(remote_ip != sf::IpAddress::None) {
@@ -181,7 +185,7 @@ void Connection_Backend::update_st() {
 
             auto status = image_receiver->get_mode();
 
-            if (status == Pernament_Connector::p_connector_mode::pernament_communication){
+            if (status == Permanent_Connector::p_connector_mode::permanent_communication){
                 std::cout <<" Camera View - Procedura nawiązywania kontaktu zakończona" << std::endl;
 
                 if(connection_state == Connection_State::camera_view_connect_establishment_custom_data_work){
@@ -198,7 +202,7 @@ void Connection_Backend::update_st() {
 
         auto status = custom_data_io->get_mode();
 
-        if (status == Pernament_Connector::p_connector_mode::pernament_communication){
+        if (status == Permanent_Connector::p_connector_mode::permanent_communication){
             std::cout <<" Custom Data - Procedura nawiązywania kontaktu zakończona" << std::endl;
 
             if(connection_state == Connection_State::custom_data_connect_establishment_camera_view_work){
@@ -212,7 +216,7 @@ void Connection_Backend::update_st() {
             ){
         auto status = rays_receiver->get_mode();
 
-        if (status == Pernament_Connector::p_connector_mode::pernament_communication){
+        if (status == Permanent_Connector::p_connector_mode::permanent_communication){
 
             connection_state = Connection_State::axes_ratio_work;
 

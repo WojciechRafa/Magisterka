@@ -14,8 +14,8 @@ add_executable(Magisterka
         Time.hpp
         Broadcast_Connector.cpp
         Broadcast_Connector.hpp
-        Pernament_Connector.cpp
-        Pernament_Connector.hpp
+        Permanent_Connector.cpp
+        Permanent_Connector.hpp
         Window.cpp Window.hpp
         Image_Receiver.cpp
         Image_Receiver.hpp

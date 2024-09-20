@@ -7,12 +7,12 @@
 
 #include <opencv2/opencv.hpp>
 
-#include "Pernament_Connector.hpp"
+#include "Permanent_Connector.hpp"
 
-class Rays_receiver: public Pernament_Connector{
+class Rays_receiver: public Permanent_Connector{
 public:
 
-Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_);
+Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, sf::Clock& clock_);
 void update() override;
 void set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_);
 
@@ -20,7 +20,12 @@ private:
     bool receive_n_time(sf::Packet& received_packet);
     const int max_number_of_receive_check = 10;
 
-    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list;
+    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list = {};
+
+    bool try_to_exchange_time();
+
+    sf::Clock& clock;
+    sf::Time time_limit = sf::microseconds(500);
 };
 
 

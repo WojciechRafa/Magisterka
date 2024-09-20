@@ -5,10 +5,10 @@
 #ifndef INZYNIERKA_IMAGE_RECEIVER_HPP
 #define INZYNIERKA_IMAGE_RECEIVER_HPP
 
-#include "Pernament_Connector.hpp"
+#include "Permanent_Connector.hpp"
 #include "SFML/Graphics.hpp"
 
-class Image_Receiver: public Pernament_Connector{
+class Image_Receiver: public Permanent_Connector{
 public:
     enum class Sender_Mode{
         const_20_fps,

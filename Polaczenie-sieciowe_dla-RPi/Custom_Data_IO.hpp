@@ -5,10 +5,10 @@
 #ifndef INZYNIERKA_CUSTOM_DATA_IO_HPP
 #define INZYNIERKA_CUSTOM_DATA_IO_HPP
 
-#include "Pernament_Connector.hpp"
+#include "Permanent_Connector.hpp"
 #include "Custom_Data_IO_Window.hpp"
 
-class Custom_Data_IO: public Pernament_Connector{
+class Custom_Data_IO: public Permanent_Connector{
 public:
     Custom_Data_IO(unsigned short port_, sf::IpAddress remote_dev_ip_);
 

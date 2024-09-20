@@ -36,7 +36,8 @@ public:
             sf::Vector2f camera_view_pos,
             sf::Vector2f camera_view_size,
             Graphic_Warehouse& graphic_warehouse,
-            unsigned short port
+            unsigned short port,
+            sf::Clock& clock_
             );
 
     // bez wyświetlania grafik z kamery
@@ -51,7 +52,8 @@ public:
             std::vector<Custom_Data_IO_Window::message>& message_list_sended,
 
             Graphic_Warehouse& graphic_warehouse,
-            unsigned short port
+            unsigned short port,
+            sf::Clock& clock_
     );
 
     // bez wyświetlania danych liczbowych
@@ -64,7 +66,8 @@ public:
             sf::Vector2f camera_view_pos,
             sf::Vector2f camera_view_size,
             Graphic_Warehouse& graphic_warehouse,
-            unsigned short port
+            unsigned short port,
+            sf::Clock& clock_
     );
 
     // do wyświetlania potencjalnych punktow kamery
@@ -80,7 +83,8 @@ public:
             Projection_image_calculator::axes axis_b,
 
             Graphic_Warehouse& graphic_warehouse,
-            unsigned short port
+            unsigned short port,
+            sf::Clock& clock_
     );
 
     std::vector<sf::Drawable*>&  get_figures_list();
@@ -103,8 +107,6 @@ private:
     Button::Button_Message actual_button_mesage = Button::Button_Message::nothing;
 
     std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> axes_ratio = {};
-
-
 };
 
 

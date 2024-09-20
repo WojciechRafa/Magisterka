@@ -19,10 +19,13 @@ class Connection_Backend{
 public:
     explicit Connection_Backend(unsigned short port_,
                                 std::vector<Custom_Data_IO_Window::message>& message_list_recived_,
-                                std::vector<Custom_Data_IO_Window::message>& message_list_sended_
+                                std::vector<Custom_Data_IO_Window::message>& message_list_sended_,
+                                sf::Clock& clock_
                                 );
 
-    explicit Connection_Backend(unsigned short port_, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio_);
+    explicit Connection_Backend(unsigned short port_,
+                                std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio_,
+                                sf::Clock& clock_);
 
     enum class Connection_State{
         primary,
@@ -86,6 +89,8 @@ private:
     std::vector<Custom_Data_IO_Window::message> message_list_sended;
 
     std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio = nullptr;
+
+    sf::Clock& clock;
 };
 
 

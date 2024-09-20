@@ -51,7 +51,6 @@ System::System(sf::Int64 update_period_microseconds_):
 }
 
 bool System::update() {
-    static sf::Clock clock;
     static sf::Int64 last_update_time_micro = clock.getElapsedTime().asMicroseconds();
 
         sf::Int64 time_to_wait = update_period_microseconds - (clock.getElapsedTime().asMicroseconds() - last_update_time_micro);
@@ -206,7 +205,8 @@ bool System::execute_button_message(Button::Button_Message message) {
                         Projection_image_calculator::axes::x,
 
                         graphic_warehouse,
-                        50238
+                        50238,
+                        clock
                 );
 
 

@@ -17,7 +17,8 @@ Connection::Connection(
                        sf::Vector2f camera_view_pos,
                        sf::Vector2f camera_view_size,
                        Graphic_Warehouse& graphic_warehouse,
-                       unsigned short port
+                       unsigned short port,
+                       sf::Clock& clock_
                        ):
         frontend(
                 std::move(button_filed_),
@@ -31,7 +32,7 @@ Connection::Connection(
                     camera_view_size,
                     graphic_warehouse
                     ),
-        backend(port,message_list_sended ,message_list_displayed)
+        backend(port,message_list_sended ,message_list_displayed, clock_)
                     {}
 
 Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_, sf::Vector2f custom_data_view_pos,
@@ -40,7 +41,8 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_, sf::Vector2
                        std::vector<Custom_Data_IO_Window::message> &message_list_displayed,
                        std::vector<Custom_Data_IO_Window::message> &message_list_sended,
                        Graphic_Warehouse &graphic_warehouse,
-                       unsigned short port) :
+                       unsigned short port,
+                       sf::Clock& clock_) :
         frontend(
                 std::move(button_filed_),
                 custom_data_view_pos,
@@ -51,7 +53,7 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_, sf::Vector2
 
                 graphic_warehouse
         ),
-        backend(port,message_list_sended ,message_list_displayed)
+        backend(port,message_list_sended ,message_list_displayed, clock_)
 {}
 
 Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
@@ -59,7 +61,8 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
                        std::vector<Custom_Data_IO_Window::message> &message_list_sended, sf::Vector2f camera_view_pos,
                        sf::Vector2f camera_view_size,
                        Graphic_Warehouse &graphic_warehouse,
-                       unsigned short port) :
+                       unsigned short port,
+                       sf::Clock& clock_) :
         frontend(
                 std::move(button_filed_),
 
@@ -67,7 +70,7 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
                 camera_view_size,
                 graphic_warehouse
         ),
-        backend(port,message_list_sended ,message_list_displayed)
+        backend(port,message_list_sended ,message_list_displayed, clock_)
 {}
 
 Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
@@ -80,7 +83,8 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
                        Projection_image_calculator::axes axis_b,
 
                        Graphic_Warehouse& graphic_warehouse,
-                       unsigned short port):
+                       unsigned short port,
+                       sf::Clock& clock_):
         frontend(
                 std::move(button_filed_),
 
@@ -93,7 +97,7 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
 
                 graphic_warehouse
         ),
-        backend(port, &axes_ratio)
+        backend(port, &axes_ratio, clock_)
 {
 }
 

@@ -7,7 +7,7 @@
 #include "main_functions.hpp"
 
 Image_Receiver::Image_Receiver(unsigned short port_, sf::IpAddress remote_dev_ip_):
-Pernament_Connector(port_, remote_dev_ip_) {
+        Permanent_Connector(port_, remote_dev_ip_) {
     update_period_microseconds = 500000; // pierwotny czas aktualziacji wykorzystywany przy nawiązywaniu połączenia
 }
 
@@ -51,12 +51,12 @@ bool Image_Receiver::receive_img() {
 }
 
 void Image_Receiver::update() {
-    if(mode == Pernament_Connector::p_connector_mode::establish_connection){
-        Pernament_Connector::update();
-        if(get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
+    if(mode == Permanent_Connector::p_connector_mode::establish_connection){
+        Permanent_Connector::update();
+        if(get_mode() == Permanent_Connector::p_connector_mode::permanent_communication){
             update_period_microseconds = 50000;
         }
-        // czas jest aktualziowany w Pernament_Connector::update();
+        // czas jest aktualziowany w Permanent_Connector::update();
     }else{
         bool is_image_received = receive_img();
         if(is_image_received){
