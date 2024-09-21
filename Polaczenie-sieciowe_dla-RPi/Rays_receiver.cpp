@@ -22,14 +22,14 @@ void Rays_receiver::update() {
             }
         }
         // czas jest aktualziowany w Permanent_Connector::update();
-    }else{
+    }else if(mode == Permanent_Connector::p_connector_mode::permanent_communication) {
         // odbieranie
         sf::Packet received_packet;
-        if(receive_n_time(received_packet)){
+        if(receive_n_time(received_packet, 10)){
             vectors_list->clear();
             received_packet >> *vectors_list;
 
-            std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << "\nRozmiar wektora " << vectors_list->size() << std::endl;
+//            std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << "\nRozmiar wektora " << vectors_list->size() << std::endl;
 
         }
 
@@ -37,7 +37,7 @@ void Rays_receiver::update() {
     }
 }
 
-bool Rays_receiver::receive_n_time(sf::Packet &received_packet) {
+bool Rays_receiver::receive_n_time(sf::Packet &received_packet, int max_number_of_receive_check) {
     setBlocking(false);
 
     bool was_any_good_packet = false;
@@ -67,7 +67,6 @@ void Rays_receiver::set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d
 }
 
 bool Rays_receiver::try_to_exchange_time() {
-    setBlocking(false);
     sf::Packet sended_packet;
     auto sent_time = clock.getElapsedTime();
     sended_packet << sent_time.asMicroseconds();
@@ -77,24 +76,18 @@ bool Rays_receiver::try_to_exchange_time() {
     if(status != sf::Socket::Done){
         return false;
     }
-
-    while (clock.getElapsedTime() < time_limit) {
+    sf::Time begin_time = clock.getElapsedTime();
+    while (clock.getElapsedTime() - begin_time < time_limit) {
         sf::Packet received_packet;
-        status = receive(received_packet);
-        if (status == sf::Socket::Done) {
-            if (not received_packet.endOfPacket()) {
-                continue;
-            } else {
-                std::cout << "End of packet \n";
-                sf::Int64 received_time_int;
-                received_packet >> received_time_int;
 
-                auto transfer_time = clock.getElapsedTime() - sent_time;
-                return (sent_time.asMicroseconds() == received_time_int and transfer_time < time_limit);
-            }
+        if(receive_n_time(received_packet, 10)){
+            sf::Int64 received_time_int;
+            received_packet >> received_time_int;
+
+            auto transfer_time = clock.getElapsedTime() - sent_time;
+            return (sent_time.asMicroseconds() == received_time_int and transfer_time < time_limit);
         }
 
     }
-
     return false;
 }

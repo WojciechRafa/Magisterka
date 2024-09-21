@@ -17,15 +17,15 @@ void update() override;
 void set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_);
 
 private:
-    bool receive_n_time(sf::Packet& received_packet);
-    const int max_number_of_receive_check = 10;
+    bool receive_n_time(sf::Packet& received_packet, int max_number_of_receive_check);
+//    const int max_number_of_receive_check = 10;
 
     std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list = {};
 
     bool try_to_exchange_time();
 
     sf::Clock& clock;
-    sf::Time time_limit = sf::microseconds(500);
+    sf::Time time_limit = sf::milliseconds(500000000);
 };
 
 
