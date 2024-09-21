@@ -21,7 +21,7 @@ private:
 
     sf::Clock& clock;
 
-    sf::Time time_limit_exchange_time_operation = sf::milliseconds(5000000000);
+    sf::Time time_limit_exchange_time_operation = sf::milliseconds(500000);
     sf::Time time_limit_retransfer = sf::milliseconds(500);
 };
 

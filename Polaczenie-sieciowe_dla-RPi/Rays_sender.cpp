@@ -48,7 +48,6 @@ bool Rays_sender::try_to_exchange_time() {
 
     sf::Time begin_time = clock.getElapsedTime();
     while (clock.getElapsedTime() - begin_time < time_limit_exchange_time_operation) {
-        sf::Packet received_packet;
 
         if(receive_n_time(received_packet, 10)){
             sf::Int64 master_time;
