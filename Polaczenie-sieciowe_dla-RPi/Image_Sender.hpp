@@ -20,7 +20,7 @@ public:
 
     void update() override;
 
-    bool need_update() override; // w trybie "pernament_communication" sposób dziłania funkcji jest niestandardowy ponieważ update który sprawdza odebranie jest częstszy niż ten który sprawdza nadawanie
+    bool need_update() override; // w trybie "permanent_communication" sposób dziłania funkcji jest niestandardowy ponieważ update który sprawdza odebranie jest częstszy niż ten który sprawdza nadawanie
 private:
     bool try_send_new_image();// wysyła kolejną klatę i robi zdjęcie kolejnej, jeżeli nie był wstanie tego zrobić zwraca false
     bool update_image_and_number();

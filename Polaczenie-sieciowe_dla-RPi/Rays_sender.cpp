@@ -44,22 +44,18 @@ void Rays_sender::set_vectors_list_ptr(std::vector<std::tuple<cv::Vec3d, cv::Vec
 }
 
 bool Rays_sender::try_to_exchange_time() {
-    setBlocking(false);
     sf::Packet received_packet;
 
     sf::Time begin_time = clock.getElapsedTime();
     while (clock.getElapsedTime() - begin_time < time_limit_exchange_time_operation) {
-        auto status = receive(received_packet);
+        sf::Packet received_packet;
 
-        if (status == sf::Socket::Done) {
-            if (not received_packet.endOfPacket()) {
-                continue;
-            }
-            std::cout << "End of packet \n";
+        if(receive_n_time(received_packet, 10)){
             sf::Int64 master_time;
             received_packet >> master_time;
+
             auto time_diff = clock.getElapsedTime() - sf::microseconds(master_time);
-            status = send(received_packet);
+            auto status = send(received_packet);
 
             return status == sf::Socket::Done and time_diff < time_limit_exchange_time_operation;
         }

@@ -44,7 +44,7 @@ bool Image_Sender::need_update() {
 
 void Image_Sender::update_establish_connection_mode() {
     Permanent_Connector::update(); // funkcja ta aktualizuje zegar
-    if(mode == Permanent_Connector::p_connector_mode::pernament_communication){
+    if(mode == Permanent_Connector::p_connector_mode::permanent_communication){
         update_period_microseconds = 50000;
         update_image_and_number();
     }

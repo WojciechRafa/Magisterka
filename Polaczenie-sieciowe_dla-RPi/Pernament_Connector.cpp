@@ -29,11 +29,42 @@ void Permanent_Connector::update() {
 
         if(status == sf::Socket::Status::Done) {
             std::cout<<"TCP - Połączenie poprawne \n";
-            mode = p_connector_mode::pernament_communication;
+            mode = p_connector_mode::permanent_communication;
             setBlocking(true);
         }
     }else
         throw std::exception();
 
     last_update_time = clock.getElapsedTime().asMicroseconds();
+}
+
+void Permanent_Connector::disconnect() {
+    std::cout << "Permanent connector is disconnected" << std::endl;
+    TcpSocket::disconnect();
+    mode = p_connector_mode::disconnected;
+}
+
+bool Permanent_Connector::receive_n_time(sf::Packet &received_packet, int max_number_of_receive_check) {
+    setBlocking(false);
+
+    bool was_any_good_packet = false;
+    sf::Packet local_packet;
+
+    for(int i = 0; i < max_number_of_receive_check; i++){
+        auto status = receive(local_packet);
+
+        if(status == sf::Socket::Done){
+            if(not local_packet.endOfPacket()) {
+                was_any_good_packet = true;
+                received_packet = local_packet;
+            }else{
+                break;
+            }
+
+        }else{
+            break;
+        }
+    }
+    setBlocking(true);
+    return was_any_good_packet;
 }
