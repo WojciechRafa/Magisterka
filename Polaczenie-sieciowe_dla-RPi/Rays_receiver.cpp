@@ -37,31 +37,6 @@ void Rays_receiver::update() {
     }
 }
 
-bool Rays_receiver::receive_n_time(sf::Packet &received_packet, int max_number_of_receive_check) {
-    setBlocking(false);
-
-    bool was_any_good_packet = false;
-    sf::Packet local_packet;
-
-    for(int i = 0; i < max_number_of_receive_check; i++){
-        auto status = receive(local_packet);
-
-        if(status == sf::Socket::Done){
-            if(not local_packet.endOfPacket()) {
-                was_any_good_packet = true;
-                received_packet = local_packet;
-            }else{
-                break;
-            }
-
-        }else{
-            break;
-        }
-    }
-    setBlocking(true);
-    return was_any_good_packet;
-}
-
 void Rays_receiver::set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_) {
     vectors_list = vectors_list_;
 }

@@ -36,6 +36,8 @@ private:
     sf::IpAddress remote_dev_ip;
 
 protected:
+    bool receive_n_time(sf::Packet& received_packet, int max_number_of_receive_check);
+
     p_connector_mode mode = p_connector_mode::establish_connection;
 };
 
