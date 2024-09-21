@@ -20,6 +20,7 @@ void Rays_sender::update() {
         auto status = tcp_listener.accept(*this);
         if(status == sf::Socket::Status::Done) {
             bool exchange_time_was_correct =  try_to_exchange_time();
+            std::cout<<"Connection done\n";
         }
 
     }else{
@@ -46,21 +47,21 @@ bool Rays_sender::try_to_exchange_time() {
     setBlocking(false);
     sf::Packet received_packet;
 
-    while (clock.getElapsedTime() < time_limit) {
+    sf::Time begin_time = clock.getElapsedTime();
+    while (clock.getElapsedTime() - begin_time < time_limit_exchange_time_operation) {
         auto status = receive(received_packet);
 
         if (status == sf::Socket::Done) {
             if (not received_packet.endOfPacket()) {
                 continue;
-            } else {
-                std::cout << "End of packet \n";
-                sf::Int64 master_time;
-                received_packet >> master_time;
-                time_diff = clock.getElapsedTime().asMicroseconds() - master_time;
-                status = send(received_packet);
-
-                return status == sf::Socket::Done;
             }
+            std::cout << "End of packet \n";
+            sf::Int64 master_time;
+            received_packet >> master_time;
+            auto time_diff = clock.getElapsedTime() - sf::microseconds(master_time);
+            status = send(received_packet);
+
+            return status == sf::Socket::Done and time_diff < time_limit_exchange_time_operation;
         }
     }
     return false;

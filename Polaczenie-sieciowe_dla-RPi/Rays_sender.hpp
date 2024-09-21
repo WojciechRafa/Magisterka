@@ -20,9 +20,9 @@ private:
     std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_ptr = nullptr;
 
     sf::Clock& clock;
-    std::int64_t time_diff;
 
-    sf::Time time_limit = sf::microseconds(500);
+    sf::Time time_limit_exchange_time_operation = sf::milliseconds(5000000000);
+    sf::Time time_limit_retransfer = sf::milliseconds(500);
 };
 
 
