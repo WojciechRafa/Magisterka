@@ -65,34 +65,7 @@ bool System::update() {
 
     last_update_time_micro = clock.getElapsedTime().asMicroseconds();
 
-
-    std::list<Time_Object*> time_object_list;
-
-    if(connection_state == Connection_State::broadcast_listen and broadcast_connector != nullptr) {
-        if (broadcast_connector->need_update()) {
-            time_object_list.push_back(broadcast_connector.get());
-        }
-    }
-
-    if(connection_state != Connection_State::broadcast_listen){
-        time_object_list.push_back(ray_sender.get());
-
-    }
-
-    // get_new_frame
-    time_object_list.push_back(&image_source);
-    time_object_list.push_back(&binarization);
-    time_object_list.push_back(&projection_calculator);
-
-    // graphic:
-    if(graphic.need_update())
-        time_object_list.push_back(&graphic);
-
-    for(auto& time_object: time_object_list){
-        time_object->update();
-    }
-    time_object_list.clear();
-
+    Time_Object::update_all_time_objets();
 
         // ST - short time
     if(connection_state == Connection_State::broadcast_listen and

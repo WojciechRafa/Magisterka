@@ -60,11 +60,6 @@ void Graphic_Manager::update() {
 //        }
     }
 
-    for (auto time_object_to_update: time_objects_to_update){
-        if(time_object_to_update != nullptr)
-            time_object_to_update->update();
-    }
-
     display();
 
     last_update_time = clock.getElapsedTime().asMicroseconds();
