@@ -17,7 +17,8 @@ public:
     ~Time_Object() = default;
 
     virtual void update() = 0; // Aktualizować last_update_time
-    std::list<Time_Object&>* get_all_contaneted_time_object();
+    static std::list<Time_Object*>* get_all_time_objects_pointers();
+    static void update_all_time_objets();
 
     bool need_update(); // wiele instancji może nadpisywać tą funkcję
 protected:
@@ -26,6 +27,8 @@ protected:
 
     sf::Clock clock; // TODO zmiana tego w static (problemy są z tym)
     sf::Int64 last_update_time = 0;
+private:
+    static std::list<Time_Object*> all_time_objects_pointers;
 };
 
 

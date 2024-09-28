@@ -53,45 +53,24 @@ System::System(sf::Int64 update_period_microseconds_):
 bool System::update() {
     static sf::Int64 last_update_time_micro = clock.getElapsedTime().asMicroseconds();
 
-        sf::Int64 time_to_wait = update_period_microseconds - (clock.getElapsedTime().asMicroseconds() - last_update_time_micro);
-        if(time_to_wait > 0)
-            sf::sleep(sf::microseconds(time_to_wait));
+    sf::Int64 time_to_wait = update_period_microseconds - (clock.getElapsedTime().asMicroseconds() - last_update_time_micro);
+    if(time_to_wait > 0)
+        sf::sleep(sf::microseconds(time_to_wait));
 
-        last_update_time_micro = clock.getElapsedTime().asMicroseconds();
+    last_update_time_micro = clock.getElapsedTime().asMicroseconds();
 
-        // aktualizacja czasowa:
+    // aktualizacja czasowa:
+    Time_Object::update_all_time_objets();
 
-        std::list<Time_Object*> time_object_list;
-
-        if(graphic.need_update())
-            time_object_list.push_back(&graphic);
-
-        for(auto& connection: connection_list){
-            for(auto& time_object : connection->get_time_objects()){
-                if(time_object->need_update())
-                    time_object_list.push_back(time_object);
-            }
-
-        }
-        time_object_list.push_back(&image_source);
-        time_object_list.push_back(&binarization);
-        time_object_list.push_back(&projection_calculator);
-
-        for(auto& time_object: time_object_list){
-            time_object->update();
-        }
-
-        time_object_list.clear();
-
-        //aktualizcaj nieczasowa (st - short time, skrót występujący w nazwach funkcji aby odróżnić je od update() który może zajmować pewien czas)
-        auto connection_to_remove = connection_list.end(); // end - odpowednil null-a
-        for(auto it = connection_list.begin(); it != connection_list.end(); it++){
-            auto status = it->get()->update_backend_st();
-            if(status == Button::Button_Message::turn_off_connection)
-                connection_to_remove = it;
-        }
-        if(connection_to_remove != connection_list.end())
-            connection_list.erase(connection_to_remove);
+    //aktualizcaj nieczasowa (st - short time, skrót występujący w nazwach funkcji aby odróżnić je od update() który może zajmować pewien czas)
+    auto connection_to_remove = connection_list.end(); // end - odpowednil null-a
+    for(auto it = connection_list.begin(); it != connection_list.end(); it++){
+        auto status = it->get()->update_backend_st();
+        if(status == Button::Button_Message::turn_off_connection)
+            connection_to_remove = it;
+    }
+    if(connection_to_remove != connection_list.end())
+        connection_list.erase(connection_to_remove);
 
     while (window.pollEvent(event))
     {
@@ -109,12 +88,10 @@ bool System::execute_button_message(Button::Button_Message message) {
     switch (message) {
         case Button::Button_Message::nothing:
             return false;
-        break;
 
         case Button::Button_Message::turn_off_program:
             window.close();
             return true;
-        break;
 
         case Button::Button_Message::create_new_screen:
             if(connection_list.empty()) {
