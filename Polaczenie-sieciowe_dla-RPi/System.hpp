@@ -16,6 +16,7 @@
 #include "Image_source_typ.hpp"
 #include "Binarization.hpp"
 #include "Projection_image_calculator.hpp"
+#include "Rays_intersection_analyzer.hpp"
 
 class System {
 public:
@@ -58,6 +59,8 @@ private:
     std::vector<std::unique_ptr<sf::Shape>> projections = std::vector<std::unique_ptr<sf::Shape>>();
 
     Projection_image_calculator projection_calculator;
+    Rays_intersection_analyzer rays_intersection_analyzer;
+
 
     sf::Clock clock;
 };

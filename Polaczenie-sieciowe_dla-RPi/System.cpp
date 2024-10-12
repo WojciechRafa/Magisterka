@@ -27,6 +27,8 @@ System::System(sf::Int64 update_period_microseconds_):
                           standard_window_size * 0.5f
     )
 {
+    Time_Object::default_update_period_microseconds = 50000;
+
     image_source.set_image_ptr(raw_picture);
     raw_picture_window.set_image_ptr(raw_picture);
 
@@ -47,7 +49,6 @@ System::System(sf::Int64 update_period_microseconds_):
     graphic.add_small_window_to_display(& binarized_picture_window);
     graphic.add_time_object_to_update(&projections_window);
     graphic.add_small_window_to_display(&projections_window);
-
 }
 
 bool System::update() {

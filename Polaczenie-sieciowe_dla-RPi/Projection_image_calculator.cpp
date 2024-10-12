@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <cmath>
+#include <utility>
 
 #include "Projection_image_calculator.hpp"
 #include "sended_struct.hpp"
@@ -60,6 +61,7 @@ Projection_image_calculator::Projection_image_calculator(Projection_image_calcul
                                                          bool are_rays_from_slave_,
                                                          std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_,
 
+                                                         cv::Mat outside_matrix_,
                                                          int change_time_):
         axis_a(axis_a_),
         axis_b(axis_b_),
@@ -69,7 +71,7 @@ Projection_image_calculator::Projection_image_calculator(Projection_image_calcul
 
         are_rays_from_slave(are_rays_from_slave_),
         rays_ratio(rays_ratio_),
-
+        Rays_source(std::move(outside_matrix_)),
         Time_Object(change_time_){
     internal_parameters = load_camera_matrix("../Camera_insert_parameters.csv");
 

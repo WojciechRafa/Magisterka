@@ -5,12 +5,13 @@
 #ifndef MAGISTERKA_PROJECTION_IMAGE_CALCULATOR_HPP
 #define MAGISTERKA_PROJECTION_IMAGE_CALCULATOR_HPP
 
-#include "Time_Object.hpp"
 #include <opencv2/opencv.hpp>
 #include "SFML/Graphics.hpp"
 #include "Binarization.hpp"
+#include "Time_Object.hpp"
+#include "Rays_source.hpp"
 
-class Projection_image_calculator: public Time_Object{
+class Projection_image_calculator: public Time_Object, public Rays_source{
 public:
     enum class axes{
         x, y, z
@@ -25,11 +26,11 @@ public:
                                 bool are_rays_from_slave_ = false,
                                 std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_ = {},
 
+
+                                cv::Mat outside_matrix_ = cv::Mat::zeros(3, 4, CV_8UC1),
                                 int change_time_ = 50000);
     void update() override;
 
-//    void set_stats(std::shared_ptr<cv::Mat> stats_);
-//    void set_centroids(std::shared_ptr<cv::Mat> centroids_);
     void set_parameters(std::shared_ptr<Binarization::Binarized_parameters> parameters_);
 
 
@@ -51,7 +52,7 @@ private:
     sf::Vector2f window_pos;
     sf::Vector2f output_window_size;
 
-    float corners_angle[4];
+    float corners_angle[4]{};
 
     sf::Vector2f output_zero_point_pos;
 

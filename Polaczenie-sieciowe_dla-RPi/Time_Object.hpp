@@ -21,9 +21,11 @@ public:
     static void update_all_time_objets();
 
     bool need_update(); // wiele instancji może nadpisywać tą funkcję
+
+    static sf::Int64 default_update_period_microseconds;
 protected:
     // WAŻNE ! Aktualizować last update time !
-    sf::Int64 update_period_microseconds = 100000;
+    sf::Int64 update_period_microseconds;
 
     sf::Clock clock; // TODO zmiana tego w static (problemy są z tym)
     sf::Int64 last_update_time = 0;

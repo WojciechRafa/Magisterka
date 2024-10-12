@@ -51,6 +51,12 @@ add_executable(Magisterka
         Projection_image_calculator.hpp
         Rays_receiver.cpp
         Rays_receiver.hpp
+        Rays_intersection_analyzer.cpp
+        Rays_intersection_analyzer.hpp
+        Rays_parameters.hpp
+        Rays_source.hpp
+        Objects_tracker.cpp
+        Objects_tracker.hpp
 )
 
 target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS})

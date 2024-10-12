@@ -5,8 +5,11 @@
 #include "Time_Object.hpp"
 
 std::list<Time_Object*> Time_Object::all_time_objects_pointers;
+sf::Int64 Time_Object::default_update_period_microseconds;
 
-Time_Object::Time_Object() {
+Time_Object::Time_Object():
+    update_period_microseconds(default_update_period_microseconds)
+{
     clock.restart();
     last_update_time = clock.getElapsedTime().asMicroseconds();
 

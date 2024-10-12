@@ -8,8 +8,9 @@
 #include <opencv2/opencv.hpp>
 
 #include "Permanent_Connector.hpp"
+#include "Rays_source.hpp"
 
-class Rays_receiver: public Permanent_Connector{
+class Rays_receiver: public Permanent_Connector, public Rays_source{
 public:
 
 Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, sf::Clock& clock_);
