@@ -24,7 +24,7 @@ public:
                                 );
 
     explicit Connection_Backend(unsigned short port_,
-                                std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio_,
+                                std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* detected_objets_2d_,
                                 sf::Clock& clock_);
 
     enum class Connection_State{
@@ -88,7 +88,7 @@ private:
     std::vector<Custom_Data_IO_Window::message> message_list_recived;
     std::vector<Custom_Data_IO_Window::message> message_list_sended;
 
-    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio = nullptr;
+    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* detected_objets_2d = nullptr;
 
     sf::Clock& clock;
 };

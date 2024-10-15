@@ -193,7 +193,7 @@ void Connection_Frontend::set_button_mode(Button::Button_Message button_type, bo
 
 //void Connection_Frontend::set_axes_ratio(
 //        std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_) {
-//    axes_ratio = std::move(axes_ratio_);
+//    detected_objets_2d = std::move(axes_ratio_);
 //}
 
 void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf::Vector2f zero_point_pos,

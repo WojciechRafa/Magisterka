@@ -37,7 +37,7 @@ void Rays_receiver::update() {
     }
 }
 
-void Rays_receiver::set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_) {
+void Rays_receiver::set_vectors_list(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* vectors_list_) {
     vectors_list = vectors_list_;
 }
 

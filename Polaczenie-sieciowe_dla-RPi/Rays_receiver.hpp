@@ -15,10 +15,10 @@ public:
 
 Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, sf::Clock& clock_);
 void update() override;
-void set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_);
+void set_vectors_list(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* vectors_list_);
 
 private:
-    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list = {};
+    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* vectors_list = {};
 
     bool try_to_exchange_time();
 

@@ -17,10 +17,10 @@ clock(clock_)
 }
 
 Connection_Backend::Connection_Backend(unsigned short port_,
-                                       std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* axes_ratio_,
+                                       std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* detected_objets_2d_,
                                        sf::Clock& clock_):
         port(port_),
-        axes_ratio(axes_ratio_),
+        detected_objets_2d(detected_objets_2d_),
         clock(clock_)
 {}
 
@@ -112,7 +112,7 @@ bool Connection_Backend::start_connection_axes_ratio() {
     if(connection_state == Connection_State::another_IP_knowed or
        connection_state == Connection_State::only_custom_data_work){
         rays_receiver = std::make_unique<Rays_receiver>(port, remote_ip, clock);
-        rays_receiver->set_vectors_list(axes_ratio);
+        rays_receiver->set_vectors_list(detected_objets_2d);
 
         if(remote_ip != sf::IpAddress::None) {
 
@@ -260,6 +260,6 @@ void Connection_Backend::set_camera_view_mode(Image_Receiver::Sender_Mode mode) 
 }
 
 //void Connection_Backend::set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_) {
-//    axes_ratio = std::move(axes_ratio_);
+//    detected_objets_2d = std::move(axes_ratio_);
 //}
 

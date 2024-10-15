@@ -53,7 +53,7 @@ add_executable(Magisterka
         Rays_receiver.hpp
         Rays_intersection_analyzer.cpp
         Rays_intersection_analyzer.hpp
-        Rays_parameters.hpp
+        Frame_parameters.hpp
         Rays_source.hpp
         Objects_tracker.cpp
         Objects_tracker.hpp
