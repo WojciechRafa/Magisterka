@@ -93,11 +93,11 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
                 zero_point_pos,
                 axis_a,
                 axis_b,
-                &axes_ratio,
+                &sent_parameters,
 
                 graphic_warehouse
         ),
-        backend(port, &axes_ratio, clock_)
+        backend(port, &sent_parameters, clock_)
 {
 }
 

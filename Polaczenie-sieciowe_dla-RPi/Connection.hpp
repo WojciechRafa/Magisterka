@@ -106,7 +106,8 @@ private:
 
     Button::Button_Message actual_button_mesage = Button::Button_Message::nothing;
 
-    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> axes_ratio = {};
+//    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> sent_parameters = {};
+    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>> sent_parameters = {};
 };
 
 

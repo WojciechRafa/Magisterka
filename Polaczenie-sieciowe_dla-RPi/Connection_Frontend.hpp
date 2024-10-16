@@ -61,7 +61,7 @@ public:
             sf::Vector2f zero_point_pos,
             Projection_image_calculator::axes axis_a,
             Projection_image_calculator::axes axis_b,
-            std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_,
+            std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* received_parameters_,
 
             Graphic_Warehouse& graphic_warehouse
     );
@@ -87,7 +87,9 @@ public:
                         sf::Vector2f zero_point_pos,
                         Projection_image_calculator::axes axis_a,
                         Projection_image_calculator::axes axis_b,
-                        std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_,
+                        std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* detected_object_parameters_,
+                        cv::Mat internal_matrix,
+                        cv::Mat external_matrix,
                         sf::Color background_color= sf::Color::White,
                         sf::Color outline_color= sf::Color::Black,
                         float outline_thickness = 3,

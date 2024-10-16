@@ -59,9 +59,10 @@ Projection_image_calculator::Projection_image_calculator(Projection_image_calcul
                                                          sf::Vector2f zero_point_pos_,
 
                                                          bool are_rays_from_slave_,
-                                                         std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_,
+                                                         std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* received_parameters_,
 
-                                                         cv::Mat outside_matrix_,
+                                                         cv::Mat internal_matrix_,
+                                                         cv::Mat external_matrix_,
                                                          int change_time_):
         axis_a(axis_a_),
         axis_b(axis_b_),
@@ -70,8 +71,8 @@ Projection_image_calculator::Projection_image_calculator(Projection_image_calcul
         output_zero_point_pos(zero_point_pos_),
 
         are_rays_from_slave(are_rays_from_slave_),
-        rays_ratio(rays_ratio_),
-        Rays_source(std::move(outside_matrix_)),
+        received_parameters(received_parameters_),
+        Rays_source(std::move(external_matrix_)),
         Time_Object(change_time_){
     internal_parameters = load_camera_matrix("../Camera_insert_parameters.csv");
 
@@ -216,13 +217,12 @@ void Projection_image_calculator::update() {
         }
 //        std::cout<<"Ilosc parametrow : " << parameters->numb_labels <<std::endl;
 
-    }else if(rays_ratio != nullptr and are_rays_from_slave){
-        for(auto& ray_vector : *rays_ratio){
+    }else if(received_parameters != nullptr and are_rays_from_slave){
+        for(auto& received_parameter : *received_parameters){
 
-            auto box_dir_3D_begin =std::get<0>(ray_vector);
-            auto box_dir_3D_end =  std::get<1>(ray_vector);
-            auto centroid_dir_3D = std::get<2>(ray_vector);
-
+            auto box_dir_3D_begin =multiple_internal(std::get<0>(received_parameter));
+            auto box_dir_3D_end =  multiple_internal(std::get<1>(received_parameter));
+            auto centroid_dir_3D = multiple_internal(std::get<2>(received_parameter));
             float line_thickness = 0.5;
 
             if(output_window_size != sf::Vector2f(0, 0) and window_pos != sf::Vector2f(0, 0)) {
@@ -261,6 +261,19 @@ void Projection_image_calculator::update() {
 
 void Projection_image_calculator::set_parameters(std::shared_ptr<Binarization::Binarized_parameters> parameters_) {
     parameters = std::move(parameters_);
+}
+
+cv::Vec3d Projection_image_calculator::multiple_internal(cv::Vec2d &image_params) {
+    double fx = internal_parameters.at<double>(0, 0);   // f_x
+    double fy = internal_parameters.at<double>(1, 1);   // f_y
+    double cx = internal_parameters.at<double>(0, 2);   // c_x
+    double cy = internal_parameters.at<double>(1, 2);   // c_y
+
+    double X = (image_params[0] - cx) / fx;
+    double Y = (image_params[1] - cy) / fy;
+    double Z = 1.0;
+
+    return {X, Y, Z};
 }
 
 //void Projection_image_calculator::set_ray_ratio(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> *rays_ratio_) {

@@ -37,5 +37,7 @@ sf::IpAddress get_ip(sf::Packet& packet);
 
 sf::Packet& operator >>(sf::Packet& packet, Image_and_number& Img_and_num);
 
-sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);
-sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);
+//sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);
+//sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);
+sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio);
+sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio);

@@ -93,12 +93,21 @@ Connection_Frontend::Connection_Frontend(std::unique_ptr<Buttons_Field> buttons_
                                          sf::Vector2f zero_point_pos,
                                          Projection_image_calculator::axes axis_a,
                                          Projection_image_calculator::axes axis_b,
-                                         std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_,
+                                         std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* received_parameters_,
 
                                          Graphic_Warehouse &graphic_warehouse):
                                          buttons_field(std::move(buttons_field_))
                                          {
-                                             add_projection(window_size, window_pos, zero_point_pos , axis_a, axis_b, rays_ratio_);
+//                                             double m[3][3] = {{a, b, c}, {d, e, f}, {g, h, i}};
+//                                             Mat M = Mat(3, 3, CV_64F, m);
+
+                                             double internal_matrix_data[3][3] = {{1830.62342855404,0,954.637220812545}, {0,1800.20786426036,538.195879306262}, {0,0,1}};
+                                             cv::Mat internal_matrix = cv::Mat(3, 3, CV_64F, internal_matrix_data);
+
+                                             double external_matrix_data[3][4] = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
+                                             cv::Mat external_matrix = cv::Mat(3, 3, CV_64F, external_matrix_data);
+
+                                             add_projection(window_size, window_pos, zero_point_pos , axis_a, axis_b, received_parameters_, internal_matrix, external_matrix);
 
                                          }
 
@@ -199,7 +208,9 @@ void Connection_Frontend::set_button_mode(Button::Button_Message button_type, bo
 void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf::Vector2f zero_point_pos,
                                          Projection_image_calculator::axes axis_a,
                                          Projection_image_calculator::axes axis_b,
-                                         std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_,
+                                         std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* rays_ratio_,
+                                         cv::Mat internal_matrix,
+                                         cv::Mat external_matrix,
                                          sf::Color background_color,
                                          sf::Color outline_color, float outline_thickness, int update_time) {
 

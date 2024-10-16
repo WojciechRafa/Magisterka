@@ -24,10 +24,10 @@ public:
                                 sf::Vector2f zero_point_pos_ = sf::Vector2f(0, 0),
 
                                 bool are_rays_from_slave_ = false,
-                                std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* rays_ratio_ = {},
+                                std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* received_parameters_ = {},
 
-
-                                cv::Mat outside_matrix_ = cv::Mat::zeros(3, 4, CV_8UC1),
+                                cv::Mat internal_matrix_ = cv::Mat::zeros(3, 3, CV_8UC1),
+                                cv::Mat external_matrix_ = cv::Mat::zeros(3, 4, CV_8UC1),
                                 int change_time_ = 50000);
     void update() override;
 
@@ -63,7 +63,9 @@ private:
     static int get_axi_nr(axes);
 
     bool are_rays_from_slave = false;
-    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>*  rays_ratio;
+    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>*  received_parameters;
+
+    cv::Vec3d multiple_internal(cv::Vec2d& image_params);
 };
 
 
