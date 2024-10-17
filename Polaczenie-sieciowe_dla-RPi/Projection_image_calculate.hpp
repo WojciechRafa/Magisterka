@@ -30,6 +30,7 @@ public:
 
 
     void set_additional_graphic(std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_);
+    void set_objets_parameters(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* objets_parameters_);
     void set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_);
 private:
 //    std::shared_ptr<cv::Mat> stats = nullptr;
@@ -40,6 +41,7 @@ private:
     axes axis_b;
 
     std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>> projections = nullptr;
+    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* objets_parameters_list = nullptr;
     std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list = nullptr;
 
     static cv::Mat load_camera_matrix(const std::string& filePath);

@@ -50,7 +50,48 @@ sf::Packet& operator <<(sf::Packet& packet, Image_and_number& image_and_number){
 }
 
 
-sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio){
+//sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio){
+//    packet.clear();
+//
+//    packet << static_cast<sf::Uint16>(axes_ratio.size());
+//
+//    for(auto& tuple: axes_ratio){
+////        auto& begin_vec = std::get<0>(tuple);
+////        auto& begin_end = std::get<1>(tuple);
+////        auto& begin_centroid = std::get<2>(tuple);
+//
+//        std::vector<cv::Vec3d> tuple_as_vec = {std::get<0>(tuple), std::get<1>(tuple), std::get<2>(tuple)};
+//
+//        for(auto& element_ratios: tuple_as_vec){
+//            for(int i = 0; i < 3; i++){  // begin, end, centroids
+//                packet << element_ratios[i];
+//            }
+//        }
+//    }
+//
+//    return packet;
+//};
+//
+//sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio){
+//    sf::Uint16 size;
+//    packet >> size;
+//
+//    axes_ratio.clear();
+//    for(sf::Uint16 i = 0; i < size; i++){  // begin, end, centroids
+//        cv::Vec3d new_element_vec[3];
+//
+//        for(auto & j : new_element_vec){
+//            double axis_x, axis_y, axis_z;
+//            packet >> axis_x >> axis_y >> axis_z;
+//
+//            j = cv::Vec3d(axis_x, axis_y, axis_z);
+//        }
+//
+//        axes_ratio.emplace_back(new_element_vec[0], new_element_vec[1], new_element_vec[2]);
+//    }
+//    return packet;
+//};
+sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio){
     packet.clear();
 
     packet << static_cast<sf::Uint16>(axes_ratio.size());
@@ -60,10 +101,10 @@ sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec
 //        auto& begin_end = std::get<1>(tuple);
 //        auto& begin_centroid = std::get<2>(tuple);
 
-        std::vector<cv::Vec3d> tuple_as_vec = {std::get<0>(tuple), std::get<1>(tuple), std::get<2>(tuple)};
+        std::vector<cv::Vec2d> tuple_as_vec = {std::get<0>(tuple), std::get<1>(tuple), std::get<2>(tuple)};
 
         for(auto& element_ratios: tuple_as_vec){
-            for(int i = 0; i < 3; i++){  // begin, end, centroids
+            for(int i = 0; i < 2; i++){
                 packet << element_ratios[i];
             }
         }
@@ -72,19 +113,19 @@ sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec
     return packet;
 };
 
-sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio){
+sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio){
     sf::Uint16 size;
     packet >> size;
 
     axes_ratio.clear();
     for(sf::Uint16 i = 0; i < size; i++){  // begin, end, centroids
-        cv::Vec3d new_element_vec[3];
+        cv::Vec2d new_element_vec[3];
 
         for(auto & j : new_element_vec){
             double axis_x, axis_y, axis_z;
-            packet >> axis_x >> axis_y >> axis_z;
+            packet >> axis_x >> axis_y;
 
-            j = cv::Vec3d(axis_x, axis_y, axis_z);
+            j = cv::Vec2d(axis_x, axis_y);
         }
 
         axes_ratio.emplace_back(new_element_vec[0], new_element_vec[1], new_element_vec[2]);

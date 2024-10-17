@@ -17,7 +17,7 @@
 #include "Image_source_typ.hpp"
 #include "Binarization.hpp"
 #include "Projection_image_calculate.hpp"
-#include "Rays_sender.hpp"
+#include "Parameter_sender.hpp"
 
 class System {
 public:
@@ -42,7 +42,7 @@ private:
     std::unique_ptr<Broadcast_Connector> broadcast_connector = nullptr;
     // std::unique_ptr<Image_Sender> image_sender = nullptr;
     // std::unique_ptr<Custom_Data_IO> custom_data_io = nullptr;
-    std::unique_ptr<Rays_sender> ray_sender = nullptr;
+    std::unique_ptr<Parameter_sender> parameter_sender = nullptr;
 
     void configure_custom_data();
     // graphic:
@@ -69,6 +69,8 @@ private:
             std::make_shared<Binarization::Binarized_parameters>();
 
     std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> vectors_list = {};
+    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>> objets_parameters_list = {};
+
     std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>>projections =
             std::make_shared<std::vector<std::unique_ptr<sf::Shape>>>();
 

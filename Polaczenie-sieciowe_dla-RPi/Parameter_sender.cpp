@@ -2,18 +2,18 @@
 // Created by wpr on 26.08.24.
 //
 
-#include "Rays_sender.hpp"
+#include "Parameter_sender.hpp"
 #include "Sended_struct.hpp"
 
-Rays_sender::Rays_sender(unsigned short port_, sf::IpAddress remote_dev_ip_, sf::Clock& clock_) : Permanent_Connector(
+Parameter_sender::Parameter_sender(unsigned short port_, sf::IpAddress remote_dev_ip_, sf::Clock& clock_) : Permanent_Connector(
                                                                                                     port_,
                                                                                                     remote_dev_ip_),
-                                                                                                    clock(clock_)
+                                                                                                            clock(clock_)
                                                                                                     {
     update_period_microseconds = 500000;
 }
 
-void Rays_sender::update() {
+void Parameter_sender::update() {
     if(mode == Permanent_Connector::p_connector_mode::establish_connection){
         Permanent_Connector::update();
 
@@ -24,14 +24,14 @@ void Rays_sender::update() {
         }
 
     }else{
-        if(vectors_list_ptr == nullptr){
-            std::cerr<<"vectors_list_ptr is nullptr \n";
+        if(objets_parameters_list_ptr == nullptr){
+            std::cerr<<"objets_parameters_list_ptr is nullptr \n";
         }
 
         // nadawanie
         sf::Packet sended_packet;
 
-        sended_packet << *vectors_list_ptr;
+        sended_packet << *objets_parameters_list_ptr;
         std::cout<<"Rozmiar danych " << sended_packet.getDataSize()<<"\n";
         auto status = send(sended_packet);
 
@@ -39,11 +39,11 @@ void Rays_sender::update() {
     }
 }
 
-void Rays_sender::set_vectors_list_ptr(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_) {
-    vectors_list_ptr = vectors_list_;
-}
+//void Parameter_sender::set_vectors_list_ptr(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_) {
+//    vectors_list_ptr = vectors_list_;
+//}
 
-bool Rays_sender::try_to_exchange_time() {
+bool Parameter_sender::try_to_exchange_time() {
     sf::Packet received_packet;
 
     sf::Time begin_time = clock.getElapsedTime();
@@ -60,4 +60,9 @@ bool Rays_sender::try_to_exchange_time() {
         }
     }
     return false;
+}
+
+void
+Parameter_sender::set_objets_parameters_list_ptr(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>> *objets_parameter_list_ptr_) {
+    objets_parameters_list_ptr = objets_parameter_list_ptr_;
 }
