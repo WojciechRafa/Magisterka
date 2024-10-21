@@ -23,7 +23,7 @@ public:
 
     virtual bool need_update(); // wiele instancji może nadpisywać tą funkcję
 
-    std::string get_name() {return "";};
+//    static std::string get_name() {return "";};
 protected:
     // WAŻNE ! Aktualizować last update time !
     sf::Int64 update_period_microseconds;
@@ -33,6 +33,8 @@ protected:
 
 private:
     static std::list<Time_Object*> all_time_objects_pointers;
+
+    const sf::Int64 default_update_period_microseconds = 50000; // TODO
 };
 
 #endif //INZYNIERKA_TIME_OBJECT_HPP

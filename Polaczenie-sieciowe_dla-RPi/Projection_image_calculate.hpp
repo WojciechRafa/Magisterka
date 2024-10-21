@@ -32,6 +32,8 @@ public:
     void set_additional_graphic(std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_);
     void set_objets_parameters(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* objets_parameters_);
     void set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_);
+
+//    static std::string get_name() {return "Projection_image_calculate";}
 private:
 //    std::shared_ptr<cv::Mat> stats = nullptr;
 //    std::shared_ptr<cv::Mat> centroids = nullptr;

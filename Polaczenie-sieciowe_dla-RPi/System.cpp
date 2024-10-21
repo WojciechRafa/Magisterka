@@ -65,9 +65,9 @@ bool System::update() {
 
 
     last_update_time_micro = clock.getElapsedTime().asMicroseconds();
-    auto time_begin = clock.getElapsedTime().asMicroseconds();
+//    auto time_begin = clock.getElapsedTime().asMicroseconds();
     Time_Object::update_all_time_objets();
-    auto time_end = clock.getElapsedTime().asMicroseconds();
+//    auto time_end = clock.getElapsedTime().asMicroseconds();
 
     // std::cout << "Time diff " << time_end - time_begin << " us, measure time " << time_end << " us " << std::endl;
 
@@ -79,7 +79,8 @@ bool System::update() {
 
         connection_state = Connection_State::both_wait_to_pernamant_connect;
 
-        parameter_sender = std::make_unique<Parameter_sender>(port, remote_ip_address, clock);
+        parameter_sender = std::make_unique<Parameter_sender>(port, remote_ip_address);
+        parameter_sender->set_update_period(1000);
 //        parameter_sender->set_vectors_list_ptr(&vectors_list);
         parameter_sender->set_objets_parameters_list_ptr(&objets_parameters_list);
 

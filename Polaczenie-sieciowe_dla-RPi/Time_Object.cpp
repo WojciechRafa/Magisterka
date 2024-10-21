@@ -10,6 +10,8 @@ Time_Object::Time_Object() {
     last_update_time = clock.getElapsedTime().asMicroseconds();
 
     all_time_objects_pointers.push_back(this);
+
+    update_period_microseconds = default_update_period_microseconds;
 }
 
 Time_Object::Time_Object(sf::Int64 update_period_microseconds_):
@@ -37,10 +39,8 @@ bool Time_Object::need_update() {
 }
 
 void Time_Object::update_all_time_objets() {
-    for(const auto time_object: all_time_objects_pointers){
+    for(Time_Object* time_object: all_time_objects_pointers){
         if(time_object->need_update()){
-            if(not time_object->get_name().empty())
-                std::cout << time_object->get_name() << std::endl;
             time_object->update();
         }
     }
