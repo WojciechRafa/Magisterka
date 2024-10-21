@@ -5,9 +5,8 @@
 #include "Rays_receiver.hpp"
 #include "sended_struct.hpp"
 
-Rays_receiver::Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, sf::Clock& clock_) :
-        Permanent_Connector(port_, remote_dev_ip_),
-        clock(clock_){
+Rays_receiver::Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_) :
+        Permanent_Connector(port_, remote_dev_ip_){
     update_period_microseconds = 500000;
 }
 

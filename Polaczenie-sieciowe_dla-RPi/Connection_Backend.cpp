@@ -111,7 +111,7 @@ bool Connection_Backend::start_connection_custom_data() {
 bool Connection_Backend::start_connection_axes_ratio() {
     if(connection_state == Connection_State::another_IP_knowed or
        connection_state == Connection_State::only_custom_data_work){
-        rays_receiver = std::make_unique<Rays_receiver>(port, remote_ip, clock);
+        rays_receiver = std::make_unique<Rays_receiver>(port, remote_ip);
         rays_receiver->set_vectors_list(detected_objets_2d);
 
         if(remote_ip != sf::IpAddress::None) {

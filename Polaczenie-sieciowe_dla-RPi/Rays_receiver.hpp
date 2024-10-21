@@ -13,7 +13,7 @@
 class Rays_receiver: public Permanent_Connector, public Rays_source{
 public:
 
-Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, sf::Clock& clock_);
+Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_);
 void update() override;
 void set_vectors_list(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* vectors_list_);
 
@@ -22,7 +22,7 @@ private:
 
     bool try_to_exchange_time();
 
-    sf::Clock& clock;
+    // sf::Clock& clock;
     sf::Time time_limit = sf::milliseconds(500000000);
 };
 
