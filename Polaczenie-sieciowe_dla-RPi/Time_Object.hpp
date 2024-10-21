@@ -14,6 +14,7 @@
 class Time_Object {
 public:
     Time_Object();
+    ~Time_Object();
     explicit Time_Object(sf::Int64 update_period_microseconds_);
 
     virtual void update() = 0; // Aktualizować last_update_time
@@ -21,6 +22,8 @@ public:
     static void update_all_time_objets();
 
     virtual bool need_update(); // wiele instancji może nadpisywać tą funkcję
+
+    std::string get_name() {return "";};
 protected:
     // WAŻNE ! Aktualizować last update time !
     sf::Int64 update_period_microseconds;
@@ -31,8 +34,5 @@ protected:
 private:
     static std::list<Time_Object*> all_time_objects_pointers;
 };
-
-
-
 
 #endif //INZYNIERKA_TIME_OBJECT_HPP

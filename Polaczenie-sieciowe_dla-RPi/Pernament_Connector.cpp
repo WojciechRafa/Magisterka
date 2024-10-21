@@ -24,7 +24,6 @@ Permanent_Connector::p_connector_mode Permanent_Connector::get_mode() {
 void Permanent_Connector::update() {
 
     if(mode == p_connector_mode::establish_connection){
-        bool is_block =isBlocking();
         auto status = tcp_listener.accept(*this);
 
         if(status == sf::Socket::Status::Done) {

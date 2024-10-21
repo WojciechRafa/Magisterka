@@ -9,8 +9,8 @@
 class Broadcast_Connector: public Time_Object{
 public:
     enum class b_connector_mode{
-        waiting_to_first_conntact,
-        send_response_and_waiting_to_second_conntact,
+        waiting_to_first_contact,
+        send_response_and_waiting_to_second_contact,
         connection_confirmed
     };
 
@@ -22,7 +22,7 @@ private:
 	unsigned short port;
 	sf::UdpSocket udp_socket;
 	
-	b_connector_mode mode = b_connector_mode::waiting_to_first_conntact;
+	b_connector_mode mode = b_connector_mode::waiting_to_first_contact;
 	
 	sf::IpAddress remote_dev_ip;
 };

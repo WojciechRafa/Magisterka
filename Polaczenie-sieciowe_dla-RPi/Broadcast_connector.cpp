@@ -18,7 +18,7 @@ port(port_){
 
 void Broadcast_Connector::update(){
 
-    if(mode == b_connector_mode::waiting_to_first_conntact){
+    if(mode == b_connector_mode::waiting_to_first_contact){
         sf::Packet packet_received;
         sf::Socket::Status status = udp_socket.receive(packet_received, remote_dev_ip, port);
         write_comunicate_sockte_status(status);
@@ -31,10 +31,10 @@ void Broadcast_Connector::update(){
         if (status == sf::Socket::Done) {
             if (remote_dev_ip.toInteger() == get_ip(packet_received).toInteger() and remote_dev_ip.toInteger() != 0) {
                 std::cout << "IP kontroler : " << remote_dev_ip.toString() << std::endl;
-                mode = b_connector_mode::send_response_and_waiting_to_second_conntact;
+                mode = b_connector_mode::send_response_and_waiting_to_second_contact;
             }
         }
-    }else if(mode == b_connector_mode::send_response_and_waiting_to_second_conntact){
+    }else if(mode == b_connector_mode::send_response_and_waiting_to_second_contact){
 
         Double_ip_message ip_message_sended = {
                 sf::IpAddress::getLocalAddress(),

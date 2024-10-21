@@ -15,6 +15,8 @@ public:
     void update() override;
 //    void set_vectors_list_ptr(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_);
     void set_objets_parameters_list_ptr(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* objets_parameter_list_ptr_);
+
+    std::string get_name() {return "Parameter_sender";}
 private:
     bool try_to_exchange_time();
 

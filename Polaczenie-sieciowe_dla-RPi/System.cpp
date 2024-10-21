@@ -65,8 +65,11 @@ bool System::update() {
 
 
     last_update_time_micro = clock.getElapsedTime().asMicroseconds();
-
+    auto time_begin = clock.getElapsedTime().asMicroseconds();
     Time_Object::update_all_time_objets();
+    auto time_end = clock.getElapsedTime().asMicroseconds();
+
+    // std::cout << "Time diff " << time_end - time_begin << " us, measure time " << time_end << " us " << std::endl;
 
         // ST - short time
     if(connection_state == Connection_State::broadcast_listen and
