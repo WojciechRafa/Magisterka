@@ -4,7 +4,7 @@
 
 #include "Time_Object.hpp"
 
-std::list<Time_Object*> Time_Object::all_time_objects_pointers;
+std::vector<Time_Object*> Time_Object::all_time_objects_pointers;
 sf::Int64 Time_Object::default_update_period_microseconds;
 
 Time_Object::Time_Object():
@@ -25,7 +25,7 @@ update_period_microseconds(update_period_microseconds_)
     all_time_objects_pointers.push_back(this);
 }
 
-std::list<Time_Object *>* Time_Object::get_all_time_objects_pointers() {
+std::vector<Time_Object *>* Time_Object::get_all_time_objects_pointers() {
     return & all_time_objects_pointers;
 }
 
@@ -39,6 +39,14 @@ void Time_Object::update_all_time_objets() {
             time_object->update();
         }
     }
+}
+
+Time_Object::~Time_Object() {
+    auto this_iterator = std::find(all_time_objects_pointers.begin(), all_time_objects_pointers.end(), this);
+
+    auto ptr_value = *this_iterator;
+    if(ptr_value != nullptr)
+        all_time_objects_pointers.erase(this_iterator);
 }
 
 

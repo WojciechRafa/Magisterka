@@ -87,7 +87,7 @@ void Small_window::set_additional_graphic(std::vector<std::unique_ptr<sf::Shape>
 }
 
 std::vector<std::unique_ptr<sf::Shape>>* Small_window::get_additional_graphic() {
-    std::cout<<"Pozycja okna "<< getPosition().x <<" "<< getPosition().y<<std::endl;
+//    std::cout<<"Pozycja okna "<< getPosition().x <<" "<< getPosition().y<<std::endl;
     return additional_graphic;
 //    additional_graphic_local.clear();
 

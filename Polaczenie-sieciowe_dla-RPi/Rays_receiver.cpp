@@ -15,10 +15,14 @@ void Rays_receiver::update() {
     if(mode == Permanent_Connector::p_connector_mode::establish_connection){
         Permanent_Connector::update();
         if(get_mode() == Permanent_Connector::p_connector_mode::permanent_communication){
-            update_period_microseconds = 50000;
+            update_period_microseconds = 50000; // TODO
             bool exchange_time_was_correct =  try_to_exchange_time();
             if(not exchange_time_was_correct){
+                std::cout<<"Time exchange incorrect\n";
                 disconnect();
+            }else{
+                setBlocking(true);
+                std::cout<<"Time exchange correct\n";
             }
         }
         // czas jest aktualziowany w Permanent_Connector::update();
@@ -32,7 +36,7 @@ void Rays_receiver::update() {
 //            std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << "\nRozmiar wektora " << vectors_list->size() << std::endl;
 
         }
-
+        std::cout<<"Data recive\n";
         last_update_time = clock.getElapsedTime().asMicroseconds();
     }
 }
