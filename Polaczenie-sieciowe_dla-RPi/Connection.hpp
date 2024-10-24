@@ -8,8 +8,8 @@
 #include "Connection_Frontend.hpp"
 #include "Connection_Backend.hpp"
 
-#include "Projection_image_calculator.hpp"
-#include "Projection_image_calculator.hpp"
+#include "Image_Analysis/Projection_image_calculator.hpp"
+#include "Image_Analysis/Projection_image_calculator.hpp"
 
 #include <list>
 

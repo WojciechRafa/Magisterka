@@ -8,23 +8,23 @@ include_directories( ${OpenCV_INCLUDE_DIRS})
 
 add_executable(Magisterka
         main.cpp
-        sended_struct.hpp
-        sended_struct.cpp
+        Network/sended_struct.hpp
+        Network/sended_struct.cpp
         main_functions.hpp
         Time.hpp
-        Broadcast_Connector.cpp
-        Broadcast_Connector.hpp
-        Permanent_Connector.cpp
-        Permanent_Connector.hpp
-        Window.cpp Window.hpp
-        Image_Receiver.cpp
-        Image_Receiver.hpp
-        Buttons_Field.cpp
-        Buttons_Field.hpp
-        Graphic_Warehouse.cpp
-        Graphic_Warehouse.hpp
-        Button.cpp
-        Button.hpp
+        Network/Broadcast_Connector.cpp
+        Network/Broadcast_Connector.hpp
+        Network/Permanent_Connector.cpp
+        Network/Permanent_Connector.hpp
+        GUI/Window.cpp GUI/Window.hpp
+        Network/Image_Receiver.cpp
+        Network/Image_Receiver.hpp
+        GUI/Buttons_Field.cpp
+        GUI/Buttons_Field.hpp
+        GUI/Graphic_Warehouse.cpp
+        GUI/Graphic_Warehouse.hpp
+        GUI/Button.cpp
+        GUI/Button.hpp
         System.cpp
         System.hpp
         Time_Object.cpp
@@ -35,28 +35,28 @@ add_executable(Magisterka
         Connection_Backend.hpp
         Connection.cpp
         Connection.hpp
-        Graphic_Manager.cpp
-        Graphic_Manager.hpp
-        Custom_Data_IO_Window.cpp
-        Custom_Data_IO_Window.hpp
-        Custom_Data_IO.cpp
-        Custom_Data_IO.hpp
-        Small_window.cpp
-        Small_window.hpp
+        GUI/Graphic_Manager.cpp
+        GUI/Graphic_Manager.hpp
+        GUI/Custom_Data_IO_Window.cpp
+        GUI/Custom_Data_IO_Window.hpp
+        Network/Custom_Data_IO.cpp
+        Network/Custom_Data_IO.hpp
+        GUI/Small_window.cpp
+        GUI/Small_window.hpp
         Image_source_typ.cpp
         Image_source_typ.hpp
-        Binarization.cpp
-        Binarization.hpp
-        Projection_image_calculator.cpp
-        Projection_image_calculator.hpp
-        Rays_receiver.cpp
-        Rays_receiver.hpp
-        Rays_intersection_analyzer.cpp
-        Rays_intersection_analyzer.hpp
-        Frame_parameters.hpp
+        Image_Analysis/Binarization.cpp
+        Image_Analysis/Binarization.hpp
+        Image_Analysis/Projection_image_calculator.cpp
+        Image_Analysis/Projection_image_calculator.hpp
+        Network/Rays_receiver.cpp
+        Network/Rays_receiver.hpp
+        Image_Analysis/Rays_intersection_analyzer.cpp
+        Image_Analysis/Rays_intersection_analyzer.hpp
+        Image_Analysis/Frame_parameters.hpp
         Rays_source.hpp
-        Objects_tracker.cpp
-        Objects_tracker.hpp
+        Image_Analysis/Objects_tracker.cpp
+        Image_Analysis/Objects_tracker.hpp
 )
 
 target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS})

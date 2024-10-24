@@ -8,7 +8,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "Permanent_Connector.hpp"
-#include "Rays_source.hpp"
+#include "../Rays_source.hpp"
 
 class Rays_receiver: public Permanent_Connector, public Rays_source{
 public:

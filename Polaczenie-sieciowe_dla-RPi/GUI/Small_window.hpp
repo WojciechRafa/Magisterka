@@ -3,7 +3,7 @@
 //
 #include <SFML/Graphics.hpp>
 #include <opencv2/opencv.hpp>
-#include "Time_Object.hpp"
+#include "../Time_Object.hpp"
 #include "vector"
 
 #ifndef MAGISTERKA_SMALL_WINDOW_HPP

@@ -3,7 +3,7 @@
 //
 
 #include "Graphic_Manager.hpp"
-#include "main_functions.hpp"
+#include "../main_functions.hpp"
 
 Graphic_Manager::Graphic_Manager(Window &window_,
                                  Graphic_Warehouse &graphic_warehouse_,

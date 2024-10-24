@@ -4,7 +4,7 @@
 
 #include "Connection_Frontend.hpp"
 #include <iostream>
-#include "Custom_Data_IO_Window.hpp"
+#include "GUI/Custom_Data_IO_Window.hpp"
 #include "main_functions.hpp"
 
 Connection_Frontend::Connection_Frontend(

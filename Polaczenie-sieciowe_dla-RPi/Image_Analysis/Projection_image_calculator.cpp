@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "Projection_image_calculator.hpp"
-#include "sended_struct.hpp"
+#include "../Network/sended_struct.hpp"
 
 cv::Mat Projection_image_calculator::load_camera_matrix(const std::string& filePath) {
     cv::Mat K = cv::Mat::zeros(3, 3, CV_64F);

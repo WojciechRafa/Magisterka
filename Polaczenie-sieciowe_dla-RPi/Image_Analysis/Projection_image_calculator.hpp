@@ -8,8 +8,8 @@
 #include <opencv2/opencv.hpp>
 #include "SFML/Graphics.hpp"
 #include "Binarization.hpp"
-#include "Time_Object.hpp"
-#include "Rays_source.hpp"
+#include "../Time_Object.hpp"
+#include "../Rays_source.hpp"
 
 class Projection_image_calculator: public Time_Object, public Rays_source{
 public:

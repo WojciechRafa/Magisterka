@@ -7,10 +7,10 @@
 
 #include "Time_Object.hpp"
 #include "Time.hpp"
-#include "Broadcast_Connector.hpp"
-#include "Image_Receiver.hpp"
-#include "Custom_Data_IO.hpp"
-#include "Rays_receiver.hpp"
+#include "Network/Broadcast_Connector.hpp"
+#include "Network/Image_Receiver.hpp"
+#include "Network/Custom_Data_IO.hpp"
+#include "Network/Rays_receiver.hpp"
 
 #include <SFML/Network.hpp>
 #include <opencv2/opencv.hpp>

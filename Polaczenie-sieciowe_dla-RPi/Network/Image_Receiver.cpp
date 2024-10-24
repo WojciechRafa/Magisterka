@@ -4,7 +4,7 @@
 
 #include "Image_Receiver.hpp"
 #include "sended_struct.hpp"
-#include "main_functions.hpp"
+#include "../main_functions.hpp"
 
 Image_Receiver::Image_Receiver(unsigned short port_, sf::IpAddress remote_dev_ip_):
         Permanent_Connector(port_, remote_dev_ip_) {

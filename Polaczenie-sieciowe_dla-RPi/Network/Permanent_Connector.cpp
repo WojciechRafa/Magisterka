@@ -3,7 +3,7 @@
 //
 
 #include "Permanent_Connector.hpp"
-#include "main_functions.hpp"
+#include "../main_functions.hpp"
 
 Permanent_Connector::Permanent_Connector(unsigned short port_, sf::IpAddress remote_dev_ip_)
 {

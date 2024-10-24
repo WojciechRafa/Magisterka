@@ -11,7 +11,7 @@
 #include <cstdlib>
 #include <string>
 
-#include "Time_Object.hpp"
+#include "../Time_Object.hpp"
 
 
 class Broadcast_Connector: public Time_Object{

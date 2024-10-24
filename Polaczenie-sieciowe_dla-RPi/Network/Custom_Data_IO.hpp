@@ -6,7 +6,7 @@
 #define INZYNIERKA_CUSTOM_DATA_IO_HPP
 
 #include "Permanent_Connector.hpp"
-#include "Custom_Data_IO_Window.hpp"
+#include "../GUI/Custom_Data_IO_Window.hpp"
 
 class Custom_Data_IO: public Permanent_Connector{
 public:

@@ -5,11 +5,11 @@
 #ifndef INZYNIERKA_CONNECTION_FRONTEND_HPP
 #define INZYNIERKA_CONNECTION_FRONTEND_HPP
 
-#include "Buttons_Field.hpp"
-#include "Graphic_Warehouse.hpp"
-#include "Custom_Data_IO_Window.hpp"
-#include "Projection_image_calculator.hpp"
-#include "Small_window.hpp"
+#include "GUI/Buttons_Field.hpp"
+#include "GUI/Graphic_Warehouse.hpp"
+#include "GUI/Custom_Data_IO_Window.hpp"
+#include "Image_Analysis/Projection_image_calculator.hpp"
+#include "GUI/Small_window.hpp"
 
 #include <list>
 #include <vector>

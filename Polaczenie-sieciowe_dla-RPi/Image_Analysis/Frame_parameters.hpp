@@ -6,7 +6,7 @@
 #define MAGISTERKA_FRAME_PARAMETERS_HPP
 
 #include <SFML/System/Time.hpp>
-#include "Rays_source.hpp"
+#include "../Rays_source.hpp"
 
 struct Object_parameters{
     cv::Vec2d position;
