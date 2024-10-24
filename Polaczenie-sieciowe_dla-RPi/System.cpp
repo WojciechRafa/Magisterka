@@ -80,7 +80,7 @@ bool System::update() {
         connection_state = Connection_State::both_wait_to_pernamant_connect;
 
         parameter_sender = std::make_unique<Parameter_sender>(port, remote_ip_address);
-        parameter_sender->set_update_period(1000);
+        // parameter_sender->set_update_period(1000);
 //        parameter_sender->set_vectors_list_ptr(&vectors_list);
         parameter_sender->set_objets_parameters_list_ptr(&objets_parameters_list);
 

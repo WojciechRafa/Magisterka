@@ -17,13 +17,16 @@ void Parameter_sender::update() {
     std::cout<<"\nParameter_sender::update() time:";
     auto time_begin = clock.getElapsedTime().asMicroseconds();
     if(mode == Permanent_Connector::p_connector_mode::establish_connection){
+        update_period_microseconds = 1000;
         if(const auto status = tcp_listener.accept(*this); status == sf::Socket::Status::Done) {
             setBlocking(true);
             if(try_to_exchange_time())
             {
                 mode = p_connector_mode::permanent_communication;
+                update_period_microseconds = 50000;
                 std::cout<<"Time exchange correct\n";
                 std::cout<<"Connection done\n";
+
             }
             setBlocking(false);
         }
