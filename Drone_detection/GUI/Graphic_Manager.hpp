@@ -9,7 +9,7 @@
 #include "Window.hpp"
 #include "Graphic_Warehouse.hpp"
 #include "Buttons_Field.hpp"
-#include "../Connection.hpp"
+#include "../Connection/Connection.hpp"
 #include "Small_window.hpp"
 
 class Graphic_Manager: public Time_Object{

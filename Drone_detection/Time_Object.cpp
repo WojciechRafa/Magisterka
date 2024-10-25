@@ -4,6 +4,8 @@
 
 #include "Time_Object.hpp"
 
+#include <iostream>
+
 std::vector<Time_Object*> Time_Object::all_time_objects_pointers;
 sf::Int64 Time_Object::default_update_period_microseconds;
 
@@ -44,9 +46,11 @@ void Time_Object::update_all_time_objets() {
 Time_Object::~Time_Object() {
     auto this_iterator = std::find(all_time_objects_pointers.begin(), all_time_objects_pointers.end(), this);
 
-    auto ptr_value = *this_iterator;
-    if(ptr_value != nullptr)
+    if(this_iterator == all_time_objects_pointers.end()){
+        std::cout<<this <<" wasn't found in list"<< std::endl;
+    }else{
         all_time_objects_pointers.erase(this_iterator);
+    }
 }
 
 

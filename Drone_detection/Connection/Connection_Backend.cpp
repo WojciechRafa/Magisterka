@@ -133,39 +133,39 @@ bool Connection_Backend::start_connection_axes_ratio() {
     return false;
 }
 
-std::vector<Time_Object *> Connection_Backend::get_time_object_list() {
-    if(connection_state == Connection_State::broadcast){
-        return {broadcast_connector.get()};
-    }
-    std::vector<Time_Object *> time_object_list;
-    if(connection_state == Connection_State::camera_view_connect_establishment_custom_data_work or
-        connection_state == Connection_State::camera_view_connect_establishment_custom_data_not_work or
-        connection_state == Connection_State::custom_data_connect_establishment_camera_view_work or
-        connection_state == Connection_State::only_camera_view_work or
-        connection_state == Connection_State::camera_view_and_custom_data_work
-    ){
-        time_object_list.push_back(image_receiver.get());
-    }
-    if(
-            connection_state == Connection_State::custom_data_connect_establishment_camera_view_not_work or
-            connection_state == Connection_State::custom_data_connect_establishment_camera_view_work or
-            connection_state == Connection_State::camera_view_connect_establishment_custom_data_work or
-            connection_state == Connection_State::only_custom_data_work or
-            connection_state == Connection_State::camera_view_and_custom_data_work
-            ){
-        time_object_list.push_back(custom_data_io.get());
-    }
-
-    if(
-            connection_state == Connection_State::axes_ratio_establishment or
-            connection_state == Connection_State::axes_ratio_work
-
-            ){
-        time_object_list.push_back(rays_receiver.get());
-    }
-
-    return time_object_list;
-}
+//std::vector<Time_Object *> Connection_Backend::get_time_object_list() {
+//    if(connection_state == Connection_State::broadcast){
+//        return {broadcast_connector.get()};
+//    }
+//    std::vector<Time_Object *> time_object_list;
+//    if(connection_state == Connection_State::camera_view_connect_establishment_custom_data_work or
+//        connection_state == Connection_State::camera_view_connect_establishment_custom_data_not_work or
+//        connection_state == Connection_State::custom_data_connect_establishment_camera_view_work or
+//        connection_state == Connection_State::only_camera_view_work or
+//        connection_state == Connection_State::camera_view_and_custom_data_work
+//    ){
+//        time_object_list.push_back(image_receiver.get());
+//    }
+//    if(
+//            connection_state == Connection_State::custom_data_connect_establishment_camera_view_not_work or
+//            connection_state == Connection_State::custom_data_connect_establishment_camera_view_work or
+//            connection_state == Connection_State::camera_view_connect_establishment_custom_data_work or
+//            connection_state == Connection_State::only_custom_data_work or
+//            connection_state == Connection_State::camera_view_and_custom_data_work
+//            ){
+//        time_object_list.push_back(custom_data_io.get());
+//    }
+//
+//    if(
+//            connection_state == Connection_State::axes_ratio_establishment or
+//            connection_state == Connection_State::axes_ratio_work
+//
+//            ){
+//        time_object_list.push_back(rays_receiver.get());
+//    }
+//
+//    return time_object_list;
+//}
 
 void Connection_Backend::update_st() {
     if(connection_state == Connection_State::broadcast){

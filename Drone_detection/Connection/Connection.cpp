@@ -181,15 +181,15 @@ void Connection::update_image() {
         frontend.update_image(*backend.get_image());
     }
 }
-std::vector<Time_Object *> Connection::get_time_objects() {
-    std::vector<Time_Object *> backed_time_objets = backend.get_time_object_list();
-    std::vector<Time_Object *> frontend_time_objets = frontend.get_time_object_list();
-
-    std::vector<Time_Object *> all_time_objects(backed_time_objets.size() + frontend_time_objets.size());
-
-    std::copy(backed_time_objets.begin(), backed_time_objets.end(), all_time_objects.begin());
-    std::copy(frontend_time_objets.begin(), frontend_time_objets.end(), all_time_objects.begin() + backed_time_objets.size());
-
-    return all_time_objects;
-}
+//std::vector<Time_Object *> Connection::get_time_objects() {
+//    std::vector<Time_Object *> backed_time_objets = backend.get_time_object_list();
+//    std::vector<Time_Object *> frontend_time_objets = frontend.get_time_object_list();
+//
+//    std::vector<Time_Object *> all_time_objects(backed_time_objets.size() + frontend_time_objets.size());
+//
+//    std::copy(backed_time_objets.begin(), backed_time_objets.end(), all_time_objects.begin());
+//    std::copy(frontend_time_objets.begin(), frontend_time_objets.end(), all_time_objects.begin() + backed_time_objets.size());
+//
+//    return all_time_objects;
+//}
 

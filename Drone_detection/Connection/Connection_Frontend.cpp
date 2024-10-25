@@ -4,8 +4,8 @@
 
 #include "Connection_Frontend.hpp"
 #include <iostream>
-#include "GUI/Custom_Data_IO_Window.hpp"
-#include "main_functions.hpp"
+#include "../GUI/Custom_Data_IO_Window.hpp"
+#include "../main_functions.hpp"
 
 Connection_Frontend::Connection_Frontend(
                                         std::unique_ptr<Buttons_Field> buttons_field_,
@@ -250,23 +250,21 @@ void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf
 //    additional_graphic_of_small_window.emplace_back();
 //    auto additional_graphic_ptr = &additional_graphic_of_small_window.back();
 
-//    projection_calculators.back().set_additional_graphic(additional_graphic_ptr);
-//    projections_windows_list.back().set_additional_graphic(additional_graphic_ptr);
 
     projections_windows_list.push_back(std::move(new_window));
     projection_calculators.push_back(std::move(new_projection_calculator));
 }
 
-std::vector<Time_Object *> Connection_Frontend::get_time_object_list() {
-    std::vector<Time_Object *> all_time_objects;
-
-    for(auto& window: projections_windows_list){
-        all_time_objects.push_back(& window);
-    }
-    for(auto& projection_calculator: projection_calculators){
-        all_time_objects.push_back(& projection_calculator);
-    }
-
-    return all_time_objects;
-}
+//std::vector<Time_Object *> Connection_Frontend::get_time_object_list() {
+//    std::vector<Time_Object *> all_time_objects;
+//
+//    for(auto& window: projections_windows_list){
+//        all_time_objects.push_back(& window);
+//    }
+//    for(auto& projection_calculator: projection_calculators){
+//        all_time_objects.push_back(& projection_calculator);
+//    }
+//
+//    return all_time_objects;
+//}
 

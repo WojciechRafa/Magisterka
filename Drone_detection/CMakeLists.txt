@@ -29,12 +29,12 @@ add_executable(Magisterka
         System.hpp
         Time_Object.cpp
         Time_Object.hpp
-        Connection_Frontend.cpp
-        Connection_Frontend.hpp
-        Connection_Backend.cpp
-        Connection_Backend.hpp
-        Connection.cpp
-        Connection.hpp
+        Connection/Connection_Frontend.cpp
+        Connection/Connection_Frontend.hpp
+        Connection/Connection_Backend.cpp
+        Connection/Connection_Backend.hpp
+        Connection/Connection.cpp
+        Connection/Connection.hpp
         GUI/Graphic_Manager.cpp
         GUI/Graphic_Manager.hpp
         GUI/Custom_Data_IO_Window.cpp

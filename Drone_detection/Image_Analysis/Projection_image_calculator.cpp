@@ -215,7 +215,6 @@ void Projection_image_calculator::update() {
 
             }
         }
-//        std::cout<<"Ilosc parametrow : " << parameters->numb_labels <<std::endl;
 
     }else if(received_parameters != nullptr and are_rays_from_slave){
         for(auto& received_parameter : *received_parameters){

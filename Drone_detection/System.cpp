@@ -19,6 +19,7 @@ System::System(sf::Int64 update_period_microseconds_):
     raw_picture_window(standard_window_size, sf::Vector2f(10, 120)),
     binarized_picture_window(standard_window_size, sf::Vector2f(320, 120)),
     projections_window(standard_window_size, sf::Vector2f(630, 120), sf::Color::White),
+    objects_tracker_window(sf::Vector2f(800, 400), sf::Vector2f(350, 350)),
 
     projection_calculator(Projection_image_calculator::axes::z,
                           Projection_image_calculator::axes::x,
@@ -49,6 +50,8 @@ System::System(sf::Int64 update_period_microseconds_):
     graphic.add_small_window_to_display(& binarized_picture_window);
     graphic.add_time_object_to_update(&projections_window);
     graphic.add_small_window_to_display(&projections_window);
+    graphic.add_time_object_to_update(&objects_tracker_window);
+    graphic.add_small_window_to_display(&objects_tracker_window);
 }
 
 bool System::update() {
@@ -139,7 +142,7 @@ bool System::execute_button_message(Button::Button_Message message) {
 //                        graphic_warehouse,
 //                        50238
 //                );
-                auto button_field = create_button_field_to_connection_with_rays(sf::Vector2f(10, 420));
+                auto button_field = create_button_field_to_connection_with_rays(sf::Vector2f(10, 340));
 
                 // bez kamery
 //                auto connection = std::make_unique<Connection>(
@@ -176,8 +179,8 @@ bool System::execute_button_message(Button::Button_Message message) {
                         // przyciski
                         std::move(button_field),
 
-                        sf::Vector2f(10, 550),
-                        sf::Vector2f(200, 100),
+                        sf::Vector2f(10, 460),
+                        sf::Vector2f(300, 150),
                         sf::Vector2f(100, 50),
                         Projection_image_calculator::axes::z,
                         Projection_image_calculator::axes::x,
@@ -269,7 +272,7 @@ std::unique_ptr<Buttons_Field>  System::create_button_field_to_connection_with_c
 }
 
 std::unique_ptr<Buttons_Field> System::create_button_field_to_connection_with_rays(sf::Vector2f button_field_pos) {
-    sf::Vector2f button_field_size = sf::Vector2f(1100, 100);
+    sf::Vector2f button_field_size = sf::Vector2f(300, 100);
     sf::Color button_field_color = sf::Color::Cyan;
 
     auto  buttons_field = std::make_unique<Buttons_Field>(

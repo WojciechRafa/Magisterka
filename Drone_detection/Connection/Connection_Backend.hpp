@@ -5,12 +5,12 @@
 #ifndef INZYNIERKA_CONNECTION_BACKEND_HPP
 #define INZYNIERKA_CONNECTION_BACKEND_HPP
 
-#include "Time_Object.hpp"
-#include "Time.hpp"
-#include "Network/Broadcast_Connector.hpp"
-#include "Network/Image_Receiver.hpp"
-#include "Network/Custom_Data_IO.hpp"
-#include "Network/Rays_receiver.hpp"
+#include "../Time_Object.hpp"
+#include "../Time.hpp"
+#include "../Network/Broadcast_Connector.hpp"
+#include "../Network/Image_Receiver.hpp"
+#include "../Network/Custom_Data_IO.hpp"
+#include "../Network/Rays_receiver.hpp"
 
 #include <SFML/Network.hpp>
 #include <opencv2/opencv.hpp>
@@ -44,7 +44,7 @@ public:
         axes_ratio_work
     };
 
-    std::vector<Time_Object*> get_time_object_list();
+//    std::vector<Time_Object*> get_time_object_list();
 
     // funkcje zwracają true przy powodzeniu
     bool start_looking_for_another_device();

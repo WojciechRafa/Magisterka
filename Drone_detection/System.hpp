@@ -9,7 +9,7 @@
 #include "GUI/Buttons_Field.hpp"
 #include "GUI/Graphic_Warehouse.hpp"
 #include "main_functions.hpp"
-#include "Connection.hpp"
+#include "Connection/Connection.hpp"
 #include "GUI/Graphic_Manager.hpp"
 
 #include "GUI/Small_window.hpp"
@@ -52,6 +52,8 @@ private:
     Small_window raw_picture_window;
     Small_window binarized_picture_window;
     Small_window projections_window;
+
+    Small_window objects_tracker_window;
 
     std::shared_ptr<Binarization::Binarized_parameters> bin_parameters =
             std::make_shared<Binarization::Binarized_parameters>();

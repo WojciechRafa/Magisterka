@@ -5,11 +5,11 @@
 #ifndef INZYNIERKA_CONNECTION_FRONTEND_HPP
 #define INZYNIERKA_CONNECTION_FRONTEND_HPP
 
-#include "GUI/Buttons_Field.hpp"
-#include "GUI/Graphic_Warehouse.hpp"
-#include "GUI/Custom_Data_IO_Window.hpp"
-#include "Image_Analysis/Projection_image_calculator.hpp"
-#include "GUI/Small_window.hpp"
+#include "../GUI/Buttons_Field.hpp"
+#include "../GUI/Graphic_Warehouse.hpp"
+#include "../GUI/Custom_Data_IO_Window.hpp"
+#include "../Image_Analysis/Projection_image_calculator.hpp"
+#include "../GUI/Small_window.hpp"
 
 #include <list>
 #include <vector>
@@ -95,7 +95,7 @@ public:
                         float outline_thickness = 3,
                         int update_time = 50000);
 
-    std::vector<Time_Object *> get_time_object_list();
+//    std::vector<Time_Object *> get_time_object_list();
 private:
 
     std::unique_ptr<Buttons_Field> buttons_field;
