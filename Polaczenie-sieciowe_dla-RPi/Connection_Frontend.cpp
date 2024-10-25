@@ -239,13 +239,13 @@ void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf
     new_projection_calculator.set_additional_graphic(&additional_graphic_of_small_window.back());
 
 
-//    projections_windows_list.emplace_back(size, pos, background_color, outline_color, outline_thickness, update_time);
+//    projections_windows_list.emplace_back(bb_size, pos, background_color, outline_color, outline_thickness, update_time);
 //    projection_calculators.emplace_back(
 //            axis_a,
 //            axis_b,
 //            pos,
-//            size,
-//            size * 0.5f
+//            bb_size,
+//            bb_size * 0.5f
 //            );
 //    additional_graphic_of_small_window.emplace_back();
 //    auto additional_graphic_ptr = &additional_graphic_of_small_window.back();

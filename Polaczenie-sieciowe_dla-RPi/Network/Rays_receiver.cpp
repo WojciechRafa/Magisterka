@@ -32,7 +32,7 @@ void Rays_receiver::update() {
             vectors_list->clear();
             received_packet >> *vectors_list;
 
-//            std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << "\nRozmiar wektora " << vectors_list->size() << std::endl;
+//            std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << "\nRozmiar wektora " << vectors_list->bb_size() << std::endl;
 
         }
         std::cout<<"Data recive\n";

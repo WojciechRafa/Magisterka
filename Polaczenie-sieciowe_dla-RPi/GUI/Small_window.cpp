@@ -63,7 +63,7 @@ void Small_window::update() {
 
 //            std::cout << "Rows: " << image_cv_ptr->rows << std::endl;
 //            std::cout << "Cols: " << image_cv_ptr->cols << std::endl;
-//            std::cout << "Size: " << image_cv_ptr->size() << std::endl;
+//            std::cout << "Size: " << image_cv_ptr->bb_size() << std::endl;
 //            std::cout << "Channels: " << image_cv_ptr->channels() << std::endl;
 //            std::cout << "Type: " << getMatType(*image_cv_ptr) << std::endl;
 //            std::cout << "Step: " << image_cv_ptr->step << " bytes" << std::endl;
