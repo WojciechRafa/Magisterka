@@ -55,8 +55,15 @@ void Rays_intersection_analyzer::update() {
 
                 calculate_intersections(result_pos, result_size,
                                         first_parameter, second_parameter);
+
+                if(objects_tracker_ptr != nullptr){
+                    objects_tracker_ptr->add_detecion(time_and_parameters_ptr.first,
+                                                      result_pos,
+                                                      result_size);
+                }
             }
         }
+
     }
 }
 
@@ -186,4 +193,8 @@ bool Rays_intersection_analyzer::check_size_comparison( double& estimated_size,
 
     return size_comparison < Configs::max_intersection_size_comparison or
             1 / size_comparison > Configs::max_intersection_size_comparison;
+}
+
+void Rays_intersection_analyzer::set_objects_tracker_ptr(Objects_tracker *objects_tracker_) {
+    objects_tracker_ptr = objects_tracker_;
 }

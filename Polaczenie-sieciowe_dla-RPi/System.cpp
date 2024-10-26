@@ -28,8 +28,6 @@ System::System(sf::Int64 update_period_microseconds_):
                           standard_window_size * 0.5f
     )
 {
-    Time_Object::default_update_period_microseconds = 50000;
-
     image_source.set_image_ptr(raw_picture);
     raw_picture_window.set_image_ptr(raw_picture);
 
@@ -43,6 +41,8 @@ System::System(sf::Int64 update_period_microseconds_):
     projection_calculator.set_additional_graphic(&projections);
 
     projections_window.set_additional_graphic(&projections);
+
+    rays_intersection_analyzer.set_objects_tracker_ptr(&objects_tracker);
 
     graphic.add_time_object_to_update(& raw_picture_window);
     graphic.add_small_window_to_display(& raw_picture_window);

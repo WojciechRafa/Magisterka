@@ -55,9 +55,9 @@ add_executable(Magisterka
         Image_Analysis/Rays_intersection_analyzer.hpp
         Image_Analysis/Frame_parameters.hpp
         Rays_source.hpp
-        Image_Analysis/Objects_tracker.cpp
-        Image_Analysis/Objects_tracker.hpp
         Configs.hpp
+        Objects_tracker.cpp
+        Objects_tracker.hpp
 )
 
 target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS})

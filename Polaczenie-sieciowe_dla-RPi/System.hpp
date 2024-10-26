@@ -62,7 +62,7 @@ private:
 
     Projection_image_calculator projection_calculator;
     Rays_intersection_analyzer rays_intersection_analyzer;
-
+    Objects_tracker objects_tracker;
 
     sf::Clock clock;
 };

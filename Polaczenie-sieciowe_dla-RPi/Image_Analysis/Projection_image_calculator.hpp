@@ -36,6 +36,7 @@ public:
 
     void set_additional_graphic(std::vector<std::unique_ptr<sf::Shape>>* additional_graphic_);
 
+    static int get_axi_nr(axes);
 private:
     std::shared_ptr<Binarization::Binarized_parameters> parameters;
 
@@ -59,8 +60,6 @@ private:
     sf::Vector2f find_intersection(double axis_a_value, double axis_b_value);
 
     std::unique_ptr<sf::RectangleShape> get_ray(sf::Vector2f intersection, sf::Color color, float thickness = 3);
-
-    static int get_axi_nr(axes);
 
     bool are_rays_from_slave = false;
     std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>*  received_parameters;

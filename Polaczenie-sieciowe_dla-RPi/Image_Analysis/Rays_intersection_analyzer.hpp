@@ -7,7 +7,7 @@
 
 #include <vector>
 #include "Frame_parameters.hpp"
-#include "Objects_tracker.hpp"
+#include "../Objects_tracker.hpp"
 #include "../Time_Object.hpp"
 #include "list"
 
@@ -15,12 +15,14 @@ class Rays_intersection_analyzer: public Time_Object{
 public:
     Rays_intersection_analyzer();
     void add_projection(std::unique_ptr<Frame_parameters> new_params);
+    void set_objects_tracker_ptr(Objects_tracker* objects_tracker_);
 
     void update() override;
 private:
     std::map<sf::Int64, std::vector<std::unique_ptr<Frame_parameters>>> objets_parameters_list_by_time;
     std::map<Rays_source*, sf::Int64> last_update_time_of_ray_source;
     std::vector<std::tuple<sf::Int64, Rays_source*, Rays_source*>> already_checked_intersections;
+    Objects_tracker* objects_tracker_ptr = nullptr;
 
     static bool check_2d_projection(const cv::Mat& position,
                              const cv::Mat& outside_matrix,
