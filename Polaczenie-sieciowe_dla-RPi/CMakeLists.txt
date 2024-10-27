@@ -43,8 +43,8 @@ add_executable(Magisterka
         Network/Custom_Data_IO.hpp
         GUI/Small_window.cpp
         GUI/Small_window.hpp
-        Image_source_typ.cpp
-        Image_source_typ.hpp
+        Image_Analysis/Image_source.cpp
+        Image_Analysis/Image_source.hpp
         Image_Analysis/Binarization.cpp
         Image_Analysis/Binarization.hpp
         Image_Analysis/Projection_image_calculator.cpp

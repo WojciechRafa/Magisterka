@@ -5,7 +5,7 @@
 #include <utility>
 #include <opencv2/opencv.hpp>
 #include <SFML/Window.hpp>
-#include "Time_Object.hpp"
+#include "../Time_Object.hpp"
 
 #ifndef MAGISTERKA_IMAGE_SOURCE_HPP
 #define MAGISTERKA_IMAGE_SOURCE_HPP

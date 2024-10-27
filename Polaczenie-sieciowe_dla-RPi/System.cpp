@@ -3,6 +3,7 @@
 //
 
 #include "System.hpp"
+#include "Configs.hpp"
 
 System::System(sf::Int64 update_period_microseconds_):
     update_period_microseconds(update_period_microseconds_),
@@ -26,7 +27,8 @@ System::System(sf::Int64 update_period_microseconds_):
                           projections_window.getPosition(),
                           standard_window_size,
                           standard_window_size * 0.5f
-    )
+    ),
+    binarization(Configs::is_binarization_relative)
 {
     image_source.set_image_ptr(raw_picture);
     raw_picture_window.set_image_ptr(raw_picture);

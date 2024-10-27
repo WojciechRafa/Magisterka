@@ -13,7 +13,7 @@
 #include "GUI/Graphic_Manager.hpp"
 
 #include "GUI/Small_window.hpp"
-#include "Image_source_typ.hpp"
+#include "Image_Analysis/Image_source.hpp"
 #include "Image_Analysis/Binarization.hpp"
 #include "Image_Analysis/Projection_image_calculator.hpp"
 #include "Image_Analysis/Rays_intersection_analyzer.hpp"

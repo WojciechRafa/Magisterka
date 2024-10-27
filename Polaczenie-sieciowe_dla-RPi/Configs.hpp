@@ -15,6 +15,9 @@ namespace Configs{
     static sf::Int64 camera_update_period_microseconds = 50000;
     static double max_intersection_size_comparison = 2;
 
+    static bool is_binarization_relative = false;
+    static int binarization_threshold = 50;
+
     namespace Big_window_parameters{
         static sf::Int64 displayed_time_microseconds = 500000;
         static cv::Vec2d size_meters = cv::Vec2d(20, 10);

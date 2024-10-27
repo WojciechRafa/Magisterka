@@ -2,7 +2,7 @@
 // Created by wpr on 16.08.24.
 //
 
-#include "Image_source_typ.hpp"
+#include "Image_source.hpp"
 
 #include <utility>
 
