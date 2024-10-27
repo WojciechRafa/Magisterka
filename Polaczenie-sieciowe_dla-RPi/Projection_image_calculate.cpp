@@ -204,7 +204,7 @@ void Projection_image_calculate::update() {
             projection->setPosition(projection->getPosition() + window_pos);
         }
         // std::cout<<"Ilosc parametrow : " << parameters->numb_labels <<std::endl;
-        std::cout<<"\t" << parameters->numb_labels;
+//        std::cout<<"\t" << parameters->numb_labels;
     }
 
     last_update_time = clock.getElapsedTime().asMicroseconds();

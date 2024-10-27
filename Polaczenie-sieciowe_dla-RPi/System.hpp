@@ -44,7 +44,7 @@ private:
     // std::unique_ptr<Custom_Data_IO> custom_data_io = nullptr;
     std::unique_ptr<Parameter_sender> parameter_sender = nullptr;
 
-    void configure_custom_data();
+//    void configure_custom_data();
     // graphic:
     Window window;
     sf::Event event{};

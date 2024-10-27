@@ -16,30 +16,30 @@ public:
         cv::Mat centroids;
     };
 
-    Binarization(int change_time_ = 50000);
+    explicit Binarization(bool is_relative_, int change_time_ = 50000);
     void update() override;
 
     void set_input_image(std::shared_ptr<cv::Mat> image_);
     void set_binarized_image(std::shared_ptr<cv::Mat> image_);
 
-//    cv::Mat* get_stats();
-//    cv::Mat* get_centroids();
-//    void set_stats(std::shared_ptr<cv::Mat> stats_);
-//    void set_centroids(std::shared_ptr<cv::Mat> centroids_);
+    void set_reference_image();
     void set_parameters(std::shared_ptr<Binarized_parameters> parameters_);
 
 private:
+    bool is_relative;
+
     std::shared_ptr<cv::Mat> input_image = nullptr;
     std::shared_ptr<cv::Mat> binarized_image_result = nullptr;
 
-//    std::unique_ptr<cv::Mat> binarized_image = nullptr;
-    std::unique_ptr<cv::Mat> image_m1 = nullptr;
-    std::unique_ptr<cv::Mat> image_m2 = nullptr;
+    std::unique_ptr<cv::Mat> image_m1 = nullptr;    // used by relative_update()
+    std::unique_ptr<cv::Mat> image_m2 = nullptr;    // used by relative_update()
 
+    std::unique_ptr<cv::Mat> reference_image = nullptr;
 
     std::shared_ptr<Binarized_parameters> parameters = nullptr;
-//    std::shared_ptr<cv::Mat> stats = nullptr;
-//    std::shared_ptr<cv::Mat> centroids = nullptr;
+
+    void absolute_update();
+    void relative_update();
 };
 
 

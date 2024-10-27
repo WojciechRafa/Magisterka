@@ -9,6 +9,7 @@
 #include <SFML/System/Clock.hpp>
 #include <list>
 #include <memory>
+#include "Configs.hpp"
 // klasa będzie wykorzystywana do obsługi wszystkich obiektów które muszą być aktualizowane w regularnych okresach czas
 
 class Time_Object {
@@ -34,7 +35,7 @@ protected:
 private:
     static std::list<Time_Object*> all_time_objects_pointers;
 
-    const sf::Int64 default_update_period_microseconds = 50000; // TODO
+    const sf::Int64 default_update_period_microseconds = Configs::default_update_time;
 };
 
 #endif //INZYNIERKA_TIME_OBJECT_HPP

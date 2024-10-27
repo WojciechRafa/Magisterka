@@ -22,7 +22,8 @@ System::System(sf::Int64 update_period_microseconds_):
                           projections_window.getPosition(),
                           standard_window_size,
                           standard_window_size * 0.5f
-                          )
+                          ),
+    binarization(Configs::is_binarization_relative)
     {
     broadcast_connector = std::make_unique<Broadcast_Connector>(port);
 
@@ -33,12 +34,9 @@ System::System(sf::Int64 update_period_microseconds_):
 
     binarization.set_input_image(raw_picture);
     binarization.set_binarized_image(binarized_picture);
-//    binarization.set_centroids(centroids);
-//    binarization.set_stats(stats);
+
     binarization.set_parameters(bin_parameters);
 
-//    projection_calculator.set_stats(stats);
-//    projection_calculator.set_centroids(centroids);
     projection_calculator.set_parameters(bin_parameters);
     projection_calculator.set_additional_graphic(projections);
     projection_calculator.set_objets_parameters(&objets_parameters_list);

@@ -41,6 +41,7 @@ add_executable(Magisterka main.cpp
 		Projection_image_calculate.hpp
         Parameter_sender.cpp
         Parameter_sender.hpp
+        Configs.hpp
 )
         
 target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS}
