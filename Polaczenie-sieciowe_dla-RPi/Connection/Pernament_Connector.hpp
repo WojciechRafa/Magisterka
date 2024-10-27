@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <string>
 
-#include "Time_Object.hpp"
+#include "../Time_Object.hpp"
 
 class Permanent_Connector:public sf::TcpSocket, public Time_Object{
 public:

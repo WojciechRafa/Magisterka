@@ -12,35 +12,35 @@ include_directories( ${OpenCV_INCLUDE_DIRS})
 
 add_executable(Magisterka main.cpp
 	main_functions.hpp
-	Sended_struct.hpp Sended_struct.cpp
-	Broadcast_connector.hpp Broadcast_connector.cpp
-	Pernament_Connector.hpp Pernament_Connector.cpp
-	Image_Sender.hpp Image_Sender.cpp
+        Connection/Sended_struct.hpp Connection/Sended_struct.cpp
+        Connection/Broadcast_connector.hpp Connection/Broadcast_connector.cpp
+        Connection/Pernament_Connector.hpp Connection/Pernament_Connector.cpp
+        Connection/Image_Sender.hpp Connection/Image_Sender.cpp
 	Time.hpp
-	Camera.hpp Camera.cpp
+        Image_Analysis/Camera.hpp Image_Analysis/Camera.cpp
 	System.cpp System.hpp
 	Time_Object.cpp Time_Object.hpp
-	Custom_Data_IO.cpp Custom_Data_IO.hpp
-		Window.cpp
-		Window.hpp
-		Graphic_Warehouse.cpp
-		Graphic_Warehouse.hpp
-	Buttons_Field.hpp
-	Buttons_Field.cpp
-		Graphic_Manager.hpp
-		Graphic_Manager.cpp
-	Button.hpp
-		Button.cpp
-		Small_window.cpp
-		Small_window.hpp
+        Connection/Custom_Data_IO.cpp Connection/Custom_Data_IO.hpp
+        GUI/Window.cpp
+        GUI/Window.hpp
+        GUI/Graphic_Warehouse.cpp
+        GUI/Graphic_Warehouse.hpp
+        GUI/Buttons_Field.hpp
+        GUI/Buttons_Field.cpp
+        GUI/Graphic_Manager.hpp
+        GUI/Graphic_Manager.cpp
+        GUI/Button.hpp
+        GUI/Button.cpp
+        GUI/Small_window.cpp
+        GUI/Small_window.hpp
         Image_source_typ.cpp
         Image_source_typ.hpp
-		Binarization.cpp
-		Binarization.hpp
-		Projection_image_calculate.cpp
-		Projection_image_calculate.hpp
-        Parameter_sender.cpp
-        Parameter_sender.hpp
+        Image_Analysis/Binarization.cpp
+        Image_Analysis/Binarization.hpp
+        Image_Analysis/Projection_image_calculate.cpp
+        Image_Analysis/Projection_image_calculate.hpp
+        Connection/Parameter_sender.cpp
+        Connection/Parameter_sender.hpp
         Configs.hpp
 )
         

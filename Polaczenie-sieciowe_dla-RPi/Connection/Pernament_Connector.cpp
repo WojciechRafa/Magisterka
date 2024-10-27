@@ -1,7 +1,7 @@
 #include "Pernament_Connector.hpp"
 
 #include "Sended_struct.hpp"
-#include "main_functions.hpp"
+#include "../main_functions.hpp"
 
 Permanent_Connector::Permanent_Connector(unsigned short port_, sf::IpAddress remote_dev_ip_):
 	port(port_),

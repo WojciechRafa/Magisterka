@@ -3,7 +3,7 @@
 //
 
 #include "Binarization.hpp"
-#include "Configs.hpp"
+#include "../Configs.hpp"
 
 void get_binary_diff(cv:: Mat& frame_1, cv:: Mat& frame_2, cv::Mat& result){
     cv::Mat diff, gray_diff;

@@ -6,7 +6,7 @@
 #define MAGISTERKA_BINARIZATION_HPP
 
 #include <opencv2/opencv.hpp>
-#include "Time_Object.hpp"
+#include "../Time_Object.hpp"
 
 class Binarization: public Time_Object{
 public:

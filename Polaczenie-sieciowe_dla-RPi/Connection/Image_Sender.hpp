@@ -2,7 +2,7 @@
 
 #include <SFML/Network.hpp>
 #include "Pernament_Connector.hpp"
-#include "Camera.hpp"
+#include "../Image_Analysis/Camera.hpp"
 #include "Sended_struct.hpp"
 
 

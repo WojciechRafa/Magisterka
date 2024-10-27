@@ -5,19 +5,19 @@
 #ifndef INZYNIERKA_SYSTEM_HPP
 #define INZYNIERKA_SYSTEM_HPP
 
-#include "Broadcast_connector.hpp"
+#include "Connection/Broadcast_connector.hpp"
 
 // graphic:
-#include "Window.hpp"
-#include "Buttons_Field.hpp"
-#include "Graphic_Warehouse.hpp"
-#include "Graphic_Manager.hpp"
+#include "GUI/Window.hpp"
+#include "GUI/Buttons_Field.hpp"
+#include "GUI/Graphic_Warehouse.hpp"
+#include "GUI/Graphic_Manager.hpp"
 
-#include "Small_window.hpp"
+#include "GUI/Small_window.hpp"
 #include "Image_source_typ.hpp"
-#include "Binarization.hpp"
-#include "Projection_image_calculate.hpp"
-#include "Parameter_sender.hpp"
+#include "Image_Analysis/Binarization.hpp"
+#include "Image_Analysis/Projection_image_calculate.hpp"
+#include "Connection/Parameter_sender.hpp"
 
 class System {
 public:

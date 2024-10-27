@@ -1,5 +1,5 @@
 #include "Image_Sender.hpp"
-#include "main_functions.hpp"
+#include "../main_functions.hpp"
 
 #include <iostream>
 

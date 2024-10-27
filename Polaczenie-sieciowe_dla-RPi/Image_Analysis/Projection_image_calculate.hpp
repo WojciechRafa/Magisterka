@@ -5,7 +5,7 @@
 #ifndef MAGISTERKA_PROJECTION_IMAGE_CALCULATE_HPP
 #define MAGISTERKA_PROJECTION_IMAGE_CALCULATE_HPP
 
-#include "Time_Object.hpp"
+#include "../Time_Object.hpp"
 #include <opencv2/opencv.hpp>
 #include "SFML/Graphics.hpp"
 #include "Binarization.hpp"

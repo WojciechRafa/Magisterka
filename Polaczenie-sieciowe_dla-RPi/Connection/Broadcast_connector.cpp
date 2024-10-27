@@ -1,8 +1,8 @@
 #include "Broadcast_connector.hpp"
 
 #include "Sended_struct.hpp"
-#include "main_functions.hpp"
-#include "Time.hpp"
+#include "../main_functions.hpp"
+#include "../Time.hpp"
 
 Broadcast_Connector::Broadcast_Connector(unsigned short port_):
 port(port_){

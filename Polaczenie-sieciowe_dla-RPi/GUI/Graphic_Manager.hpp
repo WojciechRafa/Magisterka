@@ -6,7 +6,7 @@
 #define INZYNIERKA_GRAPHIC_MANAGER_HPP
 
 #include <list>
-#include "Time_Object.hpp"
+#include "../Time_Object.hpp"
 #include "Window.hpp"
 #include "Graphic_Warehouse.hpp"
 #include "Buttons_Field.hpp"
