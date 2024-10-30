@@ -58,6 +58,7 @@ add_executable(Magisterka
         Configs.hpp
         Objects_tracker.cpp
         Objects_tracker.hpp
+        Rays_source.cpp
 )
 
 target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS})

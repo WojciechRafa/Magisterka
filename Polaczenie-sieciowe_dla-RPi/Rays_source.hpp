@@ -8,12 +8,17 @@
 #include <opencv2/core/mat.hpp>
 #include <utility>
 
+class Rays_intersection_analyzer;
+
 class Rays_source{
 public:
-    explicit Rays_source(cv::Mat outside_matrix_ = cv::Mat::zeros(3, 4, CV_64F)): outside_matrix(std::move(outside_matrix_)){};
-    cv::Mat& get_outside_matrix(){return outside_matrix;};
-    cv::Mat& get_inside_matrix(){return inside_matrix;};
+    explicit Rays_source(cv::Mat outside_matrix_ = cv::Mat::zeros(3, 4, CV_64F));
+    cv::Mat& get_outside_matrix();
+    cv::Mat& get_inside_matrix();
+
+    [[maybe_unused]] void set_rays_intersection_analyzer(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_);
 protected:
+    Rays_intersection_analyzer* rays_intersection_analyzer_ptr = nullptr;
     cv::Mat inside_matrix;
     cv::Mat outside_matrix;
 };
