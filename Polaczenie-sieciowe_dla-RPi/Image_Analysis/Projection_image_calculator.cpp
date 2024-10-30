@@ -52,7 +52,8 @@ cv::Vec3d Projection_image_calculator::compute_3D_line(const cv::Mat& intrinsicM
     return rayDirection;
 }
 
-Projection_image_calculator::Projection_image_calculator(Projection_image_calculator::axes axis_a_,
+Projection_image_calculator::Projection_image_calculator(
+                                                        Projection_image_calculator::axes axis_a_,
                                                          Projection_image_calculator::axes axis_b_,
                                                          sf::Vector2f window_pos_,
                                                          sf::Vector2f window_size_,
@@ -61,9 +62,12 @@ Projection_image_calculator::Projection_image_calculator(Projection_image_calcul
                                                          bool are_rays_from_slave_,
                                                          std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* received_parameters_,
 
+                                                        Rays_intersection_analyzer* rays_intersection_analyzer_ptr_,
+
                                                          cv::Mat internal_matrix_,
                                                          cv::Mat external_matrix_,
                                                          int change_time_):
+        Rays_source(rays_intersection_analyzer_ptr_),
         axis_a(axis_a_),
         axis_b(axis_b_),
         window_pos(window_pos_),
@@ -72,7 +76,6 @@ Projection_image_calculator::Projection_image_calculator(Projection_image_calcul
 
         are_rays_from_slave(are_rays_from_slave_),
         received_parameters(received_parameters_),
-        Rays_source(std::move(external_matrix_)),
         Time_Object(change_time_){
     internal_parameters = load_camera_matrix("../Camera_insert_parameters.csv");
 

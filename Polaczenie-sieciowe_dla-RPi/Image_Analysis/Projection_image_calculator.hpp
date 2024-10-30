@@ -17,14 +17,18 @@ public:
         x, y, z
     };
 
-    Projection_image_calculator(axes axis_a_,
+    Projection_image_calculator(
+                                axes axis_a_,
                                 axes axis_b_,
                                 sf::Vector2f window_pos_ = sf::Vector2f(0, 0),
                                 sf::Vector2f window_size_ = sf::Vector2f(0, 0),
                                 sf::Vector2f zero_point_pos_ = sf::Vector2f(0, 0),
 
+
                                 bool are_rays_from_slave_ = false,
                                 std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* received_parameters_ = {},
+
+                                Rays_intersection_analyzer* rays_intersection_analyzer_ptr_ = nullptr,
 
                                 cv::Mat internal_matrix_ = cv::Mat::zeros(3, 3, CV_8UC1),
                                 cv::Mat external_matrix_ = cv::Mat::zeros(3, 4, CV_8UC1),

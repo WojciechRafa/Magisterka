@@ -6,18 +6,42 @@
 #define MAGISTERKA_FRAME_PARAMETERS_HPP
 
 #include <SFML/System/Time.hpp>
-#include "../Rays_source.hpp"
+class Rays_source;
 
 struct Object_parameters{
+public:
     cv::Vec2d bb_position;
     cv::Vec2d bb_size;
     cv::Vec2d centroid;
+
+    Object_parameters(const cv::Vec2d& bb_position_, const cv::Vec2d& bb_size_, const cv::Vec2d& centroid_):
+        bb_position(bb_position_),
+        bb_size(bb_size_),
+        centroid(centroid_)
+    {}
+
+    explicit Object_parameters(std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d> data_tuple):
+            Object_parameters(
+                    std::get<0>(data_tuple),
+                    std::get<1>(data_tuple),
+                    std::get<2>(data_tuple)
+                    )
+    {}
 };
 
-struct Frame_parameters {
-    sf::Int64 time;
-    Rays_source* source_ptr;
-    std::vector<Object_parameters> objets;
-};
+class Frame_parameters {
+public:
+    sf::Int64 time = 0;
+    Rays_source* source_ptr = nullptr;
+    std::vector<Object_parameters> objets = {};
 
+    Frame_parameters(sf::Int64 time_, Rays_source* source_ptr_, std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& data):
+    time(time_), source_ptr(source_ptr_){
+
+        for(auto& object_tuple: data){
+            objets.emplace_back(object_tuple);
+        }
+    };
+};
+//auto frame_parameter = std::make_unique<Frame_parameters>();
 #endif //MAGISTERKA_FRAME_PARAMETERS_HPP

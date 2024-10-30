@@ -4,7 +4,8 @@
 
 #include "Rays_source.hpp"
 
-Rays_source::Rays_source(cv::Mat outside_matrix_): outside_matrix(std::move(outside_matrix_)){};
+Rays_source::Rays_source(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_):
+    rays_intersection_analyzer_ptr(rays_intersection_analyzer_ptr_){};
 
 cv::Mat &Rays_source::get_outside_matrix() {
     return outside_matrix;

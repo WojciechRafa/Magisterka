@@ -4,6 +4,7 @@
 #include <iostream>
 #include <opencv2/core/hal/interface.h>
 #include <opencv2/opencv.hpp>
+#include "../Image_Analysis/Frame_parameters.hpp"
 
 struct Control_message{
     sf::Int16 left_engine;
@@ -37,7 +38,7 @@ sf::IpAddress get_ip(sf::Packet& packet);
 
 sf::Packet& operator >>(sf::Packet& packet, Image_and_number& Img_and_num);
 
-//sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);
-//sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);
-sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio);
-sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio);
+void read_packet(sf::Int64& time,
+                 sf::Uint16& elements_amount,
+                 std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& data,
+                 sf::Packet packet);

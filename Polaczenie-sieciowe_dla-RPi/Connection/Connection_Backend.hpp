@@ -11,6 +11,7 @@
 #include "../Network/Image_Receiver.hpp"
 #include "../Network/Custom_Data_IO.hpp"
 #include "../Network/Rays_receiver.hpp"
+#include "../Image_Analysis/Rays_intersection_analyzer.hpp"
 
 #include <SFML/Network.hpp>
 #include <opencv2/opencv.hpp>
@@ -24,8 +25,8 @@ public:
                                 );
 
     explicit Connection_Backend(unsigned short port_,
-                                std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* detected_objets_2d_,
-                                sf::Clock& clock_);
+                                sf::Clock& clock_,
+                                Rays_intersection_analyzer* rays_intersection_analyzer_ptr_);
 
     enum class Connection_State{
         primary,
@@ -88,9 +89,9 @@ private:
     std::vector<Custom_Data_IO_Window::message> message_list_recived;
     std::vector<Custom_Data_IO_Window::message> message_list_sended;
 
-    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* detected_objets_2d = nullptr;
-
     sf::Clock& clock;
+
+    Rays_intersection_analyzer* rays_intersection_analyzer_ptr = nullptr;
 };
 
 

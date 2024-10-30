@@ -5,8 +5,9 @@
 #include "Rays_receiver.hpp"
 #include "sended_struct.hpp"
 
-Rays_receiver::Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_) :
-        Permanent_Connector(port_, remote_dev_ip_){
+Rays_receiver::Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, Rays_intersection_analyzer* rays_intersection_analyzer):
+    Rays_source(rays_intersection_analyzer),
+    Permanent_Connector(port_, remote_dev_ip_){
     update_period_microseconds = 500000;
 }
 
@@ -29,8 +30,15 @@ void Rays_receiver::update() {
         // odbieranie
         sf::Packet received_packet;
         if(receive_n_time(received_packet, 10)){
-            vectors_list->clear();
-            received_packet >> *vectors_list;
+            sf::Uint16 vector_size;
+            sf::Int64 rays_time;
+            std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>> rays_data;
+
+            read_packet(rays_time, vector_size, rays_data, received_packet);
+            if(vector_size > 0 and rays_intersection_analyzer_ptr != nullptr){
+                auto new_frame_parameter = std::make_unique<Frame_parameters>(rays_time, this, rays_data);
+                rays_intersection_analyzer_ptr->add_projection(std::move(new_frame_parameter));
+            }
 
 //            std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << "\nRozmiar wektora " << vectors_list->bb_size() << std::endl;
 
@@ -38,10 +46,6 @@ void Rays_receiver::update() {
         std::cout<<"Data recive\n";
         last_update_time = clock.getElapsedTime().asMicroseconds();
     }
-}
-
-void Rays_receiver::set_vectors_list(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* vectors_list_) {
-    vectors_list = vectors_list_;
 }
 
 bool Rays_receiver::try_to_exchange_time() {

@@ -22,11 +22,17 @@ System::System(sf::Int64 update_period_microseconds_):
     projections_window(standard_window_size, sf::Vector2f(630, 120), sf::Color::White),
     objects_tracker_window(sf::Vector2f(800, 400), sf::Vector2f(350, 350)),
 
-    projection_calculator(Projection_image_calculator::axes::z,
+    projection_calculator(
+                          Projection_image_calculator::axes::z,
                           Projection_image_calculator::axes::x,
                           projections_window.getPosition(),
                           standard_window_size,
-                          standard_window_size * 0.5f
+                          standard_window_size * 0.5f,
+
+                          false,
+                          {},
+
+                          &rays_intersection_analyzer
     ),
     binarization(Configs::is_binarization_relative)
 {
@@ -189,7 +195,8 @@ bool System::execute_button_message(Button::Button_Message message) {
 
                         graphic_warehouse,
                         50238,
-                        clock
+                        clock,
+                        &rays_intersection_analyzer
                 );
 
 

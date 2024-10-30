@@ -9,8 +9,10 @@
 #include "Frame_parameters.hpp"
 #include "../Objects_tracker.hpp"
 #include "../Time_Object.hpp"
-#include "../Rays_source.hpp"
+//#include "../Rays_source.hpp"
 #include "list"
+
+class Rays_source;
 
 class Rays_intersection_analyzer: public Time_Object{
 public:

@@ -71,9 +71,8 @@ public:
     );
 
     // do wyświetlania potencjalnych punktow kamery
-    [[maybe_unused]] Connection(
+    Connection(
             std::unique_ptr<Buttons_Field> button_filed_,
-//            const std::vector<Projection_window_parameters>&,
 
             sf::Vector2f window_pos,
             sf::Vector2f window_size,
@@ -84,7 +83,8 @@ public:
 
             Graphic_Warehouse& graphic_warehouse,
             unsigned short port,
-            sf::Clock& clock_
+            sf::Clock& clock_,
+            Rays_intersection_analyzer* rays_intersection_analyzer_ptr_
     );
 
     std::vector<sf::Drawable*>&  get_figures_list();
@@ -96,10 +96,6 @@ public:
 
     // aktualizowane przy aktualizacji czasowej (dla optymalności)
     void update_image();
-
-    // funkcja wykorzystywana do zarzadzeniem czasem
-    std::vector<Time_Object*> get_time_objects();
-
 private:
     Connection_Frontend frontend;
     Connection_Backend backend;

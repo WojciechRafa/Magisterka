@@ -47,30 +47,6 @@ sf::Packet& operator >>(sf::Packet& packet, Image_and_number& Img_and_num){
     return packet;
 }
 
-
-
-sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio){
-    packet.clear();
-
-    packet << static_cast<sf::Uint16>(axes_ratio.size());
-
-    for(auto& tuple: axes_ratio){
-//        auto& begin_vec = std::get<0>(tuple);
-//        auto& begin_end = std::get<1>(tuple);
-//        auto& begin_centroid = std::get<2>(tuple);
-
-        std::vector<cv::Vec2d> tuple_as_vec = {std::get<0>(tuple), std::get<1>(tuple), std::get<2>(tuple)};
-
-        for(auto& element_ratios: tuple_as_vec){
-            for(int i = 0; i < 2; i++){
-                packet << element_ratios[i];
-            }
-        }
-    }
-
-    return packet;
-};
-
 sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio){
     sf::Uint16 size;
     packet >> size;
@@ -90,3 +66,26 @@ sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec2d, cv
     }
     return packet;
 };
+
+void read_packet(sf::Int64& time,
+                 sf::Uint16& elements_amount,
+                 std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& data,
+                 sf::Packet packet){
+    packet >> time;
+    std::cout<<"Recived time : " << time <<std::endl;
+    packet >> elements_amount;
+
+    data.clear();
+    for(sf::Uint16 i = 0; i < elements_amount; i++){  // begin, end, centroids
+        cv::Vec2d new_element_vec[3];
+
+        for(auto & j : new_element_vec){
+            double axis_x, axis_y, axis_z;
+            packet >> axis_x >> axis_y;
+
+            j = cv::Vec2d(axis_x, axis_y);
+        }
+
+        data.emplace_back(new_element_vec[0], new_element_vec[1], new_element_vec[2]);
+    }
+}

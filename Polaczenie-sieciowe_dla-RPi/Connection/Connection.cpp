@@ -84,7 +84,8 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
 
                        Graphic_Warehouse& graphic_warehouse,
                        unsigned short port,
-                       sf::Clock& clock_):
+                       sf::Clock& clock_,
+                       Rays_intersection_analyzer* rays_intersection_analyzer_ptr_):
         frontend(
                 std::move(button_filed_),
 
@@ -97,7 +98,7 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
 
                 graphic_warehouse
         ),
-        backend(port, &sent_parameters, clock_)
+        backend(port, clock_, rays_intersection_analyzer_ptr_)
 {
 }
 

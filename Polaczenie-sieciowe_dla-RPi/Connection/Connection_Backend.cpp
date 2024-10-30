@@ -17,12 +17,11 @@ clock(clock_)
 }
 
 Connection_Backend::Connection_Backend(unsigned short port_,
-                                       std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* detected_objets_2d_,
-                                       sf::Clock& clock_):
+                                       sf::Clock& clock_,
+                                       Rays_intersection_analyzer* rays_intersection_analyzer_ptr_):
         port(port_),
-        detected_objets_2d(detected_objets_2d_),
-        clock(clock_)
-{}
+        clock(clock_),
+        rays_intersection_analyzer_ptr(rays_intersection_analyzer_ptr_){}
 
 const sf::Image* Connection_Backend::get_image() {
     if(image_receiver != nullptr){
@@ -111,8 +110,7 @@ bool Connection_Backend::start_connection_custom_data() {
 bool Connection_Backend::start_connection_axes_ratio() {
     if(connection_state == Connection_State::another_IP_knowed or
        connection_state == Connection_State::only_custom_data_work){
-        rays_receiver = std::make_unique<Rays_receiver>(port, remote_ip);
-        rays_receiver->set_vectors_list(detected_objets_2d);
+        rays_receiver = std::make_unique<Rays_receiver>(port, remote_ip, rays_intersection_analyzer_ptr);
 
         if(remote_ip != sf::IpAddress::None) {
 
@@ -132,40 +130,6 @@ bool Connection_Backend::start_connection_axes_ratio() {
     }
     return false;
 }
-
-//std::vector<Time_Object *> Connection_Backend::get_time_object_list() {
-//    if(connection_state == Connection_State::broadcast){
-//        return {broadcast_connector.get()};
-//    }
-//    std::vector<Time_Object *> time_object_list;
-//    if(connection_state == Connection_State::camera_view_connect_establishment_custom_data_work or
-//        connection_state == Connection_State::camera_view_connect_establishment_custom_data_not_work or
-//        connection_state == Connection_State::custom_data_connect_establishment_camera_view_work or
-//        connection_state == Connection_State::only_camera_view_work or
-//        connection_state == Connection_State::camera_view_and_custom_data_work
-//    ){
-//        time_object_list.push_back(image_receiver.get());
-//    }
-//    if(
-//            connection_state == Connection_State::custom_data_connect_establishment_camera_view_not_work or
-//            connection_state == Connection_State::custom_data_connect_establishment_camera_view_work or
-//            connection_state == Connection_State::camera_view_connect_establishment_custom_data_work or
-//            connection_state == Connection_State::only_custom_data_work or
-//            connection_state == Connection_State::camera_view_and_custom_data_work
-//            ){
-//        time_object_list.push_back(custom_data_io.get());
-//    }
-//
-//    if(
-//            connection_state == Connection_State::axes_ratio_establishment or
-//            connection_state == Connection_State::axes_ratio_work
-//
-//            ){
-//        time_object_list.push_back(rays_receiver.get());
-//    }
-//
-//    return time_object_list;
-//}
 
 void Connection_Backend::update_st() {
     if(connection_state == Connection_State::broadcast){
@@ -259,7 +223,4 @@ void Connection_Backend::set_camera_view_mode(Image_Receiver::Sender_Mode mode) 
     }
 }
 
-//void Connection_Backend::set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_) {
-//    detected_objets_2d = std::move(axes_ratio_);
-//}
 
