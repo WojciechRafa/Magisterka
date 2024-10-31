@@ -4,12 +4,11 @@
 
 #include "System.hpp"
 
-System::System(sf::Int64 update_period_microseconds_):
-    update_period_microseconds(update_period_microseconds_),
+System::System():
+    update_period(Configs::main_loop_time),
     graphic_warehouse("../Graphic_Warehouse"),
     graphic(window,
-        graphic_warehouse,
-    50000),
+        graphic_warehouse),
     image_source(Image_source::Frame_switching::automatic),
 
 //    image_source("/home/wpr/Documents/AGH/Magisterka/Program/Video/cut_video/IMG_1264.mkv", Image_source::Frame_switching::automatic),
@@ -55,19 +54,16 @@ System::System(sf::Int64 update_period_microseconds_):
 bool System::update() {
 
     static sf::Clock clock;
-    static sf::Int64 last_update_time_micro = clock.getElapsedTime().asMicroseconds();
+    static sf::Time last_update_time = clock.getElapsedTime();
 
-    sf::Int64 time_to_wait = update_period_microseconds - (clock.getElapsedTime().asMicroseconds() - last_update_time_micro);
-    if(time_to_wait > 0)
-        sf::sleep(sf::microseconds(time_to_wait));
+    sf::Time time_to_wait = update_period - (clock.getElapsedTime() - last_update_time);
+    if(time_to_wait.asMicroseconds() > 0)
+        sf::sleep(time_to_wait);
 
 
-    last_update_time_micro = clock.getElapsedTime().asMicroseconds();
-//    auto time_begin = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
     Time_Object::update_all_time_objets();
-//    auto time_end = clock.getElapsedTime().asMicroseconds();
 
-    // std::cout << "Time diff " << time_end - time_begin << " us, measure time " << time_end << " us " << std::endl;
 
         // ST - short time
     if(connection_state == Connection_State::broadcast_listen and

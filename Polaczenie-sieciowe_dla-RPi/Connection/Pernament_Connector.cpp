@@ -34,7 +34,7 @@ void Permanent_Connector::update() {
     }else
         throw std::exception();
 
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
 void Permanent_Connector::disconnect() {

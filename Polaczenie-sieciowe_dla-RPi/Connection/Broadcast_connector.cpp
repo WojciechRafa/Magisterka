@@ -13,7 +13,7 @@ port(port_){
         Delay_ms(1000);
     }
 
-    update_period_microseconds = 1000000;
+    update_period = sf::microseconds(1000000);
 }
 
 void Broadcast_Connector::update(){
@@ -75,7 +75,7 @@ void Broadcast_Connector::update(){
     }else{
         throw std::runtime_error("Nieprawidłowy tryb pracy wyszukiwania połączenia");
     }
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
 

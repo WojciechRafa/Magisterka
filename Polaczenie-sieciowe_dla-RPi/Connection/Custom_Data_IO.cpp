@@ -7,7 +7,7 @@
 Custom_Data_IO::Custom_Data_IO(unsigned short port_, sf::IpAddress remote_dev_ip_):
         Permanent_Connector(port_, remote_dev_ip_)
 {
-    update_period_microseconds = 500000;
+    update_period = sf::milliseconds(50);
 }
 
 void Custom_Data_IO::update() {
@@ -39,7 +39,7 @@ void Custom_Data_IO::update() {
 
         display_recived_data();
 
-        last_update_time = clock.getElapsedTime().asMicroseconds();
+        last_update_time = clock.getElapsedTime();
     }
 }
 

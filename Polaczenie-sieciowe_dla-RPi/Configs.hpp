@@ -8,9 +8,13 @@
 #include <SFML/Config.hpp>
 
 namespace Configs{
-    static sf::Int64 default_update_time = 50000;
+    static sf::Time default_update_time = sf::milliseconds(50);
 
-    static sf::Int64 camera_update_period_microseconds = 50000;
+    static sf::Time camera_update_period = sf::milliseconds(50);
+    static sf::Time max_camera_update_period_error = sf::milliseconds(3);
+
+    static sf::Time main_loop_time = sf::milliseconds(1);
+
 
     static bool is_binarization_relative = false;
     static int binarization_threshold = 50;

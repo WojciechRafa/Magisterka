@@ -22,7 +22,7 @@ void Binarization::update() {
         absolute_update();
     }
 
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
 void Binarization::set_input_image(std::shared_ptr<std::pair<sf::Time, cv::Mat>> image_with_main_time_) {
@@ -33,9 +33,8 @@ void Binarization::set_binarized_image(std::shared_ptr<cv::Mat> image_) {
     binarized_image_result = std::move(image_);
 }
 
-Binarization::Binarization(bool is_relative_, int change_time_):
-        is_relative(is_relative_),
-        Time_Object(change_time_){}
+Binarization::Binarization(bool is_relative_):
+        is_relative(is_relative_){}
 
 void Binarization::set_parameters(std::shared_ptr<Binarized_parameters> parameters_) {
     parameters = std::move(parameters_);
@@ -73,7 +72,7 @@ void Binarization::relative_update() {
 void Binarization::absolute_update() {
     if(reference_image == nullptr and image_with_main_time != nullptr){
         reference_image = std::make_unique<cv::Mat>(image_with_main_time->second.clone());
-    }else if(image_with_main_time != nullptr){
+    }else if(image_with_main_time != nullptr and not image_with_main_time->second.empty()){
         cv::Mat threshold_diff;
 
         get_binary_diff(image_with_main_time->second, *reference_image, threshold_diff);

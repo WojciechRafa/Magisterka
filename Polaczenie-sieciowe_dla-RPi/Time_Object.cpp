@@ -8,18 +8,18 @@ sf::Time Time_Object::main_clock_diff;
 
 Time_Object::Time_Object() {
     clock.restart();
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 
     all_time_objects_pointers.push_back(this);
 
-    update_period_microseconds = default_update_period_microseconds;
+    update_period = default_update_period_microseconds;
 }
 
-Time_Object::Time_Object(sf::Int64 update_period_microseconds_):
-        update_period_microseconds(update_period_microseconds_)
+Time_Object::Time_Object(sf::Time update_period_):
+        update_period(update_period_)
 {
     clock.restart();
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 
     all_time_objects_pointers.push_back(this);
 }
@@ -36,7 +36,7 @@ std::list<Time_Object *>* Time_Object::get_all_time_objects_pointers() {
 }
 
 bool Time_Object::need_update() {
-    return clock.getElapsedTime().asMicroseconds() - last_update_time > update_period_microseconds;
+    return clock.getElapsedTime() - last_update_time > update_period;
 }
 
 void Time_Object::update_all_time_objets() {

@@ -6,8 +6,6 @@
 Image_Sender::Image_Sender(unsigned short port_, sf::IpAddress remote_dev_ip_):
 Permanent_Connector(port_, remote_dev_ip_)
 {
-    update_period_microseconds = 500000; // na pierwszym etapie aktualziacja jest co 0,5s
-
     // nieaktualne -> funkcja jest wywoływana dwukrotnie ponieważ za pierwszym razem wynik jest błędny
 //    camera.measure_operation_time_compress();
     compress_time = camera.measure_operation_time_compress();
@@ -45,7 +43,7 @@ bool Image_Sender::need_update() {
 void Image_Sender::update_establish_connection_mode() {
     Permanent_Connector::update(); // funkcja ta aktualizuje zegar
     if(mode == Permanent_Connector::p_connector_mode::permanent_communication){
-        update_period_microseconds = 50000;
+        update_period = sf::milliseconds(50);
         update_image_and_number();
     }
 }

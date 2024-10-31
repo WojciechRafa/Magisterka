@@ -25,14 +25,13 @@ public:
 
     Image_source(const std::string& file_path_,
                  Frame_switching switching_method_,
-                 int change_time_ = 50000,
                  sf::Keyboard::Key action_key_ = sf::Keyboard::Space);
 
     explicit Image_source(Frame_switching switching_method_,
-                          int change_time_ = 50000,
                           sf::Keyboard::Key action_key_ = sf::Keyboard::Space);
 
     void update() override;
+    bool need_update() override{return true;};
 
     void set_image_and_main_time_ptr(std::shared_ptr<std::pair<sf::Time, cv::Mat>> image_and_main_time_);
 private:

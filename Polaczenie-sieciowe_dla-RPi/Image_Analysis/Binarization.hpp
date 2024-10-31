@@ -17,7 +17,7 @@ public:
         cv::Mat centroids;
     };
 
-    explicit Binarization(bool is_relative_, int change_time_ = 50000);
+    explicit Binarization(bool is_relative_);
     void update() override;
 
     void set_input_image(std::shared_ptr<std::pair<sf::Time, cv::Mat>> image_with_main_time_);

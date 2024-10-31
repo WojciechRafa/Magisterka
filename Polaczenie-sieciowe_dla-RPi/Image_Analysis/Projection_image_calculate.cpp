@@ -59,8 +59,7 @@ Projection_image_calculate::Projection_image_calculate(Projection_image_calculat
         axis_b(axis_b_),
         window_pos(window_pos_),
         output_window_size(window_size_),
-        output_zero_point_pos(zero_point_pos_),
-        Time_Object(change_time_){
+        output_zero_point_pos(zero_point_pos_){
     internal_parameters = load_camera_matrix("../Camera_insert_parameters.csv");
 
     corners_angle[0] = atan2(output_zero_point_pos.y,
@@ -207,7 +206,7 @@ void Projection_image_calculate::update() {
 //        std::cout<<"\t" << parameters->numb_labels;
     }
 
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
 void Projection_image_calculate::set_parameters(std::shared_ptr<Binarization::Binarized_parameters> parameters_) {

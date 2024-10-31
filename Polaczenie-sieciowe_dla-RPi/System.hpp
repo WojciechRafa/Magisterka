@@ -14,14 +14,14 @@
 #include "GUI/Graphic_Manager.hpp"
 
 #include "GUI/Small_window.hpp"
-#include "Image_source_typ.hpp"
+#include "Image_source.hpp"
 #include "Image_Analysis/Binarization.hpp"
 #include "Image_Analysis/Projection_image_calculate.hpp"
 #include "Connection/Parameter_sender.hpp"
 
 class System {
 public:
-    explicit System(sf::Int64 update_period_microseconds_ = 1000); // domyślne maksymalne tempo aktualizacji 1ms
+    explicit System();
 
     bool update();
 
@@ -34,7 +34,7 @@ public:
         both_work
     };
 private:
-    sf::Int64 update_period_microseconds;
+    sf::Time update_period;
     Connection_State connection_state = Connection_State::broadcast_listen;
     unsigned short port = 50238;
     sf::IpAddress remote_ip_address = sf::IpAddress::None;
