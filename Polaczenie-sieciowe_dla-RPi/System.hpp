@@ -58,7 +58,8 @@ private:
     Image_source image_source;
     Binarization binarization;
 
-    std::shared_ptr<cv::Mat> raw_picture = std::make_shared<cv::Mat>();
+    std::shared_ptr<std::pair<sf::Time, cv::Mat>> raw_picture_with_main_time
+        = std::make_shared<std::pair<sf::Time, cv::Mat>>();
     std::shared_ptr<cv::Mat> binarized_picture = std::make_shared<cv::Mat>();
 
     Small_window raw_picture_window;
@@ -69,7 +70,7 @@ private:
             std::make_shared<Binarization::Binarized_parameters>();
 
     std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> vectors_list = {};
-    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>> objets_parameters_list = {};
+    Sent_parameters sent_parameters = {};
 
     std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>>projections =
             std::make_shared<std::vector<std::unique_ptr<sf::Shape>>>();

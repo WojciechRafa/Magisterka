@@ -30,13 +30,14 @@ Image_source::Image_source(Frame_switching switching_method_,
 void Image_source::update()
 {
     if(switching_method == Frame_switching::automatic){
-        cap >> *last_frame;  // if move is ended, last_frame.empty() is true
+        cap >> last_with_main_time_frame->second;  // if move is ended, last_with_main_time_frame.empty() is true
+
     }else{
         static bool was_action_button_released = true;
 
         if(was_action_button_released and sf::Keyboard::isKeyPressed(action_key)){
             was_action_button_released = false;
-            cap >> *last_frame;
+            cap >> last_with_main_time_frame->second;
         }
 
     }
@@ -44,13 +45,6 @@ void Image_source::update()
     last_update_time = clock.getElapsedTime().asMicroseconds();
 }
 
-void Image_source::set_image_ptr(std::shared_ptr<cv::Mat> image_) {
-    last_frame = image_;
+void Image_source::set_image_and_main_time_ptr(std::shared_ptr<std::pair<sf::Time, cv::Mat>> image_and_main_time_) {
+    last_with_main_time_frame = std::move(image_and_main_time_);
 }
-
-//std::shared_ptr<cv::Mat> Image_source::get_last_frame() {
-//    if (last_frame->empty())
-//        return nullptr;
-//    else
-//        return last_frame;
-//}

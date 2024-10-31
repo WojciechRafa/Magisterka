@@ -22,6 +22,11 @@ struct Image_and_number{
     sf::Uint32 image_number;
 };
 
+struct Sent_parameters{
+    sf::Time main_time;
+    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>> data;
+};
+
 sf::Packet& operator <<(sf::Packet& packet, const Control_message& directions);
 sf::Packet& operator >>(sf::Packet& packet, Control_message& directions);
 
@@ -34,5 +39,9 @@ sf::IpAddress get_ip(sf::Packet packet);
 
 //sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);
 //sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>& axes_ratio);
-sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio);
-sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio);
+//sf::Packet& operator <<(sf::Packet& packet, const std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio);
+//sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& axes_ratio);
+
+void write_packet(sf::Time& time_main,
+                 std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& data,
+                 sf::Packet packet);

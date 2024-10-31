@@ -9,6 +9,7 @@
 #include <opencv2/opencv.hpp>
 #include "SFML/Graphics.hpp"
 #include "Binarization.hpp"
+#include "../Connection/Sended_struct.hpp"
 
 class Projection_image_calculate: public Time_Object{
 public:
@@ -24,26 +25,21 @@ public:
                                int change_time_ = 50000);
     void update() override;
 
-//    void set_stats(std::shared_ptr<cv::Mat> stats_);
-//    void set_centroids(std::shared_ptr<cv::Mat> centroids_);
     void set_parameters(std::shared_ptr<Binarization::Binarized_parameters> parameters_);
 
 
     void set_additional_graphic(std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_);
-    void set_objets_parameters(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* objets_parameters_);
+    void set_sent_parameters_ptr(Sent_parameters* sent_parameters_);
     void set_vectors_list(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_);
 
-//    static std::string get_name() {return "Projection_image_calculate";}
 private:
-//    std::shared_ptr<cv::Mat> stats = nullptr;
-//    std::shared_ptr<cv::Mat> centroids = nullptr;
     std::shared_ptr<Binarization::Binarized_parameters> parameters;
 
     axes axis_a;
     axes axis_b;
 
     std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>> projections = nullptr;
-    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* objets_parameters_list = nullptr;
+    Sent_parameters* sent_parameters = nullptr;
     std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list = nullptr;
 
     static cv::Mat load_camera_matrix(const std::string& filePath);

@@ -27,19 +27,19 @@ System::System(sf::Int64 update_period_microseconds_):
     {
     broadcast_connector = std::make_unique<Broadcast_Connector>(port);
 
-    image_source.set_image_ptr(raw_picture);
-    raw_picture_window.set_image_ptr(raw_picture);
+    image_source.set_image_and_main_time_ptr(raw_picture_with_main_time);
+    raw_picture_window.set_image_ptr(&raw_picture_with_main_time->second);
 
-    binarized_picture_window.set_image_ptr(binarized_picture);
+    binarized_picture_window.set_image_ptr(binarized_picture.get());
 
-    binarization.set_input_image(raw_picture);
+    binarization.set_input_image(raw_picture_with_main_time);
     binarization.set_binarized_image(binarized_picture);
 
     binarization.set_parameters(bin_parameters);
 
     projection_calculator.set_parameters(bin_parameters);
     projection_calculator.set_additional_graphic(projections);
-    projection_calculator.set_objets_parameters(&objets_parameters_list);
+    projection_calculator.set_sent_parameters_ptr(&sent_parameters);
 
     projections_window.set_additional_graphic(projections);
     projection_calculator.set_vectors_list(&vectors_list);
@@ -80,7 +80,7 @@ bool System::update() {
         parameter_sender = std::make_unique<Parameter_sender>(port, remote_ip_address);
         // parameter_sender->set_update_period(1000);
 //        parameter_sender->set_vectors_list_ptr(&vectors_list);
-        parameter_sender->set_objets_parameters_list_ptr(&objets_parameters_list);
+        parameter_sender->set_sent_parameters_ptr(&sent_parameters);
 
         std::cout<<"Procedura zawiązywania polaczenia przez Broadcast zakonczona !"<<std::endl;
         broadcast_connector = nullptr;

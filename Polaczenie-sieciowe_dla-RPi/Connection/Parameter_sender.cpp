@@ -32,14 +32,15 @@ void Parameter_sender::update() {
         }
 
     }else{
-        if(objets_parameters_list_ptr == nullptr){
+        if(sent_parameters_ptr == nullptr){
             std::cerr<<"objets_parameters_list_ptr is nullptr \n";
         }
 
         // nadawanie
         sf::Packet sended_packet;
 
-        sended_packet << *objets_parameters_list_ptr;
+        write_packet(sent_parameters_ptr->main_time, sent_parameters_ptr->data, sended_packet);
+
         std::cout<<"Rozmiar danych " << sended_packet.getDataSize()<<"\n";
         auto status = send(sended_packet);
         std::cout<<"Sent data, result "<< status << "\n";
@@ -65,15 +66,21 @@ bool Parameter_sender::try_to_exchange_time() {
             auto time_diff = clock.getElapsedTime() - sf::microseconds(master_time);
             auto status = send(received_packet);
 
-            return status == sf::Socket::Done and time_diff < time_limit_exchange_time_operation;
+            bool is_exchange_correct = (status == sf::Socket::Done and time_diff < time_limit_exchange_time_operation);
+
+            if(is_exchange_correct){
+                main_clock_diff = time_diff;
+            }
+
+            return is_exchange_correct;
         }
     }
     return false;
 }
 
 void
-Parameter_sender::set_objets_parameters_list_ptr(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>> *objets_parameter_list_ptr_) {
-    objets_parameters_list_ptr = objets_parameter_list_ptr_;
+Parameter_sender::set_sent_parameters_ptr(Sent_parameters* sent_parameters_ptr_) {
+    sent_parameters_ptr = sent_parameters_ptr_;
 }
 
 void Parameter_sender::set_update_period(sf::Int64 update_period_microsecond_) {

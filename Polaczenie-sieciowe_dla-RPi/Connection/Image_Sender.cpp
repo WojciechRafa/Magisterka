@@ -136,8 +136,6 @@ void Image_Sender::change_sender_mode(Image_Sender::Sender_Mode mode) {
     last_average_time_compressed = -1;
     last_average_time_not_compressed = -1;
 
-
-
     sender_mode = mode;
 }
 

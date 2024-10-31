@@ -152,11 +152,11 @@ int Projection_image_calculate::get_axi_nr(Projection_image_calculate::axes axis
 
 void Projection_image_calculate::update() {
     projections->clear();
-    objets_parameters_list->clear();
+    sent_parameters->data.clear();
     vectors_list->clear();
 
     if(parameters != nullptr){
-//        int number_of_labels = stats->rows;
+        sent_parameters->main_time = parameters->main_time;
 
         for(int i = 1; i < parameters->numb_labels; i++){ // label have number "0";
             cv::Point2i box_pos(parameters->stats.at<int>(i, cv::CC_STAT_LEFT), parameters->stats.at<int>(i, cv::CC_STAT_TOP));
@@ -164,7 +164,7 @@ void Projection_image_calculate::update() {
 
             cv::Point2d centroid(parameters->centroids.at<double>(i, 0), parameters->centroids.at<double>(i, 1));
 
-            objets_parameters_list->emplace_back(static_cast<cv::Point2d>(box_pos), static_cast<cv::Point2d>(box_pos + box_size), centroid);
+            sent_parameters->data.emplace_back(static_cast<cv::Point2d>(box_pos), static_cast<cv::Point2d>(box_pos + box_size), centroid);
 
             auto box_dir_3D_begin = compute_3D_line(internal_parameters, static_cast<cv::Point2d>(box_pos));
             auto box_dir_3D_end = compute_3D_line(internal_parameters, static_cast<cv::Point2d>(box_pos + box_size));
@@ -214,8 +214,7 @@ void Projection_image_calculate::set_parameters(std::shared_ptr<Binarization::Bi
     parameters = std::move(parameters_);
 }
 
-void Projection_image_calculate::set_objets_parameters(
-        std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>> *objets_parameters_) {
-    objets_parameters_list = objets_parameters_;
+void Projection_image_calculate::set_sent_parameters_ptr(Sent_parameters* sent_parameters_) {
+    sent_parameters = sent_parameters_;
 }
 

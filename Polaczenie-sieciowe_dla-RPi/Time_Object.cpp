@@ -3,7 +3,8 @@
 #include <iostream>
 
 std::list<Time_Object*> Time_Object::all_time_objects_pointers;
-
+sf::Clock Time_Object::clock;
+sf::Time Time_Object::main_clock_diff;
 
 Time_Object::Time_Object() {
     clock.restart();

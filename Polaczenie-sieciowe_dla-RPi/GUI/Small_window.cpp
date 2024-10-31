@@ -77,8 +77,8 @@ void Small_window::update() {
     last_update_time = clock.getElapsedTime().asMicroseconds();
 }
 
-void Small_window::set_image_ptr(std::shared_ptr<cv::Mat> image_ptr_) {
-    image_cv_ptr = std::move(image_ptr_);
+void Small_window::set_image_ptr(cv::Mat* image_ptr_) {
+    image_cv_ptr = image_ptr_;
 }
 
 void Small_window::set_additional_graphic(std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_) {

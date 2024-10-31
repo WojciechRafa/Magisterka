@@ -29,9 +29,10 @@ protected:
     // WAŻNE ! Aktualizować last update time !
     sf::Int64 update_period_microseconds;
 
-    sf::Clock clock; // TODO zmiana tego w static (problemy są z tym)
+    static sf::Clock clock;
     sf::Int64 last_update_time = 0;
 
+    static sf::Time  main_clock_diff;
 private:
     static std::list<Time_Object*> all_time_objects_pointers;
 
