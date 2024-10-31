@@ -6,7 +6,6 @@
 #define INZYNIERKA_CONNECTION_BACKEND_HPP
 
 #include "../Time_Object.hpp"
-#include "../Time.hpp"
 #include "../Network/Broadcast_Connector.hpp"
 #include "../Network/Image_Receiver.hpp"
 #include "../Network/Custom_Data_IO.hpp"
@@ -20,9 +19,7 @@ class Connection_Backend{
 public:
     explicit Connection_Backend(unsigned short port_,
                                 std::vector<Custom_Data_IO_Window::message>& message_list_recived_,
-                                std::vector<Custom_Data_IO_Window::message>& message_list_sended_,
-                                sf::Clock& clock_
-                                );
+                                std::vector<Custom_Data_IO_Window::message>& message_list_sended_);
 
     explicit Connection_Backend(unsigned short port_,
                                 sf::Clock& clock_,
@@ -70,10 +67,6 @@ public:
 
 //    void set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_);
 private:
-    // Parametryzowanie stałych
-    const sf::Int64 update_period_connection = 1000000;
-    const sf::Int64 update_period_image_transfer = 25000;
-
     sf::IpAddress broadcast_ip;
     sf::IpAddress remote_ip = sf::IpAddress::None;
 
@@ -88,8 +81,6 @@ private:
 
     std::vector<Custom_Data_IO_Window::message> message_list_recived;
     std::vector<Custom_Data_IO_Window::message> message_list_sended;
-
-    sf::Clock& clock;
 
     Rays_intersection_analyzer* rays_intersection_analyzer_ptr = nullptr;
 };

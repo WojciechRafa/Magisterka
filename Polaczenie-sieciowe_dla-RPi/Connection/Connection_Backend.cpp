@@ -6,21 +6,16 @@
 
 Connection_Backend::Connection_Backend(unsigned short port_,
                                        std::vector<Custom_Data_IO_Window::message>& message_list_sended_,
-                                       std::vector<Custom_Data_IO_Window::message>& message_list_recived_,
-                                       sf::Clock& clock_
+                                       std::vector<Custom_Data_IO_Window::message>& message_list_recived_
                                        ):
 port(port_),
 message_list_sended(message_list_sended_),
-message_list_recived(message_list_recived_),
-clock(clock_)
-{
-}
+message_list_recived(message_list_recived_){}
 
 Connection_Backend::Connection_Backend(unsigned short port_,
                                        sf::Clock& clock_,
                                        Rays_intersection_analyzer* rays_intersection_analyzer_ptr_):
         port(port_),
-        clock(clock_),
         rays_intersection_analyzer_ptr(rays_intersection_analyzer_ptr_){}
 
 const sf::Image* Connection_Backend::get_image() {

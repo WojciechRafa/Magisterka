@@ -13,13 +13,10 @@
 
 class Projection_image_calculator: public Time_Object, public Rays_source{
 public:
-    enum class axes{
-        x, y, z
-    };
 
     Projection_image_calculator(
-                                axes axis_a_,
-                                axes axis_b_,
+                                Axes axis_a_,
+                                Axes axis_b_,
                                 sf::Vector2f window_pos_ = sf::Vector2f(0, 0),
                                 sf::Vector2f window_size_ = sf::Vector2f(0, 0),
                                 sf::Vector2f zero_point_pos_ = sf::Vector2f(0, 0),
@@ -30,8 +27,8 @@ public:
 
                                 Rays_intersection_analyzer* rays_intersection_analyzer_ptr_ = nullptr,
 
-                                cv::Mat internal_matrix_ = cv::Mat::zeros(3, 3, CV_8UC1),
-                                cv::Mat external_matrix_ = cv::Mat::zeros(3, 4, CV_8UC1),
+                                const cv::Mat& internal_matrix_ = cv::Mat::zeros(3, 3, CV_8UC1),
+                                const cv::Mat& external_matrix_ = cv::Mat::zeros(3, 4, CV_8UC1),
                                 int change_time_ = 50000);
     void update() override;
 
@@ -40,12 +37,12 @@ public:
 
     void set_additional_graphic(std::vector<std::unique_ptr<sf::Shape>>* additional_graphic_);
 
-    static int get_axi_nr(axes);
+    static int get_axi_nr(Axes);
 private:
     std::shared_ptr<Binarization::Binarized_parameters> parameters;
 
-    axes axis_a;
-    axes axis_b;
+    Axes axis_a;
+    Axes axis_b;
 
     std::vector<std::unique_ptr<sf::Shape>>* projections_list = nullptr;
 

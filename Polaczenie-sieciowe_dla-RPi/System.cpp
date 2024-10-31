@@ -5,13 +5,13 @@
 #include "System.hpp"
 #include "Configs.hpp"
 
-System::System(sf::Int64 update_period_microseconds_):
-    update_period_microseconds(update_period_microseconds_),
+System::System():
+    clock(Time_Object::get_clock()),
+    update_period(Configs::main_loop_time),
     graphic_warehouse("../Graphic_Warehouse"),
     graphic(window,
             graphic_warehouse,
-            connection_list,
-            50000
+            connection_list
             ),
 
     image_source(Image_source::Frame_switching::automatic),
@@ -23,8 +23,8 @@ System::System(sf::Int64 update_period_microseconds_):
     objects_tracker_window(sf::Vector2f(800, 400), sf::Vector2f(350, 350)),
 
     projection_calculator(
-                          Projection_image_calculator::axes::z,
-                          Projection_image_calculator::axes::x,
+                          Axes::z,
+                          Axes::x,
                           projections_window.getPosition(),
                           standard_window_size,
                           standard_window_size * 0.5f,
@@ -36,12 +36,12 @@ System::System(sf::Int64 update_period_microseconds_):
     ),
     binarization(Configs::is_binarization_relative)
 {
-    image_source.set_image_ptr(raw_picture);
-    raw_picture_window.set_image_ptr(raw_picture);
+    image_source.set_image_and_main_time_ptr(raw_picture_with_main_time);
+    raw_picture_window.set_image_ptr(&raw_picture_with_main_time->second);
 
-    binarized_picture_window.set_image_ptr(binarized_picture);
+    binarized_picture_window.set_image_ptr(binarized_picture.get());
 
-    binarization.set_input_image(raw_picture);
+    binarization.set_input_image(raw_picture_with_main_time);
     binarization.set_binarized_image(binarized_picture);
     binarization.set_parameters(bin_parameters);
 
@@ -63,15 +63,14 @@ System::System(sf::Int64 update_period_microseconds_):
 }
 
 bool System::update() {
-    static sf::Int64 last_update_time_micro = clock.getElapsedTime().asMicroseconds();
+    static sf::Time last_update_time = clock.getElapsedTime();
 
-    sf::Int64 time_to_wait = update_period_microseconds - (clock.getElapsedTime().asMicroseconds() - last_update_time_micro);
-    if(time_to_wait > 0)
-        sf::sleep(sf::microseconds(time_to_wait));
+    sf::Time time_to_wait = update_period - (clock.getElapsedTime() - last_update_time);
+    if(time_to_wait.asMicroseconds() > 0)
+        sf::sleep(time_to_wait);
 
-    last_update_time_micro = clock.getElapsedTime().asMicroseconds();
 
-    // aktualizacja czasowa:
+    last_update_time = clock.getElapsedTime();
     Time_Object::update_all_time_objets();
 
     //aktualizcaj nieczasowa (st - short time, skrót występujący w nazwach funkcji aby odróżnić je od update() który może zajmować pewien czas)
@@ -190,8 +189,8 @@ bool System::execute_button_message(Button::Button_Message message) {
                         sf::Vector2f(10, 460),
                         sf::Vector2f(300, 150),
                         sf::Vector2f(100, 50),
-                        Projection_image_calculator::axes::z,
-                        Projection_image_calculator::axes::x,
+                        Axes::z,
+                        Axes::x,
 
                         graphic_warehouse,
                         50238,

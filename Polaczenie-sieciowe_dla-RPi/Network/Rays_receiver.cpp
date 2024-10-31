@@ -8,14 +8,13 @@
 Rays_receiver::Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, Rays_intersection_analyzer* rays_intersection_analyzer):
     Rays_source(rays_intersection_analyzer),
     Permanent_Connector(port_, remote_dev_ip_){
-    update_period_microseconds = 500000;
 }
 
 void Rays_receiver::update() {
     if(mode == Permanent_Connector::p_connector_mode::establish_connection){
         Permanent_Connector::update();
         if(get_mode() == Permanent_Connector::p_connector_mode::permanent_communication){
-            update_period_microseconds = 50000; // TODO
+            update_period = sf::milliseconds(50); // TODO
             bool exchange_time_was_correct =  try_to_exchange_time();
             if(not exchange_time_was_correct){
                 std::cout<<"Time exchange incorrect\n";
@@ -44,7 +43,7 @@ void Rays_receiver::update() {
 
         }
         std::cout<<"Data recive\n";
-        last_update_time = clock.getElapsedTime().asMicroseconds();
+        last_update_time = clock.getElapsedTime();
     }
 }
 

@@ -26,7 +26,7 @@ void Permanent_Connector::update() {
             mode = p_connector_mode::permanent_communication;
         }
     }
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
 Permanent_Connector::p_connector_mode Permanent_Connector::get_mode() {

@@ -17,8 +17,7 @@ Connection::Connection(
                        sf::Vector2f camera_view_pos,
                        sf::Vector2f camera_view_size,
                        Graphic_Warehouse& graphic_warehouse,
-                       unsigned short port,
-                       sf::Clock& clock_
+                       unsigned short port
                        ):
         frontend(
                 std::move(button_filed_),
@@ -27,12 +26,15 @@ Connection::Connection(
                     character_size,
                     custom_data_background_color,
                     message_list_displayed,
-
+//    cv::Mat* get_stats();
+//    cv::Mat* get_centroids();
+//    void set_stats(std::shared_ptr<cv::Mat> stats_);
+//    void set_centroids(std::shared_ptr<cv::Mat> centroids_);
                     camera_view_pos,
                     camera_view_size,
                     graphic_warehouse
                     ),
-        backend(port,message_list_sended ,message_list_displayed, clock_)
+        backend(port,message_list_sended ,message_list_displayed)
                     {}
 
 Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_, sf::Vector2f custom_data_view_pos,
@@ -53,7 +55,7 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_, sf::Vector2
 
                 graphic_warehouse
         ),
-        backend(port,message_list_sended ,message_list_displayed, clock_)
+        backend(port,message_list_sended ,message_list_displayed)
 {}
 
 Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
@@ -70,7 +72,7 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
                 camera_view_size,
                 graphic_warehouse
         ),
-        backend(port,message_list_sended ,message_list_displayed, clock_)
+        backend(port,message_list_sended ,message_list_displayed)
 {}
 
 Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
@@ -79,8 +81,8 @@ Connection::Connection(std::unique_ptr<Buttons_Field> button_filed_,
                        sf::Vector2f window_size,
                        sf::Vector2f zero_point_pos,
 
-                       Projection_image_calculator::axes axis_a,
-                       Projection_image_calculator::axes axis_b,
+                       Axes axis_a,
+                       Axes axis_b,
 
                        Graphic_Warehouse& graphic_warehouse,
                        unsigned short port,

@@ -7,10 +7,8 @@
 
 Graphic_Manager::Graphic_Manager(Window &window_,
                                  Graphic_Warehouse &graphic_warehouse_,
-                                 std::vector<std::unique_ptr<Connection>>& connection_list_,
-                                 sf::Int64 update_period_microseconds_
+                                 std::vector<std::unique_ptr<Connection>>& connection_list_
                                  ):
-Time_Object(update_period_microseconds_),
 window(window_),
 graphic_warehouse(graphic_warehouse_),
 connection_list(connection_list_)
@@ -72,7 +70,7 @@ void Graphic_Manager::update() {
 
     display();
 
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
 void Graphic_Manager::display() {

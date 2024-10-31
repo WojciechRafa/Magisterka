@@ -4,6 +4,7 @@
 
 #include "Objects_tracker.hpp"
 #include "Configs.hpp"
+#include "Image_Analysis/Projection_image_calculator.hpp"
 
 void Objects_tracker::set_small_window(Small_window* small_window_ptr_) {
     small_window_ptr = small_window_ptr_;
@@ -12,8 +13,10 @@ void Objects_tracker::set_small_window(Small_window* small_window_ptr_) {
 
 void Objects_tracker::update() {
     std::vector<sf::Int64> time_to_remove_list;
+
+    // remove old detection
     for(auto& objet: detected_objets){
-        if(clock.getElapsedTime().asMicroseconds() > (objet.first + Configs::Big_window_parameters::displayed_time_microseconds)){
+        if(clock.getElapsedTime().asMicroseconds() > (objet.first + Configs::Big_window_parameters::displayed_time.asMicroseconds())){
             time_to_remove_list.push_back(objet.first);
         }
     }
@@ -52,7 +55,7 @@ void Objects_tracker::update() {
         }
     }
 
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
 void Objects_tracker::add_detecion(sf::Int64 time, std::vector<cv::Vec3d>& pos_vector, std::vector<double>& size_vector) {

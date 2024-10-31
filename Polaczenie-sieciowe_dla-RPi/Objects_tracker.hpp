@@ -17,7 +17,7 @@ public:
     std::map<sf::Int64, std::vector<std::pair<cv::Vec3d, double>>>& get_actual_objets_list();
 
     void set_small_window(Small_window* small_window_ptr_);
-    void update() override;
+    void update() final;
 private:
     std::map<sf::Int64, std::vector<std::pair<cv::Vec3d, double>>> detected_objets;
     Small_window* small_window_ptr = nullptr;

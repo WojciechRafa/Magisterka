@@ -12,7 +12,6 @@ Small_window::Small_window(sf::Vector2f size_,
                            sf::Color outline_color,
                            float outline_thickness,
                            int update_time) :
-    Time_Object(update_time),
     size(size_)
 {
     setPosition(pos);
@@ -70,15 +69,15 @@ void Small_window::update() {
 //            std::cout << "Element Size: " << image_cv_ptr->elemSize() << " bytes" << std::endl;
 //            std::cout << "Is empty: " << std::boolalpha << image_cv_ptr->empty() << std::endl;
 
-            last_update_time = clock.getElapsedTime().asMicroseconds();
+            last_update_time = clock.getElapsedTime();
             return;
         }
     }
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
-void Small_window::set_image_ptr(std::shared_ptr<cv::Mat> image_ptr_) {
-    image_cv_ptr = std::move(image_ptr_);
+void Small_window::set_image_ptr(cv::Mat* image_ptr_) {
+    image_cv_ptr = image_ptr_;
 }
 
 void Small_window::set_additional_graphic(std::vector<std::unique_ptr<sf::Shape>>* additional_graphic_) {

@@ -25,21 +25,20 @@ public:
 
     Image_source(const std::string& file_path_,
                  Frame_switching switching_method_,
-                 int change_time_ = 50000,
                  sf::Keyboard::Key action_key_ = sf::Keyboard::Space);
 
     explicit Image_source(Frame_switching switching_method_,
-                          int change_time_ = 50000,
                           sf::Keyboard::Key action_key_ = sf::Keyboard::Space);
 
     void update() override;
+    bool need_update() override{return true;};
 
-    void set_image_ptr(std::shared_ptr<cv::Mat> image_);
+    void set_image_and_main_time_ptr(std::shared_ptr<std::pair<sf::Time, cv::Mat>> image_and_main_time_);
 private:
     Frame_switching switching_method;
     Image_source_typ source_typ;
     cv::VideoCapture cap;
-    std::shared_ptr<cv::Mat> last_frame = nullptr;
+    std::shared_ptr<std::pair<sf::Time, cv::Mat>> last_with_main_time_frame = nullptr;
     sf::Keyboard::Key action_key;
 };
 

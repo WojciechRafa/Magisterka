@@ -8,7 +8,6 @@
 
 Image_Receiver::Image_Receiver(unsigned short port_, sf::IpAddress remote_dev_ip_):
         Permanent_Connector(port_, remote_dev_ip_) {
-    update_period_microseconds = 500000; // pierwotny czas aktualziacji wykorzystywany przy nawiązywaniu połączenia
 }
 
 
@@ -54,7 +53,7 @@ void Image_Receiver::update() {
     if(mode == Permanent_Connector::p_connector_mode::establish_connection){
         Permanent_Connector::update();
         if(get_mode() == Permanent_Connector::p_connector_mode::permanent_communication){
-            update_period_microseconds = 50000;
+            update_period = sf::milliseconds(50);
         }
         // czas jest aktualziowany w Permanent_Connector::update();
     }else{
@@ -62,7 +61,7 @@ void Image_Receiver::update() {
         if(is_image_received){
             send_img_nr_and_transmission_parameters();
         }
-        last_update_time = clock.getElapsedTime().asMicroseconds();
+        last_update_time = clock.getElapsedTime();
     }
 }
 

@@ -20,10 +20,11 @@
 
 class System {
 public:
-    explicit System(sf::Int64 update_period_microseconds_ = 1000); // domyślne maksymalne tempo aktualizacji 1ms
+    explicit System();
 
     bool update();
 private:
+    sf::Time update_period;
     bool execute_button_message(Button::Button_Message message); // zwraca informacje o tym czy należy zamknąć program
 
     Window window;
@@ -46,7 +47,8 @@ private:
     Image_source image_source;
     Binarization binarization;
 
-    std::shared_ptr<cv::Mat> raw_picture = std::make_shared<cv::Mat>();
+    std::shared_ptr<std::pair<sf::Time, cv::Mat>> raw_picture_with_main_time
+        = std::make_shared<std::pair<sf::Time, cv::Mat>>();
     std::shared_ptr<cv::Mat> binarized_picture = std::make_shared<cv::Mat>();
 
     Small_window raw_picture_window;
@@ -64,7 +66,7 @@ private:
     Rays_intersection_analyzer rays_intersection_analyzer;
     Objects_tracker objects_tracker;
 
-    sf::Clock clock;
+    sf::Clock& clock;
 };
 
 

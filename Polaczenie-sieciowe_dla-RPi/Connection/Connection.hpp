@@ -18,12 +18,12 @@ public:
     struct Projection_window_parameters{
         sf::Vector2f position = sf::Vector2f(0, 0);
         sf::Vector2f size = sf::Vector2f(0, 0);
-        Projection_image_calculator::axes axis_a = Projection_image_calculator::axes::z;
-        Projection_image_calculator::axes axis_b = Projection_image_calculator::axes::x;
+        Axes axis_a = Axes::z;
+        Axes axis_b = Axes::x;
         sf::Color background_color = sf::Color::White;
     };
 
-    [[maybe_unused]] Connection(
+    Connection(
             std::unique_ptr<Buttons_Field> button_filed_,
 
             sf::Vector2f custom_data_view_pos,
@@ -36,8 +36,7 @@ public:
             sf::Vector2f camera_view_pos,
             sf::Vector2f camera_view_size,
             Graphic_Warehouse& graphic_warehouse,
-            unsigned short port,
-            sf::Clock& clock_
+            unsigned short port
             );
 
     // bez wyświetlania grafik z kamery
@@ -78,8 +77,8 @@ public:
             sf::Vector2f window_size,
             sf::Vector2f zero_point_pos,
 
-            Projection_image_calculator::axes axis_a,
-            Projection_image_calculator::axes axis_b,
+            Axes axis_a,
+            Axes axis_b,
 
             Graphic_Warehouse& graphic_warehouse,
             unsigned short port,

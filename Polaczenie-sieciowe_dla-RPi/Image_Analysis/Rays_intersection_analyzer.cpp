@@ -7,10 +7,9 @@
 #include <opencv2/calib3d.hpp>
 #include "Rays_intersection_analyzer.hpp"
 #include "../Configs.hpp"
+#include "../Rays_source.hpp"
 
-Rays_intersection_analyzer::Rays_intersection_analyzer():
-        Time_Object(Configs::camera_update_period_microseconds)
-{}
+Rays_intersection_analyzer::Rays_intersection_analyzer() = default;
 
 void get_potential_detected_object(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, double>>& result,
                                    Frame_parameters& objets_begin,

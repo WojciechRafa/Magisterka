@@ -16,42 +16,37 @@ void get_binary_diff(cv:: Mat& frame_1, cv:: Mat& frame_2, cv::Mat& result){
 void Binarization::update() {
     parameters->numb_labels = 0;
 
-    if(input_image == nullptr or input_image->empty()){
-        last_update_time = clock.getElapsedTime().asMicroseconds();
-        return;
-    }
-
     if(is_relative){
         relative_update();
     }else{
         absolute_update();
     }
-
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
-void Binarization::set_input_image(std::shared_ptr<cv::Mat> image_) {
-    input_image = std::move(image_);
+void Binarization::set_input_image(std::shared_ptr<std::pair<sf::Time, cv::Mat>> image_with_main_time_) {
+    image_with_main_time = std::move(image_with_main_time_);
 }
 
 void Binarization::set_binarized_image(std::shared_ptr<cv::Mat> image_) {
     binarized_image_result = std::move(image_);
 }
 
-Binarization::Binarization(bool is_relative_, int change_time_):
-    is_relative(is_relative_),
-    Time_Object(change_time_){}
+Binarization::Binarization(bool is_relative_):
+        is_relative(is_relative_){}
 
 void Binarization::set_parameters(std::shared_ptr<Binarized_parameters> parameters_) {
     parameters = std::move(parameters_);
 }
 
 void Binarization::relative_update() {
-    if(input_image != nullptr and image_m1 != nullptr and image_m2 != nullptr){
+    if(image_with_main_time != nullptr and image_m1 != nullptr and image_m2 != nullptr){
         cv::Mat threshold_diff_1, threshold_diff_2;
 
-        get_binary_diff(*input_image, *image_m1, threshold_diff_1);
-        get_binary_diff(*input_image, *image_m2, threshold_diff_2);
+        auto& image = image_with_main_time->second;
+
+        get_binary_diff(image, *image_m1, threshold_diff_1);
+        get_binary_diff(image, *image_m2, threshold_diff_2);
 
         cv::Mat and_result;
         cv::bitwise_and(threshold_diff_1, threshold_diff_2, and_result);
@@ -70,16 +65,16 @@ void Binarization::relative_update() {
     }
     if (image_m1 != nullptr)
         image_m2 = std::move(image_m1);
-    image_m1 = std::make_unique<cv::Mat>(input_image->clone());
+    image_m1 = std::make_unique<cv::Mat>(image_with_main_time->second.clone());
 }
 
 void Binarization::absolute_update() {
-    if(reference_image == nullptr and input_image != nullptr){
-        reference_image = std::make_unique<cv::Mat>(input_image->clone());
-    }else if(input_image != nullptr){
+    if(reference_image == nullptr and image_with_main_time != nullptr){
+        reference_image = std::make_unique<cv::Mat>(image_with_main_time->second.clone());
+    }else if(image_with_main_time != nullptr and not image_with_main_time->second.empty()){
         cv::Mat threshold_diff;
 
-        get_binary_diff(*input_image, *reference_image, threshold_diff);
+        get_binary_diff(image_with_main_time->second, *reference_image, threshold_diff);
 
         int kernelSize = 5;  // Can be adjusted
         cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(kernelSize, kernelSize));
@@ -95,7 +90,7 @@ void Binarization::absolute_update() {
 }
 
 void Binarization::set_reference_image() {
-    if(reference_image == nullptr and input_image != nullptr) {
-        reference_image = std::make_unique<cv::Mat>(input_image->clone());
+    if(reference_image == nullptr and image_with_main_time != nullptr) {
+        reference_image = std::make_unique<cv::Mat>(image_with_main_time->second.clone());
     }
 }

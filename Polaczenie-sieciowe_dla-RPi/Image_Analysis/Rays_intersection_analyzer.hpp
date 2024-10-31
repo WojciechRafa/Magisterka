@@ -20,7 +20,7 @@ public:
     void add_projection(std::unique_ptr<Frame_parameters> new_params);
     void set_objects_tracker_ptr(Objects_tracker* objects_tracker_);
 
-    void update() override;
+    void update();
 private:
     std::map<sf::Int64, std::vector<std::unique_ptr<Frame_parameters>>> objets_parameters_list_by_time;
     std::map<Rays_source*, sf::Int64> last_update_time_of_ray_source;

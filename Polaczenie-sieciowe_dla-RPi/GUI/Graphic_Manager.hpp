@@ -17,9 +17,8 @@ public:
     Graphic_Manager(
             Window& window_,
             Graphic_Warehouse& graphic_warehouse_,
-            std::vector<std::unique_ptr<Connection>>& connection_list_,
-            sf::Int64 update_period_microseconds_
-            ); // w konstruktorze znajduje się międzyinnymi konfiguracja ekranu
+            std::vector<std::unique_ptr<Connection>>& connection_list_
+    );// w konstruktorze znajduje się międzyinnymi konfiguracja ekranu
 
     void update() override;
 

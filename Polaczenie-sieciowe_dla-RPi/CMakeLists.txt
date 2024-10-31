@@ -11,7 +11,6 @@ add_executable(Magisterka
         Network/sended_struct.hpp
         Network/sended_struct.cpp
         main_functions.hpp
-        Time.hpp
         Network/Broadcast_Connector.cpp
         Network/Broadcast_Connector.hpp
         Network/Permanent_Connector.cpp

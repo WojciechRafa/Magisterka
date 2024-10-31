@@ -59,8 +59,8 @@ public:
             sf::Vector2f window_pos,
             sf::Vector2f window_size,
             sf::Vector2f zero_point_pos,
-            Projection_image_calculator::axes axis_a,
-            Projection_image_calculator::axes axis_b,
+            Axes axis_a,
+            Axes axis_b,
             std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* received_parameters_,
 
             Graphic_Warehouse& graphic_warehouse
@@ -85,8 +85,8 @@ public:
     void add_projection(sf::Vector2f size_,
                         sf::Vector2f pos,
                         sf::Vector2f zero_point_pos,
-                        Projection_image_calculator::axes axis_a,
-                        Projection_image_calculator::axes axis_b,
+                        Axes axis_a,
+                        Axes axis_b,
                         std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* detected_object_parameters_,
                         cv::Mat internal_matrix,
                         cv::Mat external_matrix,

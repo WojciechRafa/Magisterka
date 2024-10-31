@@ -21,15 +21,15 @@ public:
 
     ~Small_window() override = default;
 
-    void update() override;
-    void set_image_ptr(std::shared_ptr<cv::Mat> image_);
+    void update();
+    void set_image_ptr(cv::Mat* image_);
 
     void set_additional_graphic(std::vector<std::unique_ptr<sf::Shape>>* additional_graphic_);
     std::vector<std::unique_ptr<sf::Shape>>* get_additional_graphic();
 //    std::vector<sf::Drawable*>& get_additional_graphic();
 
 private:
-    std::shared_ptr<cv::Mat> image_cv_ptr = nullptr;
+    cv::Mat* image_cv_ptr = nullptr;
     cv::Mat image_copy;
     sf::Vector2f size;
 

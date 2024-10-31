@@ -9,8 +9,6 @@
 Broadcast_Connector::Broadcast_Connector(unsigned short port_):
     port(port_){
     udp_socket.setBlocking(false);
-
-    update_period_microseconds = 500000;
 }
 void Broadcast_Connector::update() {
     if (mode == b_connector_mode::broadcast_ip_and_waiting_to_response) {
@@ -65,7 +63,7 @@ void Broadcast_Connector::update() {
             mode = b_connector_mode::three_response_sended;
     }
 
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
 

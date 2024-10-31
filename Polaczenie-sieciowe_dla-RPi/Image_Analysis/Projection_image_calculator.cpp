@@ -53,8 +53,8 @@ cv::Vec3d Projection_image_calculator::compute_3D_line(const cv::Mat& intrinsicM
 }
 
 Projection_image_calculator::Projection_image_calculator(
-                                                        Projection_image_calculator::axes axis_a_,
-                                                         Projection_image_calculator::axes axis_b_,
+                                                         Axes axis_a_,
+                                                         Axes axis_b_,
                                                          sf::Vector2f window_pos_,
                                                          sf::Vector2f window_size_,
                                                          sf::Vector2f zero_point_pos_,
@@ -64,8 +64,8 @@ Projection_image_calculator::Projection_image_calculator(
 
                                                         Rays_intersection_analyzer* rays_intersection_analyzer_ptr_,
 
-                                                         cv::Mat internal_matrix_,
-                                                         cv::Mat external_matrix_,
+                                                         const cv::Mat& internal_matrix_,
+                                                         const cv::Mat& external_matrix_,
                                                          int change_time_):
         Rays_source(rays_intersection_analyzer_ptr_),
         axis_a(axis_a_),
@@ -75,8 +75,7 @@ Projection_image_calculator::Projection_image_calculator(
         output_zero_point_pos(zero_point_pos_),
 
         are_rays_from_slave(are_rays_from_slave_),
-        received_parameters(received_parameters_),
-        Time_Object(change_time_){
+        received_parameters(received_parameters_){
     internal_parameters = load_camera_matrix("../Camera_insert_parameters.csv");
 
     corners_angle[0] = atan2(output_zero_point_pos.y,
@@ -148,13 +147,13 @@ std::unique_ptr<sf::RectangleShape>  Projection_image_calculator::get_ray(sf::Ve
     return line;
 }
 
-int Projection_image_calculator::get_axi_nr(Projection_image_calculator::axes axis) {
+int Projection_image_calculator::get_axi_nr(Axes axis) {
     switch (axis) {
-        case axes::x:
+        case Axes::x:
             return 0;
-        case axes::y:
+        case Axes::y:
             return 1;
-        case axes::z:
+        case Axes::z:
             return 2;
         default:
             return -1;
@@ -258,7 +257,7 @@ void Projection_image_calculator::update() {
         projection->setPosition(projection->getPosition() + window_pos);
     }
 
-    last_update_time = clock.getElapsedTime().asMicroseconds();
+    last_update_time = clock.getElapsedTime();
 }
 
 void Projection_image_calculator::set_parameters(std::shared_ptr<Binarization::Binarized_parameters> parameters_) {
