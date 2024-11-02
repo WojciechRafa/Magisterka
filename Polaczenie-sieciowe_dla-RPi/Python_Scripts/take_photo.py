@@ -14,6 +14,8 @@ def capture_and_save_image(folder_path):
 
     print("Press 's' to capture an image and save it, or 'q' to quit.")
 
+    image_nr: int = 1
+
     while True:
         ret, frame = cap.read()
         if not ret:

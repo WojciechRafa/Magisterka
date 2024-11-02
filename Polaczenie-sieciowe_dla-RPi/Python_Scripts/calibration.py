@@ -17,84 +17,50 @@ objp[:, :2] = np.mgrid[0:p_y, 0:p_x].T.reshape(-1,2)
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
-Chosen_camera = "Samsung_A50_WPR"
+Chosen_camera = "Dell"
 # Chosen_camera = "IPhone"
+display_points: bool = False
 
 images = glob.glob('Calibration_Images/{}/*.png'.format(Chosen_camera), recursive=True)
-
-ret_list = []
-mtx_list = []
-dist_list = []
-rvecs_list = []
-tvecs_list = []
-
-alpha_x_list = []
-alpha_y_list = []
-vx_list = []
-vy_list = []
+cameras_matrix_folder = "Cameras_matrix"
 
 idx_list = []
 
+h:int = -1
+w:int = -1
+
 for idx, fname in enumerate(images):
     img = cv.imread(fname)
+
+    if (h, w) != img.shape[:2] and (h != -1 or w != -1):
+        raise RuntimeError("Image have different sizes")
+    h, w = img.shape[:2]
+
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
     # Find the chess board corners
-    ret, corners = cv.findChessboardCorners(gray, (p_y, p_x), None)
+    found_chess, corners = cv.findChessboardCorners(gray, (p_x, p_y), None)
 
     # If found, add object points, image points (after refining them)
-    if ret == True:
+    if found_chess:
         objpoints.append(objp)
 
-    corners2 = cv.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
-    imgpoints.append(corners2)
+        corners2 = cv.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
+        imgpoints.append(corners2)
 
-    ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
+        if display_points:
+            cv.drawChessboardCorners(gray, (p_y, p_x), corners2, found_chess)
+            cv.imshow('img', gray)
+            cv.waitKey(100)
+    cv.destroyAllWindows()
 
-    h, w = img.shape[:2]
-    newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
+ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
 
-    alpha_x_list.append(newcameramtx[0, 0])
-    alpha_y_list.append(newcameramtx[1, 1])
-    vx_list.append(newcameramtx[0, 2])
-    vy_list.append(newcameramtx[1, 2])
-
-    rot_matrix, _ = cv.Rodrigues(rvecs[-1])
-
-    trans_matrix = np.eye(4)
-
-    trans_matrix[0:3, 0:3] = rot_matrix
-
-    trans_matrix[3, 0:3] = tvecs[-1].reshape((3,))
-
-    print("\n")
-    print(rot_matrix)
-    print(tvecs)
-    print("\n")
-
-    ret_list.append(ret)
-    mtx_list.append(mtx)
-    dist_list.append(dist)
-    rvecs_list.append(rvecs)
-    tvecs_list.append(tvecs)
-
-    print("\r", end="")
-    print("\rProcent - {} %".format((100 * idx) // len(images)), end="")
-
-    idx_list.append(idx)
-    
-    #if ret == True: 
-    #    corners2 = cv.cornerSubPix(gray,corners, (11,11), (-1,-1), criteria)
-    #    imgpoints.append(corners2)
-    #    cv.drawChessboardCorners(gray, (p_y, p_x), corners2, ret)
-    #    cv.imshow('img', gray)
-    #    cv.waitKey(500)
-
+newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
 
 cv.destroyAllWindows()
 
-np.save("{}.npy".format(Chosen_camera), newcameramtx)
-pd.DataFrame(newcameramtx).to_excel("{}.xlsx".format(Chosen_camera), index=False, header=False)
-# df.to_excel("{}.npy".format(Chosen_camera), newcameramtx)
-
+np.save(cameras_matrix_folder + "/{}.npy".format(Chosen_camera), newcameramtx)
+pd.DataFrame(newcameramtx).to_excel(cameras_matrix_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
+np.savetxt(cameras_matrix_folder + "/{}.csv".format(Chosen_camera), newcameramtx, delimiter=',', fmt='%d')
 pass
