@@ -3,10 +3,8 @@
 //
 
 #include <map>
-#include <cmath>
 #include <opencv2/calib3d.hpp>
 #include "Rays_intersection_analyzer.hpp"
-#include "../Configs.hpp"
 #include "../Rays_source.hpp"
 
 Rays_intersection_analyzer::Rays_intersection_analyzer() = default;
