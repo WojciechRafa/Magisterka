@@ -6,6 +6,13 @@
 #define MAGISTERKA_CONFIGS_HPP
 
 #include <SFML/Config.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <opencv4/opencv2/core.hpp>
+#include <map>
+
+enum class Axes {
+    x, y, z
+};
 
 namespace Configs{
     static sf::Time default_update_time = sf::milliseconds(50);
@@ -18,6 +25,12 @@ namespace Configs{
 
     static bool is_binarization_relative = false;
     static int binarization_threshold = 50;
+
+    enum class computers_enum{
+        dell,
+        hp
+    };
+
 }
 
 #endif //MAGISTERKA_CONFIGS_HPP

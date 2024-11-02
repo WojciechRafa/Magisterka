@@ -16,7 +16,8 @@ System::System():
     binarized_picture_window(standard_window_size, sf::Vector2f(320, 120)),
     projections_window(standard_window_size, sf::Vector2f(630, 120), sf::Color::White),
 
-    projection_calculator(Projection_image_calculate::axes::z,
+    projection_calculator(
+                          Projection_image_calculate::axes::z,
                           Projection_image_calculate::axes::x,
                           projections_window.getPosition(),
                           standard_window_size,

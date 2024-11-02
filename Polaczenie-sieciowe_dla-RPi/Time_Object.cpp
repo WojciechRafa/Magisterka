@@ -7,7 +7,6 @@ sf::Clock Time_Object::clock;
 sf::Time Time_Object::main_clock_diff;
 
 Time_Object::Time_Object() {
-    clock.restart();
     last_update_time = clock.getElapsedTime();
 
     all_time_objects_pointers.push_back(this);
