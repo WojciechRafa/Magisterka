@@ -8,6 +8,7 @@
 #include <opencv2/opencv.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
+#include <fstream>
 
 inline void write_comunicate_sockte_status(sf::Socket::Status status){
     switch (status){
@@ -50,6 +51,71 @@ inline void resize_shape(sf::Vector2u target_size, sf::Shape* shape) {
     shape->setScale(convert_vector);
 }
 
+//inline cv::Mat load_camera_matrix(const std::string& filePath) {
+//    cv::Mat result = cv::Mat::zeros(3, 3, CV_64F);
+//    std::ifstream file(filePath);
+//
+//    if (file.is_open()) {
+//        std::string line;
+//        int row = 0;
+//        while (std::getline(file, line) && row < 3) {
+//            std::stringstream lineStream(line);
+//            std::string cell;
+//            int col = 0;
+//            while (std::getline(lineStream, cell, ',') && col < 3) {
+//                result.at<double>(row, col) = std::stof(cell);
+//                auto temporary = std::stof(cell);
+//                col++;
+//            }
+//            row++;
+//        }
+//        file.close();
+//    } else {
+//        std::cerr << "File  "<< filePath << " can't be open" << filePath << std::endl;
+//    }
+//    return result;
+//}
 
+inline cv::Mat load_camera_matrix(const std::string& filePath) {
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file " << filePath << std::endl;
+        return {};
+    }
+
+    std::vector<std::vector<double>> data;
+    std::string line;
+    size_t numCols = 0;
+
+    // Read each line from the CSV file
+    while (std::getline(file, line)) {
+        std::stringstream lineStream(line);
+        std::string cell;
+        std::vector<double> row;
+
+        while (std::getline(lineStream, cell, ',')) {
+            row.push_back(std::stof(cell));  // Convert string to float
+        }
+
+        if (numCols == 0) {
+            numCols = row.size();  // Set column count from the first row
+        } else if (row.size() != numCols) {
+            std::cerr << "Error: Inconsistent row sizes in CSV" << std::endl;
+            return {};
+        }
+
+        data.push_back(row);
+    }
+
+    // Convert the 2D vector to a cv::Mat
+    cv::Mat mat(data.size(), numCols, CV_64F);
+    for (size_t i = 0; i < data.size(); ++i) {
+        for (size_t j = 0; j < numCols; ++j) {
+            mat.at<double>(i, j) = data[i][j];
+        }
+    }
+
+    return mat;
+}
 
 #endif //SR_1_1_MAIN_FUNCTIONS_HPP

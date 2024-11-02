@@ -37,7 +37,6 @@ public:
 
     Frame_parameters(sf::Int64 time_, Rays_source* source_ptr_, std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& data):
     time(time_), source_ptr(source_ptr_){
-
         for(auto& object_tuple: data){
             objets.emplace_back(object_tuple);
         }

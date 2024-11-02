@@ -25,11 +25,7 @@ public:
                                 bool are_rays_from_slave_ = false,
                                 std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* received_parameters_ = {},
 
-                                Rays_intersection_analyzer* rays_intersection_analyzer_ptr_ = nullptr,
-
-                                const cv::Mat& internal_matrix_ = cv::Mat::zeros(3, 3, CV_8UC1),
-                                const cv::Mat& external_matrix_ = cv::Mat::zeros(3, 4, CV_8UC1),
-                                int change_time_ = 50000);
+                                Rays_intersection_analyzer* rays_intersection_analyzer_ptr_ = nullptr);
     void update() override;
 
     void set_parameters(std::shared_ptr<Binarization::Binarized_parameters> parameters_);
@@ -46,8 +42,8 @@ private:
 
     std::vector<std::unique_ptr<sf::Shape>>* projections_list = nullptr;
 
-    static cv::Mat load_camera_matrix(const std::string& filePath);
-    cv::Mat internal_parameters;
+//    static cv::Mat load_camera_matrix(const std::string& filePath);
+//    cv::Mat internal_parameters;
 
     static cv::Vec3d compute_3D_line(const cv::Mat& intrinsicMatrix, const cv::Point2d& imagePoint);
 

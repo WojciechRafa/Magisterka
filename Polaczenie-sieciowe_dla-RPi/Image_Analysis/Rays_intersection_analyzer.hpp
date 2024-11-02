@@ -17,12 +17,12 @@ class Rays_source;
 class Rays_intersection_analyzer: public Time_Object{
 public:
     Rays_intersection_analyzer();
-    void add_projection(std::unique_ptr<Frame_parameters> new_params);
+    void add_projection(std::shared_ptr<Frame_parameters> new_params);
     void set_objects_tracker_ptr(Objects_tracker* objects_tracker_);
 
     void update();
 private:
-    std::map<sf::Int64, std::vector<std::unique_ptr<Frame_parameters>>> objets_parameters_list_by_time;
+    std::map<sf::Int64, std::vector<std::shared_ptr<Frame_parameters>>> objets_parameters_list_by_time;
     std::map<Rays_source*, sf::Int64> last_update_time_of_ray_source;
     std::vector<std::tuple<sf::Int64, Rays_source*, Rays_source*>> already_checked_intersections;
     Objects_tracker* objects_tracker_ptr = nullptr;
@@ -34,7 +34,7 @@ private:
                              cv::Vec2d bb_size_2d);
 
     static bool check_size_comparison(  double& estimated_size,
-                                        const cv::Mat &position,
+                                        const cv::Mat &position_mat,
                                         const cv::Mat &first_outside_matrix,
                                         const cv::Mat &first_inside_matrix,
                                         cv::Vec2d first_bb_size_2d,
@@ -44,8 +44,8 @@ private:
 
     static void calculate_intersections( std::vector<cv::Vec3d>& result_pos,
                                   std::vector<double>& result_size,
-                                  std::unique_ptr<Frame_parameters>& first_frame_params,
-                                  std::unique_ptr<Frame_parameters>& second_frame_params);
+                                  Frame_parameters* first_frame_params,
+                                  Frame_parameters* second_frame_params);
 };
 
 #endif //MAGISTERKA_RAYS_INTERSECTION_ANALYZER_HPP

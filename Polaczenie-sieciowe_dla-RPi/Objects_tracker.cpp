@@ -63,7 +63,7 @@ void Objects_tracker::add_detecion(sf::Int64 time, std::vector<cv::Vec3d>& pos_v
         throw std::runtime_error("pos_vector.size() != size_vector.size()");
     }
 
-    for(size_t i = 0; i <= pos_vector.size(); i++){
+    for(size_t i = 0; i < pos_vector.size(); i++){
         detected_objets[time].emplace_back(pos_vector[i], size_vector[i]);
     }
 }

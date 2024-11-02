@@ -41,4 +41,4 @@ sf::Packet& operator >>(sf::Packet& packet, Image_and_number& Img_and_num);
 void read_packet(sf::Int64& time,
                  sf::Uint16& elements_amount,
                  std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& data,
-                 sf::Packet packet);
+                 sf::Packet& packet);

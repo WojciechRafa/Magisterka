@@ -18,14 +18,14 @@
 class Rays_source{
 public:
     explicit Rays_source(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_);
-    cv::Mat& get_outside_matrix();
-    cv::Mat& get_inside_matrix();
+    cv::Mat& get_internal_matrix();
+    cv::Mat& get_external_matrix();
 
     void set_rays_intersection_analyzer(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_);
 protected:
     Rays_intersection_analyzer* rays_intersection_analyzer_ptr = nullptr;
-    cv::Mat inside_matrix;
-    cv::Mat outside_matrix;
+    cv::Mat internal_matrix;
+    cv::Mat external_matrix;
 };
 
 #endif //MAGISTERKA_RAYS_SOURCE_HPP

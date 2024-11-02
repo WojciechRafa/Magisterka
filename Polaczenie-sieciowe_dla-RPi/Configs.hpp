@@ -8,6 +8,7 @@
 #include <SFML/Config.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <opencv4/opencv2/core.hpp>
+#include <map>
 
 enum class Axes {
     x, y, z
@@ -37,6 +38,18 @@ namespace Configs{
         static Axes second_axle = Axes::y;
     }
 
+    enum class computers_enum{
+        dell,
+        hp
+    };
+
+    static computers_enum local_computer = computers_enum::dell;
+    static computers_enum remote_computer = computers_enum::hp;
+
+    static std::map<computers_enum, std::string> hw_folder_folders_name{
+            {computers_enum::dell, "Dell"},
+            {computers_enum::hp, "Hp"},
+    };
 }
 
 #endif //MAGISTERKA_CONFIGS_HPP

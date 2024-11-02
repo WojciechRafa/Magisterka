@@ -3,37 +3,13 @@
 //
 #include <iostream>
 #include <string>
-#include <fstream>
+
 #include <cmath>
 #include <utility>
 
 #include "Projection_image_calculator.hpp"
 #include "../Network/sended_struct.hpp"
-
-cv::Mat Projection_image_calculator::load_camera_matrix(const std::string& filePath) {
-    cv::Mat K = cv::Mat::zeros(3, 3, CV_64F);
-    std::ifstream file(filePath);
-
-    if (file.is_open()) {
-        std::string line;
-        int row = 0;
-        while (std::getline(file, line) && row < 3) {
-            std::stringstream lineStream(line);
-            std::string cell;
-            int col = 0;
-            while (std::getline(lineStream, cell, ',') && col < 3) {
-                K.at<double>(row, col) = std::stof(cell);
-                auto temporary = std::stof(cell);
-                col++;
-            }
-            row++;
-        }
-        file.close();
-    } else {
-        std::cerr << "File  "<< filePath << " can't be open" << filePath << std::endl;
-    }
-    return K;
-}
+#include "../main_functions.hpp"
 
 cv::Vec3d Projection_image_calculator::compute_3D_line(const cv::Mat& intrinsicMatrix, const cv::Point2d& imagePoint) {
     // Invert the intrinsic matrix to go from image coordinates to camera coordinates
@@ -62,11 +38,7 @@ Projection_image_calculator::Projection_image_calculator(
                                                          bool are_rays_from_slave_,
                                                          std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* received_parameters_,
 
-                                                        Rays_intersection_analyzer* rays_intersection_analyzer_ptr_,
-
-                                                         const cv::Mat& internal_matrix_,
-                                                         const cv::Mat& external_matrix_,
-                                                         int change_time_):
+                                                        Rays_intersection_analyzer* rays_intersection_analyzer_ptr_):
         Rays_source(rays_intersection_analyzer_ptr_),
         axis_a(axis_a_),
         axis_b(axis_b_),
@@ -76,7 +48,12 @@ Projection_image_calculator::Projection_image_calculator(
 
         are_rays_from_slave(are_rays_from_slave_),
         received_parameters(received_parameters_){
-    internal_parameters = load_camera_matrix("../Camera_insert_parameters.csv");
+
+    auto local_hw = Configs::local_computer;
+    auto local_hw_folder_name = Configs::hw_folder_folders_name[local_hw];
+    std::string main_folder = "../Hw_params/" + local_hw_folder_name;
+    internal_matrix = load_camera_matrix(main_folder + "/Camera_internal_parameters.csv");
+    external_matrix = load_camera_matrix(main_folder + "/Camera_external_parameters.csv");
 
     corners_angle[0] = atan2(output_zero_point_pos.y,
                              -output_zero_point_pos.x);
@@ -182,9 +159,9 @@ void Projection_image_calculator::update() {
 
             cv::Point2d centroid(parameters->centroids.at<double>(i, 0), parameters->centroids.at<double>(i, 1));
 
-            box_dir_3D_begin = compute_3D_line(internal_parameters, static_cast<cv::Point2d>(box_pos));
-            box_dir_3D_end = compute_3D_line(internal_parameters, static_cast<cv::Point2d>(box_pos + box_size));
-            centroid_dir_3D = compute_3D_line(internal_parameters, centroid);
+            box_dir_3D_begin = compute_3D_line(internal_matrix, static_cast<cv::Point2d>(box_pos));
+            box_dir_3D_end = compute_3D_line(internal_matrix, static_cast<cv::Point2d>(box_pos + box_size));
+            centroid_dir_3D = compute_3D_line(internal_matrix, centroid);
 
 
 //            to_send.emplace_back(box_dir_3D_begin, box_dir_3D_end, centroid_dir_3D);
@@ -265,10 +242,10 @@ void Projection_image_calculator::set_parameters(std::shared_ptr<Binarization::B
 }
 
 cv::Vec3d Projection_image_calculator::multiple_internal(cv::Vec2d &image_params) {
-    double fx = internal_parameters.at<double>(0, 0);   // f_x
-    double fy = internal_parameters.at<double>(1, 1);   // f_y
-    double cx = internal_parameters.at<double>(0, 2);   // c_x
-    double cy = internal_parameters.at<double>(1, 2);   // c_y
+    double fx = internal_matrix.at<double>(0, 0);   // f_x
+    double fy = internal_matrix.at<double>(1, 1);   // f_y
+    double cx = internal_matrix.at<double>(0, 2);   // c_x
+    double cy = internal_matrix.at<double>(1, 2);   // c_y
 
     double X = (image_params[0] - cx) / fx;
     double Y = (image_params[1] - cy) / fy;
@@ -276,9 +253,3 @@ cv::Vec3d Projection_image_calculator::multiple_internal(cv::Vec2d &image_params
 
     return {X, Y, Z};
 }
-
-//void Projection_image_calculator::set_ray_ratio(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> *rays_ratio_) {
-//    rays_ratio = rays_ratio_;
-//    are_rays_from_slave = true;
-//}
-//

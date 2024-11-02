@@ -33,7 +33,6 @@ void Image_source::update()
         if(time_remainder > - Configs::max_camera_update_period_error and
            time_remainder <  Configs::max_camera_update_period_error){
             cap >> last_with_main_time_frame->second;
-            std::cout<<"Take photo "<<clock.getElapsedTime().asMilliseconds()<<std::endl;
         }
     }else{
         static bool was_action_button_released = true;

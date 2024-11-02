@@ -7,6 +7,7 @@
 #include "sended_struct.hpp"
 
 Broadcast_Connector::Broadcast_Connector(unsigned short port_):
+    Time_Object(sf::milliseconds(500)),
     port(port_){
     udp_socket.setBlocking(false);
 }

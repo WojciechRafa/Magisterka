@@ -16,14 +16,14 @@ void get_potential_detected_object(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, 
                                    Frame_parameters& objets_end,
                                    sf::Int64 time_diff);
 
-void Rays_intersection_analyzer::add_projection(std::unique_ptr<Frame_parameters> new_params) {
+void Rays_intersection_analyzer::add_projection(std::shared_ptr<Frame_parameters> new_params) {
     for(auto& parameters_in_time: objets_parameters_list_by_time[new_params->time]){
         if(parameters_in_time->source_ptr == new_params->source_ptr){
             std::cout<<"Parameters sent twice, ptr "<<new_params->source_ptr<<" time : "<< new_params->time << " us\n";
             return;
         }
     }
-    objets_parameters_list_by_time[new_params->time].push_back(std::move(new_params));
+    objets_parameters_list_by_time[new_params->time].push_back(new_params);
     last_update_time_of_ray_source[new_params->source_ptr] = new_params->time;
 }
 
@@ -53,9 +53,9 @@ void Rays_intersection_analyzer::update() {
                 std::vector<double> result_size;
 
                 calculate_intersections(result_pos, result_size,
-                                        first_parameter, second_parameter);
+                                        first_parameter.get(), second_parameter.get());
 
-                if(objects_tracker_ptr != nullptr){
+                if(objects_tracker_ptr != nullptr and !result_pos.empty()){
                     objects_tracker_ptr->add_detecion(time_and_parameters_ptr.first,
                                                       result_pos,
                                                       result_size);
@@ -68,15 +68,15 @@ void Rays_intersection_analyzer::update() {
 
 void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> &result_pos,
                                                          std::vector<double> &result_size,
-                                                         std::unique_ptr<Frame_parameters> &first_frame_params,
-                                                         std::unique_ptr<Frame_parameters> &second_frame_params) {
+                                                         Frame_parameters* first_frame_params,
+                                                         Frame_parameters* second_frame_params) {
     result_pos = {};
 
     auto first_source = first_frame_params->source_ptr;
     auto second_source = first_frame_params->source_ptr;
 
-    cv::Mat camera_matrix_first = first_source->get_inside_matrix() * first_source->get_outside_matrix();
-    cv::Mat camera_matrix_second = second_source->get_inside_matrix() * second_source->get_outside_matrix();
+    cv::Mat camera_matrix_first = first_source->get_internal_matrix() * first_source->get_external_matrix();
+    cv::Mat camera_matrix_second = second_source->get_internal_matrix() * second_source->get_external_matrix();
 
     for(auto& objet_parameter_first: first_frame_params->objets){
 
@@ -112,24 +112,24 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
                 cv::Mat interpolated_pos_mat = points_4D.col(i);
 
                 bool projection_2d_is_correct_first = check_2d_projection(interpolated_pos_mat,
-                                                                          first_source->get_outside_matrix(),
-                                                                          first_source->get_inside_matrix(),
+                                                                          first_source->get_external_matrix(),
+                                                                          first_source->get_internal_matrix(),
                                                                           first_2d_bb_pos_vectors[i],
                                                                           first_2d_bb_size_vectors[i]);
 
                 bool projection_2d_is_correct_second = check_2d_projection(interpolated_pos_mat,
-                                                                          second_source->get_outside_matrix(),
-                                                                          second_source->get_inside_matrix(),
+                                                                           second_source->get_external_matrix(),
+                                                                           second_source->get_internal_matrix(),
                                                                           second_2d_bb_pos_vectors[i],
                                                                           second_2d_bb_size_vectors[i]);
                 double estimated_size;
                 bool size_comparison_is_correct = check_size_comparison(estimated_size,
                                                                         interpolated_pos_mat,
-                                                                        first_source->get_outside_matrix(),
-                                                                        first_source->get_inside_matrix(),
+                                                                        first_source->get_external_matrix(),
+                                                                        first_source->get_internal_matrix(),
                                                                         first_2d_bb_size_vectors[i],
-                                                                        second_source->get_outside_matrix(),
-                                                                        second_source->get_inside_matrix(),
+                                                                        second_source->get_external_matrix(),
+                                                                        second_source->get_internal_matrix(),
                                                                         second_2d_bb_size_vectors[i]);
 
                 if(projection_2d_is_correct_first and projection_2d_is_correct_second and size_comparison_is_correct){
@@ -154,7 +154,7 @@ bool Rays_intersection_analyzer::check_2d_projection(const cv::Mat& position,
 }
 
 bool Rays_intersection_analyzer::check_size_comparison( double& estimated_size,
-                                                        const cv::Mat &position,
+                                                        const cv::Mat &position_mat,
                                                         const cv::Mat &first_outside_matrix,
                                                         const cv::Mat &first_inside_matrix,
                                                         cv::Vec2d first_bb_size_2d,
@@ -174,6 +174,10 @@ bool Rays_intersection_analyzer::check_size_comparison( double& estimated_size,
     cv::Vec3d second_pos(second_outside_matrix.at<double>(0, 3),
                          second_outside_matrix.at<double>(1, 3),
                          second_outside_matrix.at<double>(2, 3));
+
+    cv::Vec3d position(position_mat.at<double>(0, 3),
+                       position_mat.at<double>(1, 3),
+                       position_mat.at<double>(2, 3));
 
     double first_distance = cv::norm(position - first_pos);
     double second_distance = cv::norm(position - second_pos);

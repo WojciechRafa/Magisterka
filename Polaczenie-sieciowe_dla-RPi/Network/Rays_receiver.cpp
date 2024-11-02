@@ -4,10 +4,17 @@
 
 #include "Rays_receiver.hpp"
 #include "sended_struct.hpp"
+#include "../main_functions.hpp"
 
 Rays_receiver::Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, Rays_intersection_analyzer* rays_intersection_analyzer):
     Rays_source(rays_intersection_analyzer),
     Permanent_Connector(port_, remote_dev_ip_){
+
+    auto remote_hw = Configs::remote_computer;
+    auto remote_hw_folder_name = Configs::hw_folder_folders_name[remote_hw];
+    std::string main_folder = "../Hw_params/" + remote_hw_folder_name;
+    internal_matrix = load_camera_matrix(main_folder + "/Camera_internal_parameters.csv");
+    external_matrix = load_camera_matrix(main_folder + "/Camera_external_parameters.csv");
 }
 
 void Rays_receiver::update() {
@@ -35,14 +42,13 @@ void Rays_receiver::update() {
 
             read_packet(rays_time, vector_size, rays_data, received_packet);
             if(vector_size > 0 and rays_intersection_analyzer_ptr != nullptr){
-                auto new_frame_parameter = std::make_unique<Frame_parameters>(rays_time, this, rays_data);
+                auto new_frame_parameter = std::make_shared<Frame_parameters>(rays_time, this, rays_data);
                 rays_intersection_analyzer_ptr->add_projection(std::move(new_frame_parameter));
             }
-
-//            std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << "\nRozmiar wektora " << vectors_list->bb_size() << std::endl;
+            std::cout<<"Data recive\n";
+            std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << std::endl;
 
         }
-        std::cout<<"Data recive\n";
         last_update_time = clock.getElapsedTime();
     }
 }
