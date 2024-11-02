@@ -31,6 +31,12 @@ namespace Configs{
         hp
     };
 
+    static computers_enum this_computer = computers_enum::hp;
+
+    static std::map<computers_enum, std::string> hw_folder_folders_name{
+            {computers_enum::dell, "Dell"},
+            {computers_enum::hp, "Hp"},
+    };
 }
 
 #endif //MAGISTERKA_CONFIGS_HPP

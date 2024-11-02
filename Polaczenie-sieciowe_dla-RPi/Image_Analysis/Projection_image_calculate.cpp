@@ -6,31 +6,7 @@
 #include <fstream>
 #include <cmath>
 #include "Projection_image_calculate.hpp"
-
-cv::Mat Projection_image_calculate::load_camera_matrix(const std::string& filePath) {
-    cv::Mat K = cv::Mat::zeros(3, 3, CV_64F);
-    std::ifstream file(filePath);
-
-    if (file.is_open()) {
-        std::string line;
-        int row = 0;
-        while (std::getline(file, line) && row < 3) {
-            std::stringstream lineStream(line);
-            std::string cell;
-            int col = 0;
-            while (std::getline(lineStream, cell, ',') && col < 3) {
-                K.at<double>(row, col) = std::stof(cell);
-                auto temporary = std::stof(cell);
-                col++;
-            }
-            row++;
-        }
-        file.close();
-    } else {
-        std::cerr << "File  "<< filePath << " can't be open" << filePath << std::endl;
-    }
-    return K;
-}
+#include "../main_functions.hpp"
 
 cv::Vec3d Projection_image_calculate::compute_3D_line(const cv::Mat& intrinsicMatrix, const cv::Point2d& imagePoint) {
     // Invert the intrinsic matrix to go from image coordinates to camera coordinates
@@ -60,7 +36,11 @@ Projection_image_calculate::Projection_image_calculate(Projection_image_calculat
         window_pos(window_pos_),
         output_window_size(window_size_),
         output_zero_point_pos(zero_point_pos_){
-    internal_parameters = load_camera_matrix("../Camera_insert_parameters.csv");
+
+    auto this_hw = Configs::this_computer;
+    auto this_hw_folder_name = Configs::hw_folder_folders_name[this_hw];
+    std::string main_folder = "../Hw_params/" + this_hw_folder_name;
+    internal_matrix = load_camera_matrix(main_folder + "/Camera_internal_parameters.csv");
 
     corners_angle[0] = atan2(output_zero_point_pos.y,
                              -output_zero_point_pos.x);
@@ -165,9 +145,9 @@ void Projection_image_calculate::update() {
 
             sent_parameters->data.emplace_back(static_cast<cv::Point2d>(box_pos), static_cast<cv::Point2d>(box_pos + box_size), centroid);
 
-            auto box_dir_3D_begin = compute_3D_line(internal_parameters, static_cast<cv::Point2d>(box_pos));
-            auto box_dir_3D_end = compute_3D_line(internal_parameters, static_cast<cv::Point2d>(box_pos + box_size));
-            auto centroid_dir_3D = compute_3D_line(internal_parameters, centroid);
+            auto box_dir_3D_begin = compute_3D_line(internal_matrix, static_cast<cv::Point2d>(box_pos));
+            auto box_dir_3D_end = compute_3D_line(internal_matrix, static_cast<cv::Point2d>(box_pos + box_size));
+            auto centroid_dir_3D = compute_3D_line(internal_matrix, centroid);
 
             vectors_list->emplace_back(box_dir_3D_begin, box_dir_3D_end, centroid_dir_3D);
 

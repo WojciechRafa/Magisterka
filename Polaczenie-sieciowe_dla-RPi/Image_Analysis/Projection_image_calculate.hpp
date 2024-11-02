@@ -42,8 +42,7 @@ private:
     Sent_parameters* sent_parameters = nullptr;
     std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list = nullptr;
 
-    static cv::Mat load_camera_matrix(const std::string& filePath);
-    cv::Mat internal_parameters;
+    cv::Mat internal_matrix;
 
     static cv::Vec3d compute_3D_line(const cv::Mat& intrinsicMatrix, const cv::Point2d& imagePoint);
 
