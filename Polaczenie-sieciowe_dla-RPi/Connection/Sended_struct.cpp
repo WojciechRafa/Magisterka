@@ -135,7 +135,7 @@ sf::Packet& operator <<(sf::Packet& packet, Image_and_number& image_and_number){
 
 void write_packet(sf::Time& time_main,
                   std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& data,
-                  sf::Packet packet){
+                  sf::Packet& packet){
     packet.clear();
 
     packet << time_main.asMicroseconds();

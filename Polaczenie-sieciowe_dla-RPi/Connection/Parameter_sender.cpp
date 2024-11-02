@@ -12,8 +12,8 @@ Parameter_sender::Parameter_sender(unsigned short port_, sf::IpAddress remote_de
 
 void Parameter_sender::update() {
     std::cout<<"\nParameter_sender::update() time:";
-    auto time_begin = clock.getElapsedTime().asMicroseconds();
-    if(mode == Permanent_Connector::p_connector_mode::establish_connection){
+    const auto time_begin = clock.getElapsedTime().asMicroseconds();
+    if(mode == p_connector_mode::establish_connection){
         update_period = sf::milliseconds(1);
         if(const auto status = tcp_listener.accept(*this); status == sf::Socket::Status::Done) {
             setBlocking(true);
