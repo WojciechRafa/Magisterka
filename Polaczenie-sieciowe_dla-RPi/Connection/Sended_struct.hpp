@@ -44,4 +44,4 @@ sf::IpAddress get_ip(sf::Packet packet);
 
 void write_packet(sf::Time& time_main,
                  std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& data,
-                 sf::Packet packet);
+                 sf::Packet& packet);
