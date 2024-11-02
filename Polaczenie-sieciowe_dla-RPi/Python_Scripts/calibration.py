@@ -17,7 +17,8 @@ objp[:, :2] = np.mgrid[0:p_y, 0:p_x].T.reshape(-1,2)
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
-Chosen_camera = "Dell"
+#Chosen_camera = "Dell"
+Chosen_camera = "Hp"
 # Chosen_camera = "IPhone"
 display_points: bool = False
 
@@ -62,5 +63,5 @@ cv.destroyAllWindows()
 
 np.save(cameras_matrix_folder + "/{}.npy".format(Chosen_camera), newcameramtx)
 pd.DataFrame(newcameramtx).to_excel(cameras_matrix_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
-np.savetxt(cameras_matrix_folder + "/{}.csv".format(Chosen_camera), newcameramtx, delimiter=',', fmt='%d')
+np.savetxt(cameras_matrix_folder + "/{}.csv".format(Chosen_camera), newcameramtx, delimiter=',', fmt='%f')
 pass

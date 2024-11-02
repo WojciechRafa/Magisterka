@@ -38,4 +38,4 @@
 *.app
 /.run/
 /Archiwum/
-/Python_Scripts/Calibration_Images/
+/Python_Scripts/Calibration_Images/*
