@@ -23,7 +23,8 @@ Chosen_camera = "Dell"
 display_points: bool = False
 
 images = glob.glob('Calibration_Images/{}/*.png'.format(Chosen_camera), recursive=True)
-cameras_matrix_folder = "Cameras_matrix"
+cameras_matrix_folder = "Internal_camera_matrices"
+distortion_folder = "Distortion_vectors"
 
 idx_list = []
 
@@ -64,4 +65,8 @@ cv.destroyAllWindows()
 np.save(cameras_matrix_folder + "/{}.npy".format(Chosen_camera), newcameramtx)
 pd.DataFrame(newcameramtx).to_excel(cameras_matrix_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
 np.savetxt(cameras_matrix_folder + "/{}.csv".format(Chosen_camera), newcameramtx, delimiter=',', fmt='%f')
+
+np.save(distortion_folder + "/{}.npy".format(Chosen_camera), dist)
+pd.DataFrame(dist).to_excel(distortion_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
+np.savetxt(distortion_folder + "/{}.csv".format(Chosen_camera), dist, delimiter=',', fmt='%f')
 pass
