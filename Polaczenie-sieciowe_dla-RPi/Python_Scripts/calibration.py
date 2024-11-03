@@ -17,13 +17,14 @@ objp[:, :2] = np.mgrid[0:p_y, 0:p_x].T.reshape(-1,2)
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
-#Chosen_camera = "Dell"
-Chosen_camera = "Hp"
+Chosen_camera = "Dell"
+# Chosen_camera = "Hp"
 # Chosen_camera = "IPhone"
 display_points: bool = False
 
 images = glob.glob('Calibration_Images/{}/*.png'.format(Chosen_camera), recursive=True)
-cameras_matrix_folder = "Cameras_matrix"
+cameras_matrix_folder = "Internal_camera_matrices"
+distortion_folder = "Distortion_vectors"
 
 idx_list = []
 
@@ -64,4 +65,8 @@ cv.destroyAllWindows()
 np.save(cameras_matrix_folder + "/{}.npy".format(Chosen_camera), newcameramtx)
 pd.DataFrame(newcameramtx).to_excel(cameras_matrix_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
 np.savetxt(cameras_matrix_folder + "/{}.csv".format(Chosen_camera), newcameramtx, delimiter=',', fmt='%f')
+
+np.save(distortion_folder + "/{}.npy".format(Chosen_camera), dist)
+pd.DataFrame(dist).to_excel(distortion_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
+np.savetxt(distortion_folder + "/{}.csv".format(Chosen_camera), dist, delimiter=',', fmt='%f')
 pass
