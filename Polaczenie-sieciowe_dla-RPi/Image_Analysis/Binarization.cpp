@@ -63,6 +63,7 @@ void Binarization::relative_update() {
 
         parameters->numb_labels = cv::connectedComponentsWithStats(*binarized_image_result, labels, parameters->stats, parameters->centroids);
         parameters->numb_labels --; // first label is background, so it should be missed.
+        parameters->main_time = image_with_main_time->first;
     }
     if (image_m1 != nullptr)
         image_m2 = std::move(image_m1);
@@ -87,6 +88,7 @@ void Binarization::absolute_update() {
         cv::Mat labels;
         parameters->numb_labels = cv::connectedComponentsWithStats(*binarized_image_result, labels, parameters->stats, parameters->centroids);
         parameters->numb_labels --; // first label is background, so it should be missed.
+        parameters->main_time = image_with_main_time->first;
     }
 }
 

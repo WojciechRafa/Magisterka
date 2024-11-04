@@ -25,14 +25,15 @@ Image_source::Image_source(Frame_switching switching_method_,
 
 void Image_source::update()
 {
-    if(switching_method == Frame_switching::automatic){
-        sf::Time main_clock_status = clock.getElapsedTime() - main_clock_diff;
+    sf::Time main_clock_status = clock.getElapsedTime() - main_clock_diff;
 
+    if(switching_method == Frame_switching::automatic){
         sf::Time time_remainder = main_clock_status % Configs::camera_update_period;
 
         if(time_remainder > - Configs::max_camera_update_period_error and
            time_remainder <  Configs::max_camera_update_period_error){
             cap >> last_with_main_time_frame->second;
+            last_with_main_time_frame->first = main_clock_status;
         }
     }else{
         static bool was_action_button_released = true;
@@ -40,6 +41,7 @@ void Image_source::update()
         if(was_action_button_released and sf::Keyboard::isKeyPressed(action_key)){
             was_action_button_released = false;
             cap >> last_with_main_time_frame->second;
+            last_with_main_time_frame->first = main_clock_status;
         }
 
     }

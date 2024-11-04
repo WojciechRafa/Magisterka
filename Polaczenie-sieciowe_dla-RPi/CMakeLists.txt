@@ -12,15 +12,15 @@ include_directories( ${OpenCV_INCLUDE_DIRS})
 
 add_executable(Magisterka main.cpp
 	main_functions.hpp
-        Connection/Sended_struct.hpp Connection/Sended_struct.cpp
-        Connection/Broadcast_connector.hpp Connection/Broadcast_connector.cpp
-        Connection/Pernament_Connector.hpp Connection/Pernament_Connector.cpp
-        Connection/Image_Sender.hpp Connection/Image_Sender.cpp
+        Network/Sended_struct.hpp Network/Sended_struct.cpp
+        Network/Broadcast_connector.hpp Network/Broadcast_connector.cpp
+        Network/Pernament_Connector.hpp Network/Pernament_Connector.cpp
+        Network/Image_Sender.hpp Network/Image_Sender.cpp
 	Time.hpp
         Image_Analysis/Camera.hpp Image_Analysis/Camera.cpp
 	System.cpp System.hpp
 	Time_Object.cpp Time_Object.hpp
-        Connection/Custom_Data_IO.cpp Connection/Custom_Data_IO.hpp
+        Network/Custom_Data_IO.cpp Network/Custom_Data_IO.hpp
         GUI/Window.cpp
         GUI/Window.hpp
         GUI/Graphic_Warehouse.cpp
@@ -39,8 +39,8 @@ add_executable(Magisterka main.cpp
         Image_Analysis/Binarization.hpp
         Image_Analysis/Projection_image_calculate.cpp
         Image_Analysis/Projection_image_calculate.hpp
-        Connection/Parameter_sender.cpp
-        Connection/Parameter_sender.hpp
+        Network/Parameter_sender.cpp
+        Network/Parameter_sender.hpp
         Configs.hpp
 )
         

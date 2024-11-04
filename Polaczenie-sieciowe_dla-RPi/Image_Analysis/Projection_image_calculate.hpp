@@ -9,7 +9,7 @@
 #include <opencv2/opencv.hpp>
 #include "SFML/Graphics.hpp"
 #include "Binarization.hpp"
-#include "../Connection/Sended_struct.hpp"
+#include "../Network/Sended_struct.hpp"
 
 class Projection_image_calculate: public Time_Object{
 public:

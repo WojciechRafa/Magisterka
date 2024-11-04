@@ -5,7 +5,7 @@
 #ifndef INZYNIERKA_SYSTEM_HPP
 #define INZYNIERKA_SYSTEM_HPP
 
-#include "Connection/Broadcast_connector.hpp"
+#include "Network/Broadcast_connector.hpp"
 
 // graphic:
 #include "GUI/Window.hpp"
@@ -17,7 +17,7 @@
 #include "Image_source.hpp"
 #include "Image_Analysis/Binarization.hpp"
 #include "Image_Analysis/Projection_image_calculate.hpp"
-#include "Connection/Parameter_sender.hpp"
+#include "Network/Parameter_sender.hpp"
 
 class System {
 public:

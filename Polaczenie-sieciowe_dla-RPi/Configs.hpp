@@ -18,12 +18,12 @@ namespace Configs{
     static sf::Time default_update_time = sf::milliseconds(50);
 
     static sf::Time camera_update_period = sf::milliseconds(50);
-    static sf::Time max_camera_update_period_error = sf::milliseconds(3);
+    static sf::Time max_camera_update_period_error = sf::milliseconds(5);
 
     static sf::Time main_loop_time = sf::milliseconds(1);
 
 
-    static bool is_binarization_relative = false;
+    static bool is_binarization_relative = true;
     static int binarization_threshold = 50;
 
     enum class computers_enum{

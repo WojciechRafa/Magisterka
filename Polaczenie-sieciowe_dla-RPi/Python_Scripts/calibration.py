@@ -17,8 +17,8 @@ objp[:, :2] = np.mgrid[0:p_y, 0:p_x].T.reshape(-1,2)
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
-Chosen_camera = "Dell"
-# Chosen_camera = "Hp"
+# Chosen_camera = "Dell"
+Chosen_camera = "Hp"
 # Chosen_camera = "IPhone"
 display_points: bool = False
 

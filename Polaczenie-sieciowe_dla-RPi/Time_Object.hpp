@@ -15,7 +15,7 @@
 class Time_Object {
 public:
     Time_Object();
-    ~Time_Object();
+    virtual ~Time_Object();
     explicit Time_Object(sf::Time update_period_);
 
     virtual void update() = 0; // Aktualizować last_update_time
