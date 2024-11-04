@@ -24,6 +24,8 @@ public:
     virtual bool need_update(); // wiele instancji może nadpisywać tą funkcję
 
     static sf::Clock& get_clock();
+
+    virtual std::string get_name();
 protected:
     // WAŻNE ! Aktualizować last update time !
     sf::Time update_period;

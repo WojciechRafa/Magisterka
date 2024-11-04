@@ -58,6 +58,7 @@ void Rays_intersection_analyzer::update() {
                                                       result_pos,
                                                       result_size);
                 }
+                already_checked_intersections.push_back(checked_tuple_reverse);
             }
         }
 
@@ -75,6 +76,8 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
 
     cv::Mat camera_matrix_first = first_source->get_internal_matrix() * first_source->get_external_matrix();
     cv::Mat camera_matrix_second = second_source->get_internal_matrix() * second_source->get_external_matrix();
+
+    sf::Time time_sum = sf::seconds(0);
 
     for(auto& objet_parameter_first: first_frame_params->objets){
 
@@ -99,29 +102,33 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
         }
 
         cv::Mat points_4D;
-        for(auto& objet_parameter_second: second_frame_params->objets){
-            cv::triangulatePoints(camera_matrix_first,
-                                  camera_matrix_second,
-                                  first_2d_centroid_vectors,
-                                  second_2d_centroid_vectors,
-                                  points_4D);
+        auto time_begin = clock.getElapsedTime();
+        cv::triangulatePoints(camera_matrix_first,
+                              camera_matrix_second,
+                              first_2d_centroid_vectors,
+                              second_2d_centroid_vectors,
+                              points_4D);
+        auto time_end = clock.getElapsedTime();
 
-            for (int i = 0; i < points_4D.cols; i++){
-                cv::Mat interpolated_pos_mat = points_4D.col(i);
+        time_sum += (time_end - time_begin);
+//        std::cout<<"Measure time : "<<(time_end - time_begin).asMilliseconds()<<" ms, "<< first_2d_centroid_vectors.size() <<" parameters"<<std::endl;
 
-                bool projection_2d_is_correct_first = check_2d_projection(interpolated_pos_mat,
-                                                                          first_source->get_external_matrix(),
-                                                                          first_source->get_internal_matrix(),
-                                                                          first_2d_bb_pos_vectors[i],
-                                                                          first_2d_bb_size_vectors[i]);
+        for (int i = 0; i < points_4D.cols; i++){
+            cv::Mat interpolated_pos_mat = points_4D.col(i);
 
-                bool projection_2d_is_correct_second = check_2d_projection(interpolated_pos_mat,
-                                                                           second_source->get_external_matrix(),
-                                                                           second_source->get_internal_matrix(),
-                                                                          second_2d_bb_pos_vectors[i],
-                                                                          second_2d_bb_size_vectors[i]);
-                double estimated_size;
-                bool size_comparison_is_correct = check_size_comparison(estimated_size,
+            bool projection_2d_is_correct_first = check_2d_projection(interpolated_pos_mat,
+                                                                      first_source->get_external_matrix(),
+                                                                      first_source->get_internal_matrix(),
+                                                                      first_2d_bb_pos_vectors[i],
+                                                                      first_2d_bb_size_vectors[i]);
+
+            bool projection_2d_is_correct_second = check_2d_projection(interpolated_pos_mat,
+                                                                       second_source->get_external_matrix(),
+                                                                       second_source->get_internal_matrix(),
+                                                                       second_2d_bb_pos_vectors[i],
+                                                                       second_2d_bb_size_vectors[i]);
+            double estimated_size;
+            bool size_comparison_is_correct = check_size_comparison(estimated_size,
                                                                         interpolated_pos_mat,
                                                                         first_source->get_external_matrix(),
                                                                         first_source->get_internal_matrix(),
@@ -130,13 +137,14 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
                                                                         second_source->get_internal_matrix(),
                                                                         second_2d_bb_size_vectors[i]);
 
-                if(projection_2d_is_correct_first and projection_2d_is_correct_second and size_comparison_is_correct){
-                    result_pos.emplace_back(interpolated_pos_mat.at<double>(0, 0), interpolated_pos_mat.at<double>(1, 0), interpolated_pos_mat.at<double>(2, 0));
-                    result_size.push_back(estimated_size);
-                }
+            if(projection_2d_is_correct_first and projection_2d_is_correct_second and size_comparison_is_correct){
+                result_pos.emplace_back(interpolated_pos_mat.at<double>(0, 0), interpolated_pos_mat.at<double>(1, 0), interpolated_pos_mat.at<double>(2, 0));
+                result_size.push_back(estimated_size);
             }
+
         }
     }
+    std::cout<<"Time sum : "<<time_sum.asMilliseconds()<<" ms "<<std::endl;
 }
 
 bool Rays_intersection_analyzer::check_2d_projection(const cv::Mat& position,

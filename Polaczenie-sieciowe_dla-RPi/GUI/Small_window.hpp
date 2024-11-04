@@ -27,7 +27,7 @@ public:
     void set_additional_graphic(std::vector<std::unique_ptr<sf::Shape>>* additional_graphic_);
     std::vector<std::unique_ptr<sf::Shape>>* get_additional_graphic();
 //    std::vector<sf::Drawable*>& get_additional_graphic();
-
+    std::string get_name() override{return "Small Window";};
 private:
     cv::Mat* image_cv_ptr = nullptr;
     cv::Mat image_copy;

@@ -34,6 +34,8 @@ public:
     void set_additional_graphic(std::vector<std::unique_ptr<sf::Shape>>* additional_graphic_);
 
     static int get_axi_nr(Axes);
+
+    std::string get_name() override{return "Project Image Calculator";};
 private:
     std::shared_ptr<Binarization::Binarized_parameters> parameters;
 

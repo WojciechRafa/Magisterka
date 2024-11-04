@@ -18,21 +18,23 @@ namespace Configs{
     static sf::Time default_update_time = sf::milliseconds(50);
 
     static sf::Time camera_update_period = sf::milliseconds(50);
-    static sf::Time max_camera_update_period_error = sf::milliseconds(3);
+    static sf::Time max_camera_update_period_error = sf::milliseconds(30);
 
     static sf::Time main_loop_time = sf::milliseconds(1);
-    static double max_intersection_size_comparison = 2;
+    static double max_intersection_size_comparison = 10;
 
-    static bool is_binarization_relative = false;
+    static bool is_binarization_relative = true;
     static int binarization_threshold = 50;
 
     namespace Big_window_parameters{
-        static sf::Time displayed_time = sf::milliseconds(50);
+        static sf::Time displayed_time = sf::milliseconds(1000000);
         static cv::Vec2d size_meters = cv::Vec2d(20, 10);
         static cv::Vec2d zero_point_meters = cv::Vec2d(10, 5);
 
-        static float circle_radius_relation = 3;
+        static float circle_radius_ratio = 0.000001;
         static sf::Color circle_color = sf::Color::Magenta;
+
+        static float position_ratio = 100;
 
         static Axes first_axle = Axes::x;
         static Axes second_axle = Axes::y;

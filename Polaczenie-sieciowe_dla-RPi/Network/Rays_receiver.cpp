@@ -43,7 +43,7 @@ void Rays_receiver::update() {
             read_packet(rays_time, vector_size, rays_data, received_packet);
             if(vector_size > 0 and rays_intersection_analyzer_ptr != nullptr){
                 auto new_frame_parameter = std::make_shared<Frame_parameters>(rays_time, this, rays_data);
-                rays_intersection_analyzer_ptr->add_projection(std::move(new_frame_parameter));
+                rays_intersection_analyzer_ptr->add_projection(new_frame_parameter);
             }
             std::cout<<"Data recive\n";
             std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << std::endl;

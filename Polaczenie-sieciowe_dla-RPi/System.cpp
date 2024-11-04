@@ -52,6 +52,8 @@ System::System():
 
     rays_intersection_analyzer.set_objects_tracker_ptr(&objects_tracker);
 
+    objects_tracker.set_small_window(&objects_tracker_window);
+
     graphic.add_time_object_to_update(& raw_picture_window);
     graphic.add_small_window_to_display(& raw_picture_window);
     graphic.add_time_object_to_update(& binarized_picture_window);

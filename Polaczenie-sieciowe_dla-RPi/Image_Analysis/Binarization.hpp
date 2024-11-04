@@ -26,6 +26,7 @@ public:
     void set_reference_image();
     void set_parameters(std::shared_ptr<Binarized_parameters> parameters_);
 
+    std::string get_name() override{return "Binaryzation";};
 private:
     bool is_relative;
 

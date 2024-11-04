@@ -18,6 +18,8 @@ public:
 
     void set_small_window(Small_window* small_window_ptr_);
     void update() final;
+
+    std::string get_name() override{return "Object Tracker";};
 private:
     std::map<sf::Int64, std::vector<std::pair<cv::Vec3d, double>>> detected_objets;
     Small_window* small_window_ptr = nullptr;

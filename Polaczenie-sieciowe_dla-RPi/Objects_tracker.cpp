@@ -31,8 +31,10 @@ void Objects_tracker::update() {
         for(auto& objets_list: detected_objets){
             for(auto& objet: objets_list.second) {
 
-                auto new_circle = std::make_unique<sf::CircleShape>(static_cast<float>(objet.second) *
-                        Configs::Big_window_parameters::circle_radius_relation);
+//                auto new_circle = std::make_unique<sf::CircleShape>(static_cast<float>(objet.second) *
+//                        Configs::Big_window_parameters::circle_radius_ratio);
+                auto new_circle = std::make_unique<sf::CircleShape>(20);
+
                 new_circle->setOrigin(new_circle->getRadius(), new_circle->getRadius());
                 new_circle->setFillColor(Configs::Big_window_parameters::circle_color);
 
@@ -75,6 +77,9 @@ Objects_tracker::get_actual_objets_list() {
 
 sf::Vector2f
 Objects_tracker::get_position_of_detected_object_on_main_window(bool& is_in_board, double first_dimension, double second_dimension) {
+    first_dimension *= Configs::Big_window_parameters::position_ratio;
+    second_dimension *= Configs::Big_window_parameters::position_ratio;
+
     first_dimension += Configs::Big_window_parameters::zero_point_meters[0];
     second_dimension += Configs::Big_window_parameters::zero_point_meters[1];
 
@@ -88,6 +93,9 @@ Objects_tracker::get_position_of_detected_object_on_main_window(bool& is_in_boar
 
     sf::Vector2f result = sf::Vector2f(static_cast<float>(first_dimension / Configs::Big_window_parameters::size_meters[0]),
                                        static_cast<float>(second_dimension / Configs::Big_window_parameters::size_meters[1]));
+
+    result.x *= small_window_ptr->getSize().x;
+    result.y *= small_window_ptr->getSize().y;
 
     result += small_window_ptr->getPosition();
     return result;

@@ -7,6 +7,9 @@ p_y = 9
 camera_name = "Dell"
 square_size = 2.0 # 2 cm
 
+display_points = True
+display_time = 2000
+
 
 internal_cameras_matrix_folder = "Internal_camera_matrices"
 external_cameras_matrix_folder = "External_camera_matrices"
@@ -64,6 +67,11 @@ def main():
 
     corners_refined = cv.cornerSubPix(gray, corners, (11, 11), (-1, -1),
                                        criteria=(cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001))
+
+    if display_points:
+        cv.drawChessboardCorners(gray, (p_y, p_x), corners_refined, found_chess)
+        cv.imshow('img', gray)
+        cv.waitKey(display_time)
 
     internal_matrix = np.load(internal_cameras_matrix_folder + "/" + camera_name + ".npy")
     distraction_vector = np.load(distortion_folder + "/" + camera_name + ".npy")

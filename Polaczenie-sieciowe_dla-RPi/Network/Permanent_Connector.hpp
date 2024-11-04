@@ -31,6 +31,8 @@ public:
     p_connector_mode get_mode();
 
     void disconnect();
+
+    std::string get_name() override{return "Pernament Connectior";};
 private:
     unsigned short port = 0;
     sf::IpAddress remote_dev_ip;

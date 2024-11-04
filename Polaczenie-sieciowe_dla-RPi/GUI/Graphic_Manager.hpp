@@ -27,6 +27,8 @@ public:
 
     void add_time_object_to_update(Time_Object * time_object_to_update_);
     void add_small_window_to_display(Small_window* small_window);
+
+    std::string get_name() override{return "Graphic Manager";};
 private:
     sf::Sprite background;
 
