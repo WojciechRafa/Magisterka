@@ -27,7 +27,6 @@ connection_list(connection_list_)
                                 sf::Vector2f(80, 80),
                                 Button::Button_Message::turn_off_program,
                                 graphic_warehouse.get_texture("Cancel")
-
     );
 
     auto new_connection = Button(sf::Vector2f(110, 10),
@@ -35,12 +34,22 @@ connection_list(connection_list_)
                                  sf::Vector2f(80, 80),
                                  Button::Button_Message::create_new_screen,
                                  graphic_warehouse.get_texture("Plus")
-
     );
+
+
+    auto reference_image_button = Button(sf::Vector2f(210, 10),
+                                         main_menu.getPosition(),
+                                         sf::Vector2f(80, 80),
+                                         Button::Button_Message::set_reference_image,
+                                         graphic_warehouse.get_texture("Set_reference_image")
+                                         );
 
     main_menu.add_button(std::move(cancle_button));
     main_menu.add_button(std::move(new_connection));
 
+    if(not Configs::is_binarization_relative){
+        main_menu.add_button(std::move(reference_image_button));
+    }
     buttons_filed_list.push_back(std::move(main_menu));
 }
 
@@ -114,6 +123,9 @@ void Graphic_Manager::display() {
 Button::Button_Message Graphic_Manager::get_and_delate_actual_button_mesage() {
     auto message_copy = actual_button_mesage;
     actual_button_mesage = Button::Button_Message::nothing;
+
+
+
     return message_copy;
 }
 

@@ -20,7 +20,8 @@ public:
         conection_establish_rays,
         set_camera_mode_const_20_fps,
         set_camera_mode_x1,
-        set_camera_mode_x0_5
+        set_camera_mode_x0_5,
+        set_reference_image
     };
 
     Button(sf::Vector2f position_,

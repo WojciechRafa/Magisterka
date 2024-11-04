@@ -14,7 +14,7 @@ void get_potential_detected_object(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, 
                                    Frame_parameters& objets_end,
                                    sf::Int64 time_diff);
 
-void Rays_intersection_analyzer::add_projection(std::shared_ptr<Frame_parameters> new_params) {
+void Rays_intersection_analyzer::add_projection(const std::shared_ptr<Frame_parameters>& new_params) {
     for(auto& parameters_in_time: objets_parameters_list_by_time[new_params->time]){
         if(parameters_in_time->source_ptr == new_params->source_ptr){
             std::cout<<"Parameters sent twice, ptr "<<new_params->source_ptr<<" time : "<< new_params->time << " us\n";

@@ -90,7 +90,7 @@ void Binarization::absolute_update() {
 }
 
 void Binarization::set_reference_image() {
-    if(reference_image == nullptr and image_with_main_time != nullptr) {
+    if(image_with_main_time != nullptr and not Configs::is_binarization_relative) {
         reference_image = std::make_unique<cv::Mat>(image_with_main_time->second.clone());
     }
 }

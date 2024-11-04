@@ -17,7 +17,7 @@ class Rays_source;
 class Rays_intersection_analyzer: public Time_Object{
 public:
     Rays_intersection_analyzer();
-    void add_projection(std::shared_ptr<Frame_parameters> new_params);
+    void add_projection(const std::shared_ptr<Frame_parameters>& new_params);
     void set_objects_tracker_ptr(Objects_tracker* objects_tracker_);
 
     void update();

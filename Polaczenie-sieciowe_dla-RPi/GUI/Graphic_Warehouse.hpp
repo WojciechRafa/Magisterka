@@ -26,7 +26,8 @@ private:
             "20_fps",
             "x1",
             "x0_5",
-            "Rays"
+            "Rays",
+            "Set_reference_image"
             };
     std::vector<sf::Texture> texture_list;
 };

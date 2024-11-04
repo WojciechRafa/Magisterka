@@ -87,6 +87,16 @@ bool System::update() {
 
     while (window.pollEvent(event))
     {
+        if (event.type == sf::Event::EventType::KeyPressed){
+            switch (event.key.code) {
+                case sf::Keyboard::R:
+                    binarization.set_reference_image();
+                    break;
+                default:
+                    break;
+            }
+        }
+
         if (event.type == sf::Event::Closed){
             window.close();
             return true;
@@ -136,21 +146,6 @@ bool System::execute_button_message(Button::Button_Message message) {
 
 
 
-//                auto connection = std::make_unique<Connection>(
-//                        create_button_field_to_connection_with_camera_and_custom_data(),
-//                        // dane
-//                        sf::Vector2f(1050, 230),
-//                        sf::Vector2f(200, 100),
-//                        15,
-//                        sf::Color::Magenta,
-//                        message_list_displayed,
-//                        message_list_sended,
-////                        kamera
-//                        sf::Vector2f(10, 230),
-//                        sf::Vector2f(1000, 600),
-//                        graphic_warehouse,
-//                        50238
-//                );
                 auto button_field = create_button_field_to_connection_with_rays(sf::Vector2f(10, 340));
 
                 // bez kamery
@@ -210,6 +205,10 @@ bool System::execute_button_message(Button::Button_Message message) {
             }
             return false;
 
+        case Button::Button_Message::set_reference_image:
+            binarization.set_reference_image();
+
+            return false;
 
     }
     return false;
@@ -308,7 +307,6 @@ std::unique_ptr<Buttons_Field> System::create_button_field_to_connection_with_ra
                                sf::Vector2f(80, 80),
                                Button::Button_Message::conection_establish_rays,
                                graphic_warehouse.get_texture("Rays"));
-
 
     buttons_field->add_button(std::move(cancle_button));
     buttons_field->add_button(std::move(broadcast_ip));

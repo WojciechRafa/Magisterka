@@ -33,10 +33,12 @@ void Objects_tracker::update() {
 
 //                auto new_circle = std::make_unique<sf::CircleShape>(static_cast<float>(objet.second) *
 //                        Configs::Big_window_parameters::circle_radius_ratio);
-                auto new_circle = std::make_unique<sf::CircleShape>(20);
+                auto new_circle = std::make_unique<sf::CircleShape>(10);
 
                 new_circle->setOrigin(new_circle->getRadius(), new_circle->getRadius());
                 new_circle->setFillColor(Configs::Big_window_parameters::circle_color);
+                new_circle->setOutlineColor(sf::Color::Black);
+                new_circle->setOutlineThickness(1.5);
 
                 bool is_in_board;
                 auto first_dim_len = objet.first[Projection_image_calculator::get_axi_nr(
@@ -64,7 +66,7 @@ void Objects_tracker::add_detecion(sf::Int64 time, std::vector<cv::Vec3d>& pos_v
     if(pos_vector.size() != size_vector.size()){
         throw std::runtime_error("pos_vector.size() != size_vector.size()");
     }
-
+    std::cout<<"Add projection"<<std::endl;
     for(size_t i = 0; i < pos_vector.size(); i++){
         detected_objets[time].emplace_back(pos_vector[i], size_vector[i]);
     }

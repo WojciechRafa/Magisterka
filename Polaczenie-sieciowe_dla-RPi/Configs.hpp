@@ -23,18 +23,18 @@ namespace Configs{
     static sf::Time main_loop_time = sf::milliseconds(1);
     static double max_intersection_size_comparison = 10;
 
-    static bool is_binarization_relative = true;
+    static bool is_binarization_relative = false;
     static int binarization_threshold = 50;
 
     namespace Big_window_parameters{
-        static sf::Time displayed_time = sf::milliseconds(1000000);
+        static sf::Time displayed_time = sf::milliseconds(2000);
         static cv::Vec2d size_meters = cv::Vec2d(20, 10);
         static cv::Vec2d zero_point_meters = cv::Vec2d(10, 5);
 
         static float circle_radius_ratio = 0.000001;
         static sf::Color circle_color = sf::Color::Magenta;
 
-        static float position_ratio = 100;
+        static float position_ratio = 8;
 
         static Axes first_axle = Axes::x;
         static Axes second_axle = Axes::y;
