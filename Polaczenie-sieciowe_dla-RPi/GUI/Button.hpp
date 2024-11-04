@@ -12,6 +12,7 @@ public:
     enum class Button_Message {
         nothing,
         turn_off_program,
+        set_reference_image
     };
 
     Button(sf::Vector2f position_,

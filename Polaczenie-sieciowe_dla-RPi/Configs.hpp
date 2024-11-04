@@ -23,7 +23,7 @@ namespace Configs{
     static sf::Time main_loop_time = sf::milliseconds(1);
 
 
-    static bool is_binarization_relative = true;
+    static bool is_binarization_relative = false;
     static int binarization_threshold = 50;
 
     enum class computers_enum{

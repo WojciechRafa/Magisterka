@@ -37,11 +37,18 @@ graphic_warehouse(graphic_warehouse_)
 //                                 Button::Button_Message::create_new_screen,
 //                                 graphic_warehouse.get_texture("Plus")
 
-//    );
+    auto reference_image_button = Button(sf::Vector2f(110, 10),
+                                         main_menu.getPosition(),
+                                         sf::Vector2f(80, 80),
+                                         Button::Button_Message::set_reference_image,
+                                         graphic_warehouse.get_texture("Set_reference_image")
+                                         );
 
     main_menu.add_button(std::move(cancle_button));
-//    main_menu.add_button(std::move(new_connection));
 
+    if(not Configs::is_binarization_relative){
+        main_menu.add_button(std::move(reference_image_button));
+    }
     buttons_filed_list.push_back(std::move(main_menu));
 }
 

@@ -18,7 +18,8 @@ public:
 private:
     std::vector<std::string> file_name_list =
             {"Background",
-             "Cancel"
+             "Cancel",
+             "Set_reference_image"
             };
     std::vector<sf::Texture> texture_list;
 };

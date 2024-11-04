@@ -85,6 +85,16 @@ bool System::update() {
 
     while (window.pollEvent(event))
     {
+        if (event.type == sf::Event::EventType::KeyPressed){
+            switch (event.key.code) {
+                case sf::Keyboard::R:
+                    binarization.set_reference_image();
+                    break;
+                default:
+                    break;
+            }
+        }
+
         if (event.type == sf::Event::Closed){
             window.close();
             return true;
@@ -106,60 +116,10 @@ bool System::execute_button_message(Button::Button_Message message) {
             return true;
             break;
 
-//                auto connection = std::make_unique<Connection>(
-//                        create_button_field_to_connection(),
-//                        // dane
-//                        sf::Vector2f(1050, 230),
-//                        sf::Vector2f(200, 100),
-//                        15,
-//                        sf::Color::Magenta,
-//                        message_list_displayed,
-//                        message_list_sended,
-////                        kamera
-//                        sf::Vector2f(10, 230),
-//                        sf::Vector2f(1000, 600),
-//                        graphic_warehouse,
-//                        50238
-//                );
-//                // bez kamery
-////                auto connection = std::make_unique<Connection>(
-////                        // przyciski
-////                        create_button_field_to_connection(),
-////                        // dane
-////                        sf::Vector2f(10, 230),
-////                        sf::Vector2f(200, 100),
-////                        15,
-////                        sf::Color::Magenta,
-////                        message_list_displayed,
-////                        message_list_sended,
-////
-////                        graphic_warehouse,
-////                        50238
-////                );
-//
-////                // bez danych liczbowych
-////                auto connection = std::make_unique<Connection>(
-////                        // przyciski
-////                        create_button_field_to_connection(),
-////                        // dane
-////                        message_list_displayed,
-////                        message_list_sended,
-//////                        kamera
-////                        sf::Vector2f(10, 230),
-////                        sf::Vector2f(1000, 600),
-////                        graphic_warehouse,
-////                        50238
-////                );
-//
-//                connection_list.push_back(std::move(connection));
-//
-//                // usunięcie zaznaczenia przycisku
-//
-//
-//
-//            }
-            return false;
+        case Button::Button_Message::set_reference_image:
+            binarization.set_reference_image();
 
+            return false;
 
     }
     return false;
