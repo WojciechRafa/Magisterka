@@ -24,7 +24,7 @@ namespace Configs{
     static double max_intersection_size_comparison = 10;
 
     static bool is_binarization_relative = false;
-    static int binarization_threshold = 50;
+    static int binarization_threshold = 25;
 
     namespace Big_window_parameters{
         static sf::Time displayed_time = sf::milliseconds(2000);
