@@ -62,13 +62,23 @@ void Objects_tracker::update() {
     last_update_time = clock.getElapsedTime();
 }
 
-void Objects_tracker::add_detecion(sf::Int64 time, std::vector<cv::Vec3d>& pos_vector, std::vector<double>& size_vector) {
+void Objects_tracker::add_detection(sf::Time time, std::vector<cv::Vec3d>& pos_vector, std::vector<double>& size_vector) {
     if(pos_vector.size() != size_vector.size()){
         throw std::runtime_error("pos_vector.size() != size_vector.size()");
     }
     std::cout<<"Add projection"<<std::endl;
     for(size_t i = 0; i < pos_vector.size(); i++){
         detected_objets[time].emplace_back(pos_vector[i], size_vector[i]);
+
+        // TODO, avoid double adding
+        auto closed_object_ptr = get_closed_object(pos_vector[i], size_vector[i]);
+        if(closed_object_ptr != nullptr){
+            closed_object_ptr->position_list.push_back(pos_vector[i]);
+            closed_object_ptr->size = size_vector[i];
+            closed_object_ptr->last_update = time;
+        }else{
+
+        }
     }
 }
 
@@ -101,4 +111,30 @@ Objects_tracker::get_position_of_detected_object_on_main_window(bool& is_in_boar
 
     result += small_window_ptr->getPosition();
     return result;
+}
+
+Objects_tracker::Object *Objects_tracker::get_closed_object(const cv::Vec3d& position, double size) {
+    Objects_tracker::Object * closet_object_ptr = nullptr;
+    double min_distance = -1;
+
+    for(auto& object: object_list){
+        double size_proportion = object.size / size;
+
+        if(size_proportion > Configs::Object_tracker::max_size_proportion or
+           size_proportion < 1 / Configs::Object_tracker::max_size_proportion){
+            continue;
+        }
+
+        double distance = cv::norm(object.position_list.back() - position);
+
+        if(distance > Configs::Object_tracker::max_distance){
+            continue;
+        }
+
+        if(closet_object_ptr == nullptr or distance < min_distance){
+            closet_object_ptr = &object;
+            min_distance = distance;
+        }
+    }
+    return closet_object_ptr;
 }

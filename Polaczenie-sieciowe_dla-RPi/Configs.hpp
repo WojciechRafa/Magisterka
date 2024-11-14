@@ -52,6 +52,13 @@ namespace Configs{
             {computers_enum::dell, "Dell"},
             {computers_enum::hp, "Hp"},
     };
+
+    namespace Object_tracker{
+        double max_size_proportion = 2;
+        double max_distance = 10;
+        double min_detect_number = 3;
+        sf::Time remove_time = sf::seconds(1);
+    }
 }
 
 #endif //MAGISTERKA_CONFIGS_HPP

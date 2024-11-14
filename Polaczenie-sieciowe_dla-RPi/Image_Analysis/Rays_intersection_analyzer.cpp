@@ -54,9 +54,9 @@ void Rays_intersection_analyzer::update() {
                                         first_parameter.get(), second_parameter.get());
 
                 if(objects_tracker_ptr != nullptr and !result_pos.empty()){
-                    objects_tracker_ptr->add_detecion(time_and_parameters_ptr.first,
-                                                      result_pos,
-                                                      result_size);
+                    objects_tracker_ptr->add_detection(time_and_parameters_ptr.first,
+                                                       result_pos,
+                                                       result_size);
                 }
                 already_checked_intersections.push_back(checked_tuple_reverse);
             }
