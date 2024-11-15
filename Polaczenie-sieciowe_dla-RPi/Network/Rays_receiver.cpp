@@ -37,7 +37,7 @@ void Rays_receiver::update() {
         sf::Packet received_packet;
         if(receive_n_time(received_packet, 10)){
             sf::Uint16 vector_size;
-            sf::Int64 rays_time;
+            sf::Time rays_time;
             std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>> rays_data;
 
             read_packet(rays_time, vector_size, rays_data, received_packet);

@@ -38,6 +38,8 @@ private:
     std::vector<Object> object_list;
 
     Object* get_closed_object(const cv::Vec3d& position, double size);
+
+    sf::Color get_random_color();
 };
 
 

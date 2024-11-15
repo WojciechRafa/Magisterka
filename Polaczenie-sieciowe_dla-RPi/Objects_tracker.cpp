@@ -12,18 +12,29 @@ void Objects_tracker::set_small_window(Small_window* small_window_ptr_) {
 }
 
 void Objects_tracker::update() {
-    std::vector<sf::Int64> time_to_remove_list;
-
     // remove old detection
+    std::vector<sf::Time> time_to_remove_list;
     for(auto& objet: detected_objets){
-        if(clock.getElapsedTime().asMicroseconds() > (objet.first + Configs::Big_window_parameters::displayed_time.asMicroseconds())){
+        if(clock.getElapsedTime() > (objet.first + Configs::Big_window_parameters::displayed_time)){
             time_to_remove_list.push_back(objet.first);
         }
     }
-
-    for(sf::Int64 to_remove: time_to_remove_list){
+    for(auto to_remove: time_to_remove_list){
         detected_objets.erase(to_remove);
     }
+
+
+    // update Objets
+    for(auto& object: object_list){
+        //is displayed
+        object.is_displayed = object.position_list.size() >= Configs::Object_tracker::min_detect_number;
+    }
+    object_list.erase(
+            std::remove_if(object_list.begin(), object_list.end(),
+                           [](const Object& obj) { return (clock.getElapsedTime() - obj.last_update) >
+                                                                Configs::Object_tracker::remove_time;}),
+            object_list.end()
+    );
 
     if(small_window_ptr != nullptr){
         list_of_graphic.clear();
@@ -31,9 +42,12 @@ void Objects_tracker::update() {
         for(auto& objets_list: detected_objets){
             for(auto& objet: objets_list.second) {
 
-//                auto new_circle = std::make_unique<sf::CircleShape>(static_cast<float>(objet.second) *
-//                        Configs::Big_window_parameters::circle_radius_ratio);
-                auto new_circle = std::make_unique<sf::CircleShape>(10);
+                auto new_circle = std::make_unique<sf::CircleShape>();
+                if(Configs::Big_window_parameters::is_const_size) {
+                    new_circle->setRadius(Configs::Big_window_parameters::default_object_size);
+                }else {
+                    new_circle->setRadius(static_cast<float>(objet.second) * Configs::Big_window_parameters::circle_radius_ratio);
+                }
 
                 new_circle->setOrigin(new_circle->getRadius(), new_circle->getRadius());
                 new_circle->setFillColor(Configs::Big_window_parameters::circle_color);
@@ -77,12 +91,17 @@ void Objects_tracker::add_detection(sf::Time time, std::vector<cv::Vec3d>& pos_v
             closed_object_ptr->size = size_vector[i];
             closed_object_ptr->last_update = time;
         }else{
-
+            object_list.emplace_back(
+                    std::vector<cv::Vec3d>{pos_vector[i]},
+                        size_vector[i],
+                        get_random_color(),
+                        time
+                    );
         }
     }
 }
 
-std::map<sf::Int64, std::vector<std::pair<cv::Vec3d, double>>>&
+std::map<sf::Time, std::vector<std::pair<cv::Vec3d, double>>>&
 Objects_tracker::get_actual_objets_list() {
     return detected_objets;
 }
@@ -137,4 +156,14 @@ Objects_tracker::Object *Objects_tracker::get_closed_object(const cv::Vec3d& pos
         }
     }
     return closet_object_ptr;
+}
+
+sf::Color Objects_tracker::get_random_color() {
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+
+    int red = std::rand() % 256;
+    int green = std::rand() % 256;
+    int blue = std::rand() % 256;
+
+    return sf::Color(red, green, blue);
 }

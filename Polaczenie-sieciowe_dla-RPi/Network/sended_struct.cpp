@@ -67,12 +67,15 @@ sf::Packet& operator >>(sf::Packet& packet, std::vector<std::tuple<cv::Vec2d, cv
     return packet;
 };
 
-void read_packet(sf::Int64& time,
+void read_packet(sf::Time& time,
                  sf::Uint16& elements_amount,
                  std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>& data,
                  sf::Packet& packet){
-    packet >> time;
-    std::cout<<"Recived time : " << time <<std::endl;
+    sf::Int64 time_int;
+    packet >> time_int;
+    time = sf::microseconds(time_int);
+
+    std::cout<<"Recived time : " << time.asMicroseconds() << " s " <<std::endl;
     packet >> elements_amount;
 
     data.clear();

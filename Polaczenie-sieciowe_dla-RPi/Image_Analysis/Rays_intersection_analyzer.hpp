@@ -24,9 +24,9 @@ public:
 
     std::string get_name() override{return "Rays Intersection Analyzer";};
 private:
-    std::map<sf::Int64, std::vector<std::shared_ptr<Frame_parameters>>> objets_parameters_list_by_time;
-    std::map<Rays_source*, sf::Int64> last_update_time_of_ray_source;
-    std::vector<std::tuple<sf::Int64, Rays_source*, Rays_source*>> already_checked_intersections;
+    std::map<sf::Time, std::vector<std::shared_ptr<Frame_parameters>>> objets_parameters_list_by_time;
+    std::map<Rays_source*, sf::Time> last_update_time_of_ray_source;
+    std::vector<std::tuple<sf::Time, Rays_source*, Rays_source*>> already_checked_intersections;
     Objects_tracker* objects_tracker_ptr = nullptr;
 
     static bool check_2d_projection(const cv::Mat& position,

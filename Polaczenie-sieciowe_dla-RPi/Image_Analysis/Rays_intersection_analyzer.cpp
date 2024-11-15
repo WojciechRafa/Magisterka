@@ -17,7 +17,7 @@ void get_potential_detected_object(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, 
 void Rays_intersection_analyzer::add_projection(const std::shared_ptr<Frame_parameters>& new_params) {
     for(auto& parameters_in_time: objets_parameters_list_by_time[new_params->time]){
         if(parameters_in_time->source_ptr == new_params->source_ptr){
-            std::cout<<"Parameters sent twice, ptr "<<new_params->source_ptr<<" time : "<< new_params->time << " us\n";
+            std::cout<<"Parameters sent twice, ptr "<<new_params->source_ptr<<" time : "<< new_params->time.asMicroseconds() << " us\n";
             return;
         }
     }
@@ -188,7 +188,7 @@ bool Rays_intersection_analyzer::check_size_comparison( double& estimated_size,
     double first_distance = cv::norm(position - first_pos);
     double second_distance = cv::norm(position - second_pos);
 
-    cv::Vec2d first_size_vec = cv::Vec2d(first_bb_size_2d[0] * first_focal_x * first_distance,
+    cv::Vec2d first_size_vec = cv::Vec2d(first_bb_size_2d[0] * first_focal_x * first_distance,  // TODO,
                                        first_bb_size_2d[1] * first_focal_y * first_distance);
     double first_size_norm = cv::norm(first_size_vec);
 

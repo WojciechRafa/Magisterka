@@ -38,6 +38,9 @@ namespace Configs{
 
         static Axes first_axle = Axes::x;
         static Axes second_axle = Axes::y;
+
+        bool is_const_size = true;
+        float default_object_size = 10;
     }
 
     enum class computers_enum{
@@ -56,7 +59,7 @@ namespace Configs{
     namespace Object_tracker{
         double max_size_proportion = 2;
         double max_distance = 10;
-        double min_detect_number = 3;
+        int min_detect_number = 3;
         sf::Time remove_time = sf::seconds(1);
     }
 }
