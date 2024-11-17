@@ -120,7 +120,7 @@ namespace Configs{
         static const bool is_displayed_verified_only = true;
 
         static const float grid_span = 500;    // mm
-        static const sf::Color grid_span_zero_point_color = sf::Color::Black;
+        static const sf::Color grid_span_zero_point_color = sf::Color::Red;
         static const sf::Color grid_span_default_color(120, 120, 120);
         static float grid_lines_width = 1;
     }

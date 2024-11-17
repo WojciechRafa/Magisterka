@@ -39,7 +39,7 @@ std::vector<sf::Drawable *>& Connection::get_figures_list() {
     return frontend.get_figures_list();
 }
 
-std::vector<std::vector<std::unique_ptr<sf::Shape>>> *Connection::get_additional_graphic_lists() {
+std::vector<std::vector<std::unique_ptr<sf::Drawable>>> *Connection::get_additional_graphic_lists() {
     return frontend.get_additional_graphic_lists();
 }
 

@@ -101,8 +101,8 @@ sf::Vector2f Projection_image_calculator::find_intersection(double axis_a_value,
 }
 
 void
-Projection_image_calculator::set_additional_graphic(std::vector<std::unique_ptr<sf::Shape>>* additional_graphic_) {
-    projections_list = additional_graphic_;
+Projection_image_calculator::set_additional_drawable_ptr(std::vector<std::unique_ptr<sf::Drawable>>* additional_graphic_) {
+    drawable_list = additional_graphic_;
 }
 
 std::unique_ptr<sf::RectangleShape>  Projection_image_calculator::get_ray(sf::Vector2f intersection,
@@ -139,12 +139,10 @@ std::unique_ptr<sf::RectangleShape>  Projection_image_calculator::get_ray(sf::Ve
 
 
 void Projection_image_calculator::update() {
-    projections_list->clear();
+    drawable_list->clear();
 
-//    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> to_send;
 
     if(parameters != nullptr and not are_rays_from_slave){
-//        int number_of_labels = stats->rows;
 
         for(int i = 1; i < parameters->numb_labels; i++){ // label have number "0";
 
@@ -188,9 +186,9 @@ void Projection_image_calculator::update() {
                                 sf::Color::Green,
                                 line_thickness);
 
-                projections_list->push_back(std::move(begin_ray));
-                projections_list->push_back(std::move(end_ray));
-                projections_list->push_back(std::move(center_ray));
+                drawable_list->push_back(std::move(begin_ray));
+                drawable_list->push_back(std::move(end_ray));
+                drawable_list->push_back(std::move(center_ray));
 
             }
         }
@@ -223,15 +221,16 @@ void Projection_image_calculator::update() {
                                 sf::Color::Green,
                                 line_thickness);
 
-                projections_list->push_back(std::move(begin_ray));
-                projections_list->push_back(std::move(end_ray));
-                projections_list->push_back(std::move(center_ray));
+                drawable_list->push_back(std::move(begin_ray));
+                drawable_list->push_back(std::move(end_ray));
+                drawable_list->push_back(std::move(center_ray));
 
             }
         }
     }
-    for(auto& projection: *projections_list){
-        projection->setPosition(projection->getPosition() + window_pos);
+    for(auto& projection_drawable: *drawable_list){
+        sf::Shape* projection_shape_ptr = dynamic_cast<sf::Shape*>(projection_drawable.get());
+        projection_shape_ptr->setPosition(projection_shape_ptr->getPosition() + window_pos);
     }
 
     last_update_time = clock.getElapsedTime();

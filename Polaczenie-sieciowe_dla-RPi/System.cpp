@@ -60,7 +60,7 @@ System::System():
     binarization.set_parameters(bin_parameters);
 
     projection_calculator.set_parameters(bin_parameters);
-    projection_calculator.set_additional_graphic(&projections);
+    projection_calculator.set_additional_drawable_ptr(&projections);
 
     if(Configs::GUI_layout::is_projection_calculator_displayed)
         projections_window.set_additional_graphic(&projections);

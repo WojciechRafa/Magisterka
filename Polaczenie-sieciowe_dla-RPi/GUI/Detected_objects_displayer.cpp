@@ -14,30 +14,14 @@ Detected_objects_displayer::Detected_objects_displayer(std::pair<Axes, Axes> axe
                                                        area_size(area_size_),
                                                        zero_point(zero_point_),
                                                        objects_tracker_ptr(objects_tracker_ptr_),
-                                                       small_window_ptr(small_window_ptr_)
+                                                       small_window_ptr(small_window_ptr_),
+                                                       reference_lines(sf::Lines)
                                                        {
     if(small_window_ptr != nullptr)
         small_window_ptr->set_additional_graphic(&all_graphics);
+
+    create_grid();
                                                        }
-
-//Detected_objects_displayer::Detected_objects_displayer(Detected_objects_displayer&& other) noexcept:
-//        axes(std::move(other.axes)),
-//        area_size(other.area_size),
-//        zero_point(other.zero_point),
-//        objects_tracker_ptr(other.objects_tracker_ptr),
-//        small_window_ptr(other.small_window_ptr),
-//        all_graphics(std::vector<std::unique_ptr<sf::Shape>>()),        // empty
-//        detection_graphics(std::vector<std::unique_ptr<sf::Shape>>()),  // empty
-//        reference_lines(std::move(other.reference_lines)) {
-//
-//    if(small_window_ptr != nullptr)
-//        small_window_ptr->set_additional_graphic(&all_graphics);
-//
-//    // Reset pointers in the source object to null to avoid dangling pointers.
-//    other.objects_tracker_ptr = nullptr;
-//    other.small_window_ptr = nullptr;
-//}
-
 
 void Detected_objects_displayer::update() {
     if(Configs::Big_windows_parameters::is_displayed_verified_only){
@@ -48,9 +32,7 @@ void Detected_objects_displayer::update() {
 
     all_graphics.clear();
 
-    for(auto& reference_line: reference_lines){
-        all_graphics.push_back(std::make_unique<sf::RectangleShape>(reference_line));
-    }
+    all_graphics.push_back(std::make_unique<sf::VertexArray>(reference_lines));
 
     for(auto& detection_graphic: detection_graphics){
         all_graphics.push_back(std::move(detection_graphic));
@@ -134,17 +116,17 @@ void Detected_objects_displayer::add_detection_graphic(sf::Vector2f pos, float s
     detection_graphics.emplace_back(std::move(new_circle));
 }
 
-void Detected_objects_displayer::write_grid() {
+void Detected_objects_displayer::create_grid() {
     if(small_window_ptr == nullptr)
         return;
 
     sf::FloatRect bounds = small_window_ptr->getGlobalBounds();
 
-    float window_interval_x = bounds.width  * static_cast<float>(area_size[0]) / Configs::Big_windows_parameters::grid_span;
-    float window_interval_y = bounds.height * static_cast<float>(area_size[1]) / Configs::Big_windows_parameters::grid_span;
+    float window_interval_x = bounds.width  / (static_cast<float>(area_size[0]) / Configs::Big_windows_parameters::grid_span);
+    float window_interval_y = bounds.height / (static_cast<float>(area_size[1]) / Configs::Big_windows_parameters::grid_span);
 
     int number_of_line_pair_x = static_cast<int>(0.5 * bounds.width / window_interval_x);
-    int number_of_line_pair_y = static_cast<int>(0.5 * bounds.width / window_interval_y);
+    int number_of_line_pair_y = static_cast<int>(0.5 * bounds.height / window_interval_y);
 
     sf::Vector2f global_zero_point = bounds.getPosition() + sf::Vector2f(bounds.width / 2, bounds.height / 2);
 
@@ -155,20 +137,23 @@ void Detected_objects_displayer::write_grid() {
         else
             line_color = Configs::Big_windows_parameters::grid_span_default_color;
 
-        float pos_x = window_interval_x * number_of_line_pair_x; + global_zero_point.x;
+        float pos_x = window_interval_x * static_cast<float>(i) + global_zero_point.x;
 
-
+        reference_lines.append(sf::Vertex(sf::Vector2f(pos_x, bounds.top), line_color));
+        reference_lines.append(sf::Vertex(sf::Vector2f(pos_x, bounds.top + bounds.height), line_color));
     }
 
-    // Add vertical lines
-    for (float x = bounds.left; x <= bounds.left + bounds.width; x += interval) {
-        grid.append(sf::Vertex(sf::Vector2f(x, bounds.top), sf::Color::Black));
-        grid.append(sf::Vertex(sf::Vector2f(x, bounds.top + bounds.height), sf::Color::Black));
-    }
+    for(int i = -number_of_line_pair_y; i <= number_of_line_pair_y; i++){
+        sf::Color line_color;
+        if(i == 0)
+            line_color = Configs::Big_windows_parameters::grid_span_zero_point_color;
+        else
+            line_color = Configs::Big_windows_parameters::grid_span_default_color;
 
-    // Add horizontal lines
-    for (float y = bounds.top; y <= bounds.top + bounds.height; y += interval) {
-        grid.append(sf::Vertex(sf::Vector2f(bounds.left, y), sf::Color::Black));
-        grid.append(sf::Vertex(sf::Vector2f(bounds.left + bounds.width, y), sf::Color::Black));
+        float pos_y = window_interval_y * static_cast<float>(i) + global_zero_point.y;
+
+        reference_lines.append(sf::Vertex(sf::Vector2f(bounds.left, pos_y), line_color));
+        reference_lines.append(sf::Vertex(sf::Vector2f(bounds.left + bounds.width, pos_y), line_color));
+
     }
 }

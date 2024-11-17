@@ -30,11 +30,12 @@ private:
 
     void add_detection_graphic(sf::Vector2f pos, float size, sf::Color color);
 
-    std::vector<std::unique_ptr<sf::Shape>> all_graphics = {};
+    std::vector<std::unique_ptr<sf::Drawable>> all_graphics = {};
     std::vector<std::unique_ptr<sf::Shape>> detection_graphics = {};
-    std::vector<sf::RectangleShape> reference_lines = {};
+//    std::vector<sf::Drawable> reference_lines = {};
+    sf::VertexArray reference_lines;
 
-    void write_grid();
+    void create_grid();
 };
 
 

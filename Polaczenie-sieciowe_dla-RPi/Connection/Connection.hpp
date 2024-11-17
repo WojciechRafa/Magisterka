@@ -41,7 +41,7 @@ public:
     );
 
     std::vector<sf::Drawable*>&  get_figures_list();
-    std::vector<std::vector<std::unique_ptr<sf::Shape>>>* get_additional_graphic_lists();
+    std::vector<std::vector<std::unique_ptr<sf::Drawable>>>* get_additional_graphic_lists();
 
     //st - short time -  wykorzystywane
     Button::Button_Message update_backend_st();

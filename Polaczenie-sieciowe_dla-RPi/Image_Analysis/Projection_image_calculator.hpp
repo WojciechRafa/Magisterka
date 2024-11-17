@@ -31,7 +31,7 @@ public:
     void set_parameters(std::shared_ptr<Binarization::Binarized_parameters> parameters_);
 
 
-    void set_additional_graphic(std::vector<std::unique_ptr<sf::Shape>>* additional_graphic_);
+    void set_additional_drawable_ptr(std::vector<std::unique_ptr<sf::Drawable>>* additional_graphic_);
 
     std::string get_name() override{return "Project Image Calculator";};
 private:
@@ -40,10 +40,8 @@ private:
     Axes axis_a;
     Axes axis_b;
 
-    std::vector<std::unique_ptr<sf::Shape>>* projections_list = nullptr;
-
-//    static cv::Mat load_camera_matrix(const std::string& filePath);
-//    cv::Mat internal_parameters;
+//    std::vector<std::unique_ptr<sf::Shape>>* projections_list = nullptr;
+    std::vector<std::unique_ptr<sf::Drawable>>* drawable_list = nullptr;
 
     static cv::Vec3d compute_3D_line(const cv::Mat& intrinsicMatrix, const cv::Point2d& imagePoint);
 

@@ -67,7 +67,7 @@ public:
     );
 
     std::vector<sf::Drawable*>& get_figures_list();
-    std::vector<std::vector<std::unique_ptr<sf::Shape>>>* get_additional_graphic_lists();
+    std::vector<std::vector<std::unique_ptr<sf::Drawable>>>* get_additional_graphic_lists();
 
     Button::Button_Message update_st(sf::Vector2i mouse_pos_relative_to_window);// zwraca informację o tym, czy połączenie ma być zakończone
     void update_image(const sf::Image& new_image); // zwraca false przy braku nowego zdjęcia
@@ -112,7 +112,7 @@ private:
     std::vector<Small_window> projections_windows_list;
 
     std::vector<Projection_image_calculator> projection_calculators;
-    std::vector<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_of_small_window = {};
+    std::vector<std::vector<std::unique_ptr<sf::Drawable>>> additional_graphic_of_small_window = {};
 
 };
 

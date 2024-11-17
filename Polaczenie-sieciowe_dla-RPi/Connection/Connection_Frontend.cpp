@@ -150,7 +150,7 @@ std::vector<sf::Drawable*>& Connection_Frontend::get_figures_list() {
     return list1;
 }
 
-std::vector<std::vector<std::unique_ptr<sf::Shape>>> *Connection_Frontend::get_additional_graphic_lists() {
+std::vector<std::vector<std::unique_ptr<sf::Drawable>>> *Connection_Frontend::get_additional_graphic_lists() {
     return &additional_graphic_of_small_window;
 }
 
@@ -214,10 +214,7 @@ void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf
                                          sf::Color background_color,
                                          sf::Color outline_color, float outline_thickness, int update_time) {
 
-    std::vector<std::unique_ptr<sf::Shape>> additional_graphic_list;
-
-
-//    additional_graphic_of_small_window = std::ma
+    std::vector<std::unique_ptr<sf::Drawable>> additional_graphic_list;
 
     Small_window projections_window(pos, size, background_color, outline_color, outline_thickness, update_time);
 
@@ -233,10 +230,10 @@ void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf
             true,
             rays_ratio_
     );
-//    new_projection_calculator.set_additional_graphic(&additional_graphic_list);
+//    new_projection_calculator.set_additional_drawable_ptr(&additional_graphic_list);
 
 
-    new_projection_calculator.set_additional_graphic(&additional_graphic_of_small_window.back());
+    new_projection_calculator.set_additional_drawable_ptr(&additional_graphic_of_small_window.back());
 
 
 //    projections_windows_list.emplace_back(bb_size, pos, background_color, outline_color, detection_outline_thickness, update_time);

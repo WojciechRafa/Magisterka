@@ -56,7 +56,7 @@ private:
     std::shared_ptr<Binarization::Binarized_parameters> bin_parameters =
             std::make_shared<Binarization::Binarized_parameters>();
 
-    std::vector<std::unique_ptr<sf::Shape>> projections = std::vector<std::unique_ptr<sf::Shape>>();
+    std::vector<std::unique_ptr<sf::Drawable>> projections = std::vector<std::unique_ptr<sf::Drawable>>();
 
     Projection_image_calculator projection_calculator;
     Rays_intersection_analyzer rays_intersection_analyzer;
