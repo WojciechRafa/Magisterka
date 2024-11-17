@@ -17,6 +17,10 @@ public:
     ~Time_Object();
     explicit Time_Object(sf::Time update_period_);
 
+    Time_Object(Time_Object&&) noexcept = default;
+    Time_Object& operator=(Time_Object&&) noexcept = default;
+
+
     virtual void update() = 0; // Aktualizować last_update_time
     static std::list<Time_Object*>* get_all_time_objects_pointers();
     static void update_all_time_objets();
@@ -34,8 +38,6 @@ protected:
     sf::Time last_update_time = sf::milliseconds(0);
 private:
     static std::list<Time_Object*> all_time_objects_pointers;
-
-    const sf::Time default_update_period_microseconds = Configs::default_update_time;
 };
 
 #endif //INZYNIERKA_TIME_OBJECT_HPP

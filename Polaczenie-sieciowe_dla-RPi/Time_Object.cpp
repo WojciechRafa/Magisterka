@@ -12,7 +12,7 @@ sf::Clock Time_Object::clock;
 Time_Object::Time_Object() {
     last_update_time = clock.getElapsedTime();
     all_time_objects_pointers.push_back(this);
-    update_period = default_update_period_microseconds;
+    update_period = Configs::default_update_time;
 }
 
 Time_Object::Time_Object(sf::Time update_period_):

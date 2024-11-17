@@ -9,6 +9,9 @@ System::System():
     clock(Time_Object::get_clock()),
     update_period(Configs::main_loop_time),
     graphic_warehouse("../Graphic_Warehouse"),
+    window(sf::VideoMode(  Configs::GUI_layout::render_window_size.x,
+                                Configs::GUI_layout::render_window_size.y),
+                                      Configs::GUI_layout::render_window_name),
     graphic(window,
             graphic_warehouse,
             connection_list
@@ -17,17 +20,16 @@ System::System():
     image_source(Image_source::Frame_switching::automatic),
 
 //    image_source("/home/wpr/Documents/AGH/Magisterka/Program/Video/cut_video/IMG_1264.mkv", Image_source::Frame_switching::automatic),
-    raw_picture_window(standard_window_size, sf::Vector2f(10, 120)),
-    binarized_picture_window(standard_window_size, sf::Vector2f(320, 120)),
-    projections_window(standard_window_size, sf::Vector2f(630, 120), sf::Color::White),
-    objects_tracker_window(sf::Vector2f(800, 400), sf::Vector2f(350, 350)),
+    raw_picture_window(Configs::GUI_layout::camera_view_window_pos),
+    binarized_picture_window(Configs::GUI_layout::binarization_window_pos),
+    projections_window(Configs::GUI_layout::rays_window_pos),
 
     projection_calculator(
                           Axes::z,
                           Axes::x,
                           projections_window.getPosition(),
-                          standard_window_size,
-                          standard_window_size * 0.5f,
+                          Configs::GUI_layout::default_small_window_size,
+                          Configs::GUI_layout::default_small_window_size * 0.5f,
 
                           false,
                           {},
@@ -36,6 +38,18 @@ System::System():
     ),
     binarization(Configs::is_binarization_relative)
 {
+    detected_objects_windows.reserve(Configs::Big_windows_parameters::displayed_big_window_list.size());
+    detected_objects_displayer_list.reserve(Configs::Big_windows_parameters::displayed_big_window_list.size());
+    for(auto& big_window_parameters: Configs::Big_windows_parameters::displayed_big_window_list){
+        detected_objects_windows.emplace_back(big_window_parameters.window_pos, big_window_parameters.window_size);
+        detected_objects_displayer_list.emplace_back(big_window_parameters.axes,
+                                                     big_window_parameters.area_size,
+                                                     big_window_parameters.area_zero_point,
+                                                     &objects_tracker,
+                                                     &detected_objects_windows.back());
+    }
+
+
     image_source.set_image_and_main_time_ptr(raw_picture_with_main_time);
     raw_picture_window.set_image_ptr(&raw_picture_with_main_time->second);
 
@@ -48,20 +62,21 @@ System::System():
     projection_calculator.set_parameters(bin_parameters);
     projection_calculator.set_additional_graphic(&projections);
 
-    projections_window.set_additional_graphic(&projections);
+    if(Configs::GUI_layout::is_projection_calculator_displayed)
+        projections_window.set_additional_graphic(&projections);
 
     rays_intersection_analyzer.set_objects_tracker_ptr(&objects_tracker);
 
-    objects_tracker.set_small_window(&objects_tracker_window);
 
-    graphic.add_time_object_to_update(& raw_picture_window);
     graphic.add_small_window_to_display(& raw_picture_window);
-    graphic.add_time_object_to_update(& binarized_picture_window);
     graphic.add_small_window_to_display(& binarized_picture_window);
-    graphic.add_time_object_to_update(&projections_window);
-    graphic.add_small_window_to_display(&projections_window);
-    graphic.add_time_object_to_update(&objects_tracker_window);
-    graphic.add_small_window_to_display(&objects_tracker_window);
+
+    if(Configs::GUI_layout::is_projection_calculator_displayed)
+        graphic.add_small_window_to_display(& projections_window);
+
+    for(auto& detected_objects_window:detected_objects_windows){
+        graphic.add_small_window_to_display(&detected_objects_window);
+    }
 }
 
 bool System::update() {
@@ -116,37 +131,12 @@ bool System::execute_button_message(Button::Button_Message message) {
             window.close();
             return true;
 
-        case Button::Button_Message::create_new_screen:
+        case Button::Button_Message::create_new_connection_interface:
             if(connection_list.empty()) {
-                Custom_Data_IO_Window::message sended_message_1;
-                Custom_Data_IO_Window::message sended_message_2;
 
-                Custom_Data_IO_Window::message recived_message_1;
-                Custom_Data_IO_Window::message recived_message_2;
-
-                sended_message_1.is_int = true;
-                sended_message_1.name   = "Wiadomosc_int";
-                sended_message_1.id     = 1;
-
-                sended_message_2.is_int = false;
-                sended_message_2.name   = "Wiadomosc_float";
-                sended_message_2.id     = 2;
-
-                recived_message_1.is_int = true;
-                recived_message_1.name   = "Wiadomosc_int";
-                recived_message_1.id     = 1;
-
-                recived_message_2.is_int = false;
-                recived_message_2.name   = "Wiadomosc_float";
-                recived_message_2.id     = 2;
-
-
-                std::vector<Custom_Data_IO_Window::message> message_list_displayed = {recived_message_1, recived_message_2};
-                std::vector<Custom_Data_IO_Window::message> message_list_sended = {sended_message_1, sended_message_2};
-
-
-
-                auto button_field = create_button_field_to_connection_with_rays(sf::Vector2f(10, 340));
+                auto button_field = create_button_field_to_connection_with_rays(
+                        Configs::GUI_layout::first_connection_button_field.getPosition()
+                        );
 
                 // bez kamery
 //                auto connection = std::make_unique<Connection>(
@@ -183,11 +173,11 @@ bool System::execute_button_message(Button::Button_Message message) {
                         // przyciski
                         std::move(button_field),
 
-                        sf::Vector2f(10, 460),
-                        sf::Vector2f(300, 150),
-                        sf::Vector2f(100, 50),
-                        Axes::z,
-                        Axes::x,
+                        Configs::GUI_layout::received_rays_field.getPosition(),
+                        Configs::GUI_layout::received_rays_field.getSize(),
+                        sf::Vector2f(Configs::GUI_layout::received_rays_zero_point),
+                        Configs::GUI_layout::received_rays_axes.first,
+                        Configs::GUI_layout::received_rays_axes.second,
 
                         graphic_warehouse,
                         50238,
@@ -281,8 +271,8 @@ std::unique_ptr<Buttons_Field>  System::create_button_field_to_connection_with_c
 }
 
 std::unique_ptr<Buttons_Field> System::create_button_field_to_connection_with_rays(sf::Vector2f button_field_pos) {
-    sf::Vector2f button_field_size = sf::Vector2f(300, 100);
-    sf::Color button_field_color = sf::Color::Cyan;
+    sf::Vector2f button_field_size = Configs::GUI_layout::first_connection_button_field.getSize();
+    sf::Color button_field_color = Configs::GUI_layout::first_connection_button_field_color;
 
     auto  buttons_field = std::make_unique<Buttons_Field>(
             button_field_pos,

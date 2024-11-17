@@ -124,18 +124,18 @@ std::unique_ptr<sf::RectangleShape>  Projection_image_calculator::get_ray(sf::Ve
     return line;
 }
 
-int Projection_image_calculator::get_axi_nr(Axes axis) {
-    switch (axis) {
-        case Axes::x:
-            return 0;
-        case Axes::y:
-            return 1;
-        case Axes::z:
-            return 2;
-        default:
-            return -1;
-    }
-}
+//int Projection_image_calculator::get_axi_nr(Axes axis) {
+//    switch (axis) {
+//        case Axes::x:
+//            return 0;
+//        case Axes::y:
+//            return 1;
+//        case Axes::z:
+//            return 2;
+//        default:
+//            return -1;
+//    }
+//}
 
 
 void Projection_image_calculator::update() {

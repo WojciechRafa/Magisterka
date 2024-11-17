@@ -7,7 +7,7 @@
 # Prerequisites
 *.d
 
-# Compiled Object files
+# Compiled Verified_object files
 *.slo
 *.lo
 *.o

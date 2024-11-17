@@ -11,7 +11,7 @@ class Button: public sf::RectangleShape {
 public:
     enum class Button_Message {
         nothing,
-        create_new_screen,
+        create_new_connection_interface,
         turn_off_program,
         turn_off_connection,
         broadcast_ip_process,

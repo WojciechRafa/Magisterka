@@ -219,10 +219,10 @@ void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf
 
 //    additional_graphic_of_small_window = std::ma
 
-    Small_window new_window(size, pos, background_color, outline_color, outline_thickness, update_time);
+    Small_window projections_window(pos, size, background_color, outline_color, outline_thickness, update_time);
 
     additional_graphic_of_small_window.push_back(std::move(additional_graphic_list));
-    new_window.set_additional_graphic(&additional_graphic_of_small_window.back());
+    projections_window.set_additional_graphic(&additional_graphic_of_small_window.back());
 
     Projection_image_calculator new_projection_calculator(
             axis_a,
@@ -239,7 +239,7 @@ void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf
     new_projection_calculator.set_additional_graphic(&additional_graphic_of_small_window.back());
 
 
-//    projections_windows_list.emplace_back(bb_size, pos, background_color, outline_color, outline_thickness, update_time);
+//    projections_windows_list.emplace_back(bb_size, pos, background_color, outline_color, detection_outline_thickness, update_time);
 //    projection_calculators.emplace_back(
 //            axis_a,
 //            axis_b,
@@ -251,7 +251,7 @@ void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf
 //    auto additional_graphic_ptr = &additional_graphic_of_small_window.back();
 
 
-    projections_windows_list.push_back(std::move(new_window));
+    projections_windows_list.push_back(std::move(projections_window));
     projection_calculators.push_back(std::move(new_projection_calculator));
 }
 

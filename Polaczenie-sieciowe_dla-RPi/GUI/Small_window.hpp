@@ -12,14 +12,17 @@
 
 class Small_window: public sf::RectangleShape, public Time_Object{
 public:
-    Small_window(sf::Vector2f size_,
-                 sf::Vector2f pos,
+    explicit Small_window(sf::Vector2f pos_,
+                 sf::Vector2f size_ = Configs::GUI_layout::default_small_window_size,
                  sf::Color background_color= sf::Color::White,
                  sf::Color outline_color= sf::Color::Black,
                  float outline_thickness = 3,
                  int update_time = 50000);
 
     ~Small_window() override = default;
+
+    Small_window(Small_window&&) noexcept = default;
+    Small_window& operator=(Small_window&&) noexcept = default;
 
     void update();
     void set_image_ptr(cv::Mat* image_);
@@ -36,8 +39,7 @@ private:
     sf::Texture texture;
 
     std::vector<std::unique_ptr<sf::Shape>>* additional_graphic = nullptr;
-//    std::vector<std::unique_ptr<sf::Shape>> additional_graphic_local;
-//    std::vector<sf::Drawable> additional_graphic_local;
+
 };
 
 

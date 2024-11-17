@@ -5,7 +5,7 @@
 #include "Graphic_Manager.hpp"
 #include "../main_functions.hpp"
 
-Graphic_Manager::Graphic_Manager(Window &window_,
+Graphic_Manager::Graphic_Manager(sf::RenderWindow &window_,
                                  Graphic_Warehouse &graphic_warehouse_,
                                  std::vector<std::unique_ptr<Connection>>& connection_list_
                                  ):
@@ -16,9 +16,9 @@ connection_list(connection_list_)
     background.setTexture(graphic_warehouse.get_texture("Background"));
     resize_sprite(window.getSize(), background);
 
-    auto main_menu = Buttons_Field(sf::Vector2f(10, 10),
-                                   sf::Vector2f(1100, 100),
-                                   sf::Color::White
+    auto main_menu = Buttons_Field(Configs::GUI_layout::main_button_field.getPosition(),
+                                   Configs::GUI_layout::main_button_field.getSize(),
+                                   Configs::GUI_layout::main_button_field_color
     );
 
 
@@ -32,7 +32,7 @@ connection_list(connection_list_)
     auto new_connection = Button(sf::Vector2f(110, 10),
                                  main_menu.getPosition(),
                                  sf::Vector2f(80, 80),
-                                 Button::Button_Message::create_new_screen,
+                                 Button::Button_Message::create_new_connection_interface,
                                  graphic_warehouse.get_texture("Plus")
     );
 
@@ -63,8 +63,8 @@ void Graphic_Manager::update() {
         if (button_field_status != Button::Button_Message::nothing)
             actual_button_mesage = button_field_status;
 
-        if(actual_button_mesage == Button::Button_Message::create_new_screen) {
-            button_field.set_button_mode(Button::Button_Message::create_new_screen, false); // dla tego przycisku, wyświetlenie nie jest zapamiętywane
+        if(actual_button_mesage == Button::Button_Message::create_new_connection_interface) {
+            button_field.set_button_mode(Button::Button_Message::create_new_connection_interface, false); // dla tego przycisku, wyświetlenie nie jest zapamiętywane
         }
     }
 
@@ -105,7 +105,7 @@ void Graphic_Manager::display() {
 
 //    std::vector<sf::RectangleShape> small_wind_list;
 
-    for(auto small_window: small_windows){
+    for(auto small_window: small_windows_ptrs){
         if(small_window != nullptr) {
             window.draw(* small_window);
 
@@ -129,10 +129,6 @@ Button::Button_Message Graphic_Manager::get_and_delate_actual_button_mesage() {
     return message_copy;
 }
 
-void Graphic_Manager::add_time_object_to_update(Time_Object *time_object_to_update_) {
-    time_objects_to_update.push_back(time_object_to_update_);
-}
-
 void Graphic_Manager::add_small_window_to_display(Small_window* small_window) {
-    small_windows.push_back(small_window);
+    small_windows_ptrs.push_back(small_window);
 }

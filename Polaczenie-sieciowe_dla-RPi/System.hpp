@@ -5,7 +5,6 @@
 #ifndef INZYNIERKA_SYSTEM_HPP
 #define INZYNIERKA_SYSTEM_HPP
 
-#include "GUI/Window.hpp"
 #include "GUI/Buttons_Field.hpp"
 #include "GUI/Graphic_Warehouse.hpp"
 #include "main_functions.hpp"
@@ -17,6 +16,7 @@
 #include "Image_Analysis/Binarization.hpp"
 #include "Image_Analysis/Projection_image_calculator.hpp"
 #include "Image_Analysis/Rays_intersection_analyzer.hpp"
+#include "GUI/Detected_objects_displayer.hpp"
 
 class System {
 public:
@@ -27,7 +27,7 @@ private:
     sf::Time update_period;
     bool execute_button_message(Button::Button_Message message); // zwraca informacje o tym czy należy zamknąć program
 
-    Window window;
+    sf::RenderWindow window;
 
     std::vector<std::unique_ptr<Connection>> connection_list;
 
@@ -36,13 +36,8 @@ private:
 
     Graphic_Manager graphic;
 
-    sf::Int64 update_period_microseconds;
-
     std::unique_ptr<Buttons_Field>  create_button_field_to_connection_with_camera_and_custom_data(sf::Vector2f button_field_pos = sf::Vector2f(10, 120));
     std::unique_ptr<Buttons_Field>  create_button_field_to_connection_with_rays(sf::Vector2f button_field_pos = sf::Vector2f(10, 120));
-
-    // camera data windows
-    const sf::Vector2f standard_window_size = sf::Vector2f(300, 200);
 
     Image_source image_source;
     Binarization binarization;
@@ -55,7 +50,8 @@ private:
     Small_window binarized_picture_window;
     Small_window projections_window;
 
-    Small_window objects_tracker_window;
+//    Small_window objects_tracker_window;
+    std::vector<Small_window> detected_objects_windows;
 
     std::shared_ptr<Binarization::Binarized_parameters> bin_parameters =
             std::make_shared<Binarization::Binarized_parameters>();
@@ -65,6 +61,7 @@ private:
     Projection_image_calculator projection_calculator;
     Rays_intersection_analyzer rays_intersection_analyzer;
     Objects_tracker objects_tracker;
+    std::vector<Detected_objects_displayer> detected_objects_displayer_list;
 
     sf::Clock& clock;
 };

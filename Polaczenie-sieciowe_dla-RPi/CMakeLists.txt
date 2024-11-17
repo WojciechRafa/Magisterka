@@ -15,7 +15,6 @@ add_executable(Magisterka
         Network/Broadcast_Connector.hpp
         Network/Permanent_Connector.cpp
         Network/Permanent_Connector.hpp
-        GUI/Window.cpp GUI/Window.hpp
         Network/Image_Receiver.cpp
         Network/Image_Receiver.hpp
         GUI/Buttons_Field.cpp
@@ -58,6 +57,8 @@ add_executable(Magisterka
         Objects_tracker.cpp
         Objects_tracker.hpp
         Rays_source.cpp
+        GUI/Detected_objects_displayer.cpp
+        GUI/Detected_objects_displayer.hpp
 )
 
 target_link_libraries(Magisterka sfml-network sfml-system sfml-window sfml-graphics ${OpenCV_LIBS})

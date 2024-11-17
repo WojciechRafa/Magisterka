@@ -23,52 +23,6 @@ public:
         sf::Color background_color = sf::Color::White;
     };
 
-    Connection(
-            std::unique_ptr<Buttons_Field> button_filed_,
-
-            sf::Vector2f custom_data_view_pos,
-            sf::Vector2f custom_data_view_size,
-            unsigned int character_size,
-            sf::Color custom_data_background_color,
-            std::vector<Custom_Data_IO_Window::message>& message_list_displayed,
-            std::vector<Custom_Data_IO_Window::message>& message_list_sended,
-
-            sf::Vector2f camera_view_pos,
-            sf::Vector2f camera_view_size,
-            Graphic_Warehouse& graphic_warehouse,
-            unsigned short port
-            );
-
-    // bez wyświetlania grafik z kamery
-    [[maybe_unused]] Connection(
-            std::unique_ptr<Buttons_Field> button_filed_,
-
-            sf::Vector2f custom_data_view_pos,
-            sf::Vector2f custom_data_view_size,
-            unsigned int character_size,
-            sf::Color custom_data_background_color,
-            std::vector<Custom_Data_IO_Window::message>& message_list_displayed,
-            std::vector<Custom_Data_IO_Window::message>& message_list_sended,
-
-            Graphic_Warehouse& graphic_warehouse,
-            unsigned short port,
-            sf::Clock& clock_
-    );
-
-    // bez wyświetlania danych liczbowych
-    [[maybe_unused]] Connection(
-            std::unique_ptr<Buttons_Field> button_filed_,
-
-            std::vector<Custom_Data_IO_Window::message>& message_list_displayed,
-            std::vector<Custom_Data_IO_Window::message>& message_list_sended,
-
-            sf::Vector2f camera_view_pos,
-            sf::Vector2f camera_view_size,
-            Graphic_Warehouse& graphic_warehouse,
-            unsigned short port,
-            sf::Clock& clock_
-    );
-
     // do wyświetlania potencjalnych punktow kamery
     Connection(
             std::unique_ptr<Buttons_Field> button_filed_,
