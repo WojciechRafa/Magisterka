@@ -6,7 +6,7 @@
 #include "../main_functions.hpp"
 #include "Small_window.hpp"
 
-Graphic_Manager::Graphic_Manager(Window &window_,
+Graphic_Manager::Graphic_Manager(sf::RenderWindow &window_,
                                  Graphic_Warehouse &graphic_warehouse_,
                                  sf::Time update_period_
                                  ):
@@ -17,9 +17,9 @@ graphic_warehouse(graphic_warehouse_)
     background.setTexture(graphic_warehouse.get_texture("Background"));
     resize_sprite(window.getSize(), background);
 
-    auto main_menu = Buttons_Field(sf::Vector2f(10, 10),
-                                   sf::Vector2f(1100, 100),
-                                   sf::Color::White
+    auto main_menu = Buttons_Field(Configs::GUI_layout::main_button_field.getPosition(),
+                                   Configs::GUI_layout::main_button_field.getSize(),
+                                   Configs::GUI_layout::main_button_field_color
     );
 
 
@@ -84,7 +84,7 @@ void Graphic_Manager::display() {
 
     std::vector<sf::RectangleShape> small_wind_list;
 
-    for(auto small_window: small_windows){
+    for(auto small_window: small_windows_ptrs){
         if(small_window != nullptr) {
             window.draw(* small_window);
 
@@ -110,6 +110,6 @@ void Graphic_Manager::add_time_object_to_update(Time_Object *time_object_to_upda
 }
 
 void Graphic_Manager::add_small_window_to_display(Small_window* small_window) {
-    small_windows.push_back(small_window);
+    small_windows_ptrs.push_back(small_window);
 }
 

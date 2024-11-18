@@ -37,8 +37,8 @@ add_executable(Magisterka main.cpp
 		Image_source.hpp
         Image_Analysis/Binarization.cpp
         Image_Analysis/Binarization.hpp
-        Image_Analysis/Projection_image_calculate.cpp
-        Image_Analysis/Projection_image_calculate.hpp
+        Image_Analysis/Projection_image_calculator.cpp
+        Image_Analysis/Projection_image_calculator.hpp
         Network/Parameter_sender.cpp
         Network/Parameter_sender.hpp
         Configs.hpp

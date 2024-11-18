@@ -8,7 +8,6 @@
 #include "Network/Broadcast_connector.hpp"
 
 // graphic:
-#include "GUI/Window.hpp"
 #include "GUI/Buttons_Field.hpp"
 #include "GUI/Graphic_Warehouse.hpp"
 #include "GUI/Graphic_Manager.hpp"
@@ -16,7 +15,7 @@
 #include "GUI/Small_window.hpp"
 #include "Image_source.hpp"
 #include "Image_Analysis/Binarization.hpp"
-#include "Image_Analysis/Projection_image_calculate.hpp"
+#include "Image_Analysis/Projection_image_calculator.hpp"
 #include "Network/Parameter_sender.hpp"
 
 class System {
@@ -46,7 +45,7 @@ private:
 
 //    void configure_custom_data();
     // graphic:
-    Window window;
+    sf::RenderWindow window;
     sf::Event event{};
     Graphic_Warehouse graphic_warehouse;
 
@@ -69,13 +68,10 @@ private:
     std::shared_ptr<Binarization::Binarized_parameters> bin_parameters =
             std::make_shared<Binarization::Binarized_parameters>();
 
-    std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>> vectors_list = {};
-    Sent_parameters sent_parameters = {};
+    std::vector<std::unique_ptr<sf::Drawable>> projections = std::vector<std::unique_ptr<sf::Drawable>>();
 
-    std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>>projections =
-            std::make_shared<std::vector<std::unique_ptr<sf::Shape>>>();
 
-    Projection_image_calculate projection_calculator;
+    Projection_image_calculator projection_calculator;
 
 };
 

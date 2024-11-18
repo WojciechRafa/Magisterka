@@ -6,15 +6,15 @@
 
 #include <utility>
 
-Small_window::Small_window(sf::Vector2f size_,
-                           sf::Vector2f pos,
+Small_window::Small_window(sf::Vector2f pos_,
+                           sf::Vector2f size_,
                            sf::Color background_color,
                            sf::Color outline_color,
                            float outline_thickness,
                            int update_time) :
     size(size_)
 {
-    setPosition(pos);
+    setPosition(pos_);
     setSize(size);
 //    setColor(background_color);
     setFillColor(background_color);
@@ -80,18 +80,12 @@ void Small_window::set_image_ptr(cv::Mat* image_ptr_) {
     image_cv_ptr = image_ptr_;
 }
 
-void Small_window::set_additional_graphic(std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_) {
-    additional_graphic = std::move(additional_graphic_);
+void Small_window::set_additional_graphic(std::vector<std::unique_ptr<sf::Drawable>>* additional_graphic_) {
+    additional_graphic = additional_graphic_;
 }
 
-std::vector<std::unique_ptr<sf::Shape>>* Small_window::get_additional_graphic() {
-    return additional_graphic.get();
-//    additional_graphic_local.clear();
-
-//    for(auto& graphic: *additional_graphic){
-//        additional_graphic_local.push_back(std::make_unique<sf::Drawable>(*graphic));
-//        auto std::make_unique<sf::Shape>();
-//        additional_graphic_local.push_back()
-//    }
-//    return additional_graphic.get();
+std::vector<std::unique_ptr<sf::Drawable>>* Small_window::get_additional_graphic() {
+    return additional_graphic;
 }
+
+

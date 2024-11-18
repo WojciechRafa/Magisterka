@@ -15,7 +15,7 @@
 class Graphic_Manager: public Time_Object{
 public:
     Graphic_Manager(
-            Window& window_,
+            sf::RenderWindow& window_,
             Graphic_Warehouse& graphic_warehouse_,
             sf::Time update_period_ = sf::milliseconds(50)
             ); // w konstruktorze znajduje się międzyinnymi konfiguracja ekranu
@@ -32,7 +32,7 @@ private:
 
     std::vector<Buttons_Field> buttons_filed_list;
 
-    Window& window;
+    sf::RenderWindow& window;
     Graphic_Warehouse& graphic_warehouse;
 
     Button::Button_Message actual_button_mesage = Button::Button_Message::nothing;
@@ -40,7 +40,7 @@ private:
     void display();
 
     std::list<Time_Object*> time_objects_to_update;
-    std::list<Small_window*> small_windows;
+    std::list<Small_window*> small_windows_ptrs;
 };
 
 

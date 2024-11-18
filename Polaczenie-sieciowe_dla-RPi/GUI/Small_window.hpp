@@ -12,8 +12,8 @@
 
 class Small_window: public sf::RectangleShape, public Time_Object{
 public:
-    Small_window(sf::Vector2f size_,
-                 sf::Vector2f pos,
+    explicit Small_window(sf::Vector2f pos_,
+                 sf::Vector2f size_ = Configs::GUI_layout::default_small_window_size,
                  sf::Color background_color= sf::Color::White,
                  sf::Color outline_color= sf::Color::Black,
                  float outline_thickness = 3,
@@ -22,9 +22,8 @@ public:
     void update() override;
     void set_image_ptr(cv::Mat* image_);
 
-    void set_additional_graphic(std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic_);
-    std::vector<std::unique_ptr<sf::Shape>>* get_additional_graphic();
-//    std::vector<sf::Drawable*>& get_additional_graphic();
+    void set_additional_graphic(std::vector<std::unique_ptr<sf::Drawable>>* additional_graphic_);
+    std::vector<std::unique_ptr<sf::Drawable>>* get_additional_graphic();
 
 private:
     cv::Mat* image_cv_ptr = nullptr;
@@ -33,9 +32,8 @@ private:
 
     sf::Texture texture;
 
-    std::shared_ptr<std::vector<std::unique_ptr<sf::Shape>>> additional_graphic = nullptr;
-//    std::vector<std::unique_ptr<sf::Shape>> additional_graphic_local;
-//    std::vector<sf::Drawable> additional_graphic_local;
+    std::vector<std::unique_ptr<sf::Drawable>>* additional_graphic = nullptr;
+
 };
 
 

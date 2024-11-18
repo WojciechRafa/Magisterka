@@ -7,7 +7,7 @@
 Custom_Data_IO::Custom_Data_IO(unsigned short port_, sf::IpAddress remote_dev_ip_):
         Permanent_Connector(port_, remote_dev_ip_)
 {
-    update_period = sf::milliseconds(50);
+    update_period = sf::milliseconds(500);
 }
 
 void Custom_Data_IO::update() {

@@ -12,17 +12,17 @@ System::System():
     image_source(Image_source::Frame_switching::automatic),
 
 //    image_source("/home/wpr/Documents/AGH/Magisterka/Program/Video/cut_video/IMG_1264.mkv", Image_source::Frame_switching::automatic),
-    raw_picture_window(standard_window_size, sf::Vector2f(10, 120)),
-    binarized_picture_window(standard_window_size, sf::Vector2f(320, 120)),
-    projections_window(standard_window_size, sf::Vector2f(630, 120), sf::Color::White),
+    raw_picture_window(Configs::GUI_layout::camera_view_window_pos),
+    binarized_picture_window(Configs::GUI_layout::binarization_window_pos),
+    projections_window(Configs::GUI_layout::rays_window_pos),
 
     projection_calculator(
-                          Projection_image_calculate::axes::z,
-                          Projection_image_calculate::axes::x,
+                          Axes::z,
+                          Axes::x,
                           projections_window.getPosition(),
-                          standard_window_size,
-                          standard_window_size * 0.5f
-                          ),
+                          Configs::GUI_layout::default_small_window_size,
+                          Configs::GUI_layout::default_small_window_size * 0.5f
+    ),
     binarization(Configs::is_binarization_relative)
     {
     broadcast_connector = std::make_unique<Broadcast_Connector>(port);
@@ -38,17 +38,12 @@ System::System():
     binarization.set_parameters(bin_parameters);
 
     projection_calculator.set_parameters(bin_parameters);
-    projection_calculator.set_additional_graphic(projections);
-    projection_calculator.set_sent_parameters_ptr(&sent_parameters);
+    projection_calculator.set_additional_drawable_ptr(&projections);
 
-    projections_window.set_additional_graphic(projections);
-    projection_calculator.set_vectors_list(&vectors_list);
+    projections_window.set_additional_graphic(&projections);
 
-    graphic.add_time_object_to_update(& raw_picture_window);
     graphic.add_small_window_to_display(& raw_picture_window);
-    graphic.add_time_object_to_update(& binarized_picture_window);
     graphic.add_small_window_to_display(& binarized_picture_window);
-    graphic.add_time_object_to_update(&projections_window);
     graphic.add_small_window_to_display(&projections_window);
     }
 
@@ -75,9 +70,6 @@ bool System::update() {
         connection_state = Connection_State::both_wait_to_pernamant_connect;
 
         parameter_sender = std::make_unique<Parameter_sender>(port, remote_ip_address);
-        // parameter_sender->set_update_period(1000);
-//        parameter_sender->set_vectors_list_ptr(&vectors_list);
-        parameter_sender->set_sent_parameters_ptr(&sent_parameters);
 
         std::cout<<"Procedura zawiązywania polaczenia przez Broadcast zakonczona !"<<std::endl;
         broadcast_connector = nullptr;
