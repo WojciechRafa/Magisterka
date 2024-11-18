@@ -102,7 +102,7 @@ std::unique_ptr<sf::RectangleShape>  Projection_image_calculator::get_ray(sf::Ve
 
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-    auto line = std::make_unique<sf::RectangleShape>((sf::Vector2f(length, 0.5)));
+    auto line = std::make_unique<sf::RectangleShape>((sf::Vector2f(length, thickness)));
 
     line->setPosition(output_zero_point_pos);
 

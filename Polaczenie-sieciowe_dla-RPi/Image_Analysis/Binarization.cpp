@@ -6,6 +6,11 @@
 #include "../Configs.hpp"
 
 void get_binary_diff(cv:: Mat& frame_1, cv:: Mat& frame_2, cv::Mat& result){
+    if(frame_1.empty() or frame_2.empty()) {
+        result = cv::Mat();
+        return;
+    }
+
     cv::Mat diff, gray_diff;
 
     cv::absdiff(frame_1, frame_2, diff);
@@ -71,7 +76,7 @@ void Binarization::relative_update() {
 }
 
 void Binarization::absolute_update() {
-    if(reference_image == nullptr and image_with_main_time != nullptr){
+    if(reference_image == nullptr and image_with_main_time != nullptr and not image_with_main_time->second.empty()){
         reference_image = std::make_unique<cv::Mat>(image_with_main_time->second.clone());
     }else if(image_with_main_time != nullptr and not image_with_main_time->second.empty()){
         cv::Mat threshold_diff;

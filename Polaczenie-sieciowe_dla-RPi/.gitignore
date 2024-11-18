@@ -2,7 +2,7 @@
 **/.idea
 */txt
 
-
+/CMakeFiles
 
 # Prerequisites
 *.d
@@ -39,3 +39,4 @@
 /.run/
 /Archiwum/
 /Python_Scripts/Calibration_Images/*
+/CMakeFiles/

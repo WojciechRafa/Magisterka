@@ -21,9 +21,7 @@ add_executable(Magisterka main.cpp
 	System.cpp System.hpp
 	Time_Object.cpp Time_Object.hpp
         Network/Custom_Data_IO.cpp Network/Custom_Data_IO.hpp
-        GUI/Window.cpp
-        GUI/Window.hpp
-        GUI/Graphic_Warehouse.cpp
+		GUI/Graphic_Warehouse.cpp
         GUI/Graphic_Warehouse.hpp
         GUI/Buttons_Field.hpp
         GUI/Buttons_Field.cpp

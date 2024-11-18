@@ -7,7 +7,6 @@
 
 #include <list>
 #include "../Time_Object.hpp"
-#include "Window.hpp"
 #include "Graphic_Warehouse.hpp"
 #include "Buttons_Field.hpp"
 #include "Small_window.hpp"

@@ -62,9 +62,6 @@ void Graphic_Manager::update() {
         if (button_field_status != Button::Button_Message::nothing)
             actual_button_mesage = button_field_status;
 
-//        if(actual_button_mesage == Button::Button_Message::create_new_screen) {
-//            button_field.set_button_mode(Button::Button_Message::create_new_screen, false); // dla tego przycisku, wyświetlenie nie jest zapamiętywane
-//        }
     }
 
     display();

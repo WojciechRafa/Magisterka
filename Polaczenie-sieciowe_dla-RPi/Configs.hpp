@@ -42,24 +42,24 @@ namespace Configs{
     static int binarization_threshold = 50;
 
     namespace GUI_layout{
-        static const sf::Vector2f default_small_window_size = sf::Vector2f(360, 230);
+        static const sf::Vector2f default_small_window_size = sf::Vector2f(550, 350);
 
         static const sf::Vector2i render_window_size(1200,  800);
         static const std::string render_window_name("Inzynierka");
 
-        static const bool is_projection_calculator_displayed = true;
-        static const std::pair<Axes, Axes> projection_calculator_axes(Axes::z, Axes::x);
-
-
         static const sf::FloatRect main_button_field(10, 10, 350, 100);
         static const sf::Color main_button_field_color = sf::Color::White;
 
-        static const sf::Vector2f camera_view_window_pos(400, 30);
-        static const sf::Vector2f binarization_window_pos(camera_view_window_pos.x + default_small_window_size.x + 10,
-                                                          camera_view_window_pos.y);
-        static const sf::Vector2f rays_window_pos(camera_view_window_pos.x,
-                                                  camera_view_window_pos.y + default_small_window_size.y + 10);
+        static const sf::Vector2f camera_view_window_pos(main_button_field.left + main_button_field.width + 10,
+                                                         main_button_field.top);
+        static const sf::Vector2f binarization_window_pos(main_button_field.left,
+                                                          main_button_field.top + default_small_window_size.y + 10);
+        static const sf::Vector2f rays_window_pos(binarization_window_pos.x + default_small_window_size.x + 10,
+                                                  binarization_window_pos.y);
 
+        static const bool is_projection_calculator_displayed = true;
+        static const std::pair<Axes, Axes> projection_calculator_axes(Axes::z, Axes::x);
+        static const sf::Vector2f projection_zero_point(default_small_window_size.x / 4, default_small_window_size.y / 2);
     }
     enum class computers_enum{
         dell,

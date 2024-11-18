@@ -7,6 +7,9 @@
 System::System():
     update_period(Configs::main_loop_time),
     graphic_warehouse("../Graphic_Warehouse"),
+    window(sf::VideoMode(  Configs::GUI_layout::render_window_size.x,
+                                Configs::GUI_layout::render_window_size.y),
+                                      Configs::GUI_layout::render_window_name),
     graphic(window,
         graphic_warehouse),
     image_source(Image_source::Frame_switching::automatic),
@@ -17,11 +20,11 @@ System::System():
     projections_window(Configs::GUI_layout::rays_window_pos),
 
     projection_calculator(
-                          Axes::z,
-                          Axes::x,
-                          projections_window.getPosition(),
-                          Configs::GUI_layout::default_small_window_size,
-                          Configs::GUI_layout::default_small_window_size * 0.5f
+                        Configs::GUI_layout::projection_calculator_axes.first,
+                        Configs::GUI_layout::projection_calculator_axes.second,
+                        projections_window.getPosition(),
+                        Configs::GUI_layout::default_small_window_size,
+                        Configs::GUI_layout::projection_zero_point
     ),
     binarization(Configs::is_binarization_relative)
     {
@@ -44,7 +47,8 @@ System::System():
 
     graphic.add_small_window_to_display(& raw_picture_window);
     graphic.add_small_window_to_display(& binarized_picture_window);
-    graphic.add_small_window_to_display(&projections_window);
+    if(Configs::GUI_layout::is_projection_calculator_displayed)
+        graphic.add_small_window_to_display(&projections_window);
     }
 
 bool System::update() {
