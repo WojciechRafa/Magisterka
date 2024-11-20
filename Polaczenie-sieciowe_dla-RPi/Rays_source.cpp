@@ -4,8 +4,11 @@
 
 #include "Rays_source.hpp"
 
-Rays_source::Rays_source(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_):
-    rays_intersection_analyzer_ptr(rays_intersection_analyzer_ptr_){};
+Rays_source::Rays_source(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_, Configs::computers_enum computer_type_):
+    rays_intersection_analyzer_ptr(rays_intersection_analyzer_ptr_),
+    computer_type(computer_type_),
+    camera_params(Configs::camera_params[computer_type])
+    {};
 
 cv::Mat &Rays_source::get_external_matrix() {
     return external_matrix;
@@ -15,6 +18,6 @@ cv::Mat &Rays_source::get_internal_matrix() {
     return internal_matrix;
 }
 
-void Rays_source::set_rays_intersection_analyzer(Rays_intersection_analyzer *rays_intersection_analyzer_ptr_) {
-    rays_intersection_analyzer_ptr = rays_intersection_analyzer_ptr_;
+Configs::camera_parameters_struct *Rays_source::get_camera_params() {
+    return &camera_params;
 }

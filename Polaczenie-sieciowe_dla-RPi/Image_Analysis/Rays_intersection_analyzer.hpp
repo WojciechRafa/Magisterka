@@ -37,17 +37,17 @@ private:
 
     static bool check_size_comparison(  double& estimated_size,
                                         const cv::Mat &position_mat,
-                                        const cv::Mat &first_outside_matrix,
-                                        const cv::Mat &first_inside_matrix,
-                                        cv::Vec2d first_bb_size_2d,
-                                        const cv::Mat &second_outside_matrix,
-                                        const cv::Mat &second_inside_matrix,
-                                        cv::Vec2d second_bb_size_2d);
+                                        Rays_source first_ray_source,
+                                        const cv::Vec2d& first_bb_size_2d,
+                                        Rays_source& second_ray_source,
+                                        const cv::Vec2d& second_bb_size_2d);
 
     static void calculate_intersections( std::vector<cv::Vec3d>& result_pos,
                                   std::vector<double>& result_size,
                                   Frame_parameters* first_frame_params,
                                   Frame_parameters* second_frame_params);
+
+    static double get_estimated_3d_size(cv::Vec2d size_2d, double distance_3d, Rays_source& rays_source);
 };
 
 #endif //MAGISTERKA_RAYS_INTERSECTION_ANALYZER_HPP

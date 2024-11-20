@@ -17,15 +17,19 @@
 
 class Rays_source{
 public:
-    explicit Rays_source(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_);
+    explicit Rays_source(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_, Configs::computers_enum computer_type_);
     cv::Mat& get_internal_matrix();
     cv::Mat& get_external_matrix();
 
-    void set_rays_intersection_analyzer(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_);
+    Configs::camera_parameters_struct* get_camera_params();
 protected:
+    void set_rays_intersection_analyzer(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_);
     Rays_intersection_analyzer* rays_intersection_analyzer_ptr = nullptr;
     cv::Mat internal_matrix;
     cv::Mat external_matrix;
+
+    Configs::computers_enum computer_type;
+    Configs::camera_parameters_struct camera_params;
 };
 
 #endif //MAGISTERKA_RAYS_SOURCE_HPP

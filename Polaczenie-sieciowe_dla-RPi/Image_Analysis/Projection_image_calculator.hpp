@@ -17,6 +17,9 @@ public:
     Projection_image_calculator(
                                 Axes axis_a_,
                                 Axes axis_b_,
+
+                                Configs::computers_enum computer_type_,
+
                                 sf::Vector2f window_pos_ = sf::Vector2f(0, 0),
                                 sf::Vector2f window_size_ = sf::Vector2f(0, 0),
                                 sf::Vector2f zero_point_pos_ = sf::Vector2f(0, 0),

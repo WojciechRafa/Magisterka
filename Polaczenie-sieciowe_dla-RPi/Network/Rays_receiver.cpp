@@ -7,11 +7,11 @@
 #include "../main_functions.hpp"
 
 Rays_receiver::Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, Rays_intersection_analyzer* rays_intersection_analyzer):
-    Rays_source(rays_intersection_analyzer),
+    Rays_source(rays_intersection_analyzer, Configs::computers_enum::hp),
     Permanent_Connector(port_, remote_dev_ip_){
 
     auto remote_hw = Configs::remote_computer;
-    auto remote_hw_folder_name = Configs::hw_folder_folders_name[remote_hw];
+    auto remote_hw_folder_name = Configs::hw_folders_name[remote_hw];
     std::string main_folder = "../Hw_params/" + remote_hw_folder_name;
     internal_matrix = load_camera_matrix(main_folder + "/Camera_internal_parameters.csv");
     external_matrix = load_camera_matrix(main_folder + "/Camera_external_parameters.csv");

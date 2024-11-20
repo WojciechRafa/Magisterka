@@ -41,6 +41,10 @@ namespace Configs{
     static const bool is_binarization_relative = false;
     static const int binarization_threshold = 25;
 
+    static const bool is_in_2d_field_tested = true;
+    static const bool is_3d_size_correct_test = true;
+
+
     namespace GUI_layout{
         static const sf::Vector2f default_small_window_size = sf::Vector2f(360, 230);
 
@@ -122,7 +126,6 @@ namespace Configs{
         static const float grid_span = 500;    // mm
         static const sf::Color grid_span_zero_point_color = sf::Color::Red;
         static const sf::Color grid_span_default_color(120, 120, 120);
-        static float grid_lines_width = 1;
     }
 
     enum class computers_enum{
@@ -133,9 +136,33 @@ namespace Configs{
     static const computers_enum local_computer = computers_enum::dell;
     static const computers_enum remote_computer = computers_enum::hp;
 
-    static std::map<computers_enum, std::string> hw_folder_folders_name{
+    static std::map<computers_enum, std::string> hw_folders_name{
             {computers_enum::dell, "Dell"},
             {computers_enum::hp, "Hp"},
+    };
+
+    struct camera_parameters_struct{
+        const cv::Vec2d camera_size_mm;
+        const cv::Vec2i camera_size_pixels;
+    };
+
+    static std::map<computers_enum, camera_parameters_struct> camera_params{
+            {computers_enum::dell,{
+                {
+                    3.2, 2.4    //mm
+                    },{
+                    1920, 1080
+                    }
+                }
+            },
+            {computers_enum::hp, {
+                {
+                    3.2, 2.4    //mm
+                    },{
+                    1920, 1080
+                    }
+                }
+            }
     };
 
     namespace Object_tracker{

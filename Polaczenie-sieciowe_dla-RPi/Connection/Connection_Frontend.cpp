@@ -224,6 +224,9 @@ void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf
     Projection_image_calculator new_projection_calculator(
             axis_a,
             axis_b,
+
+            Configs::computers_enum::hp,
+
             pos,
             size,
             zero_point_pos,

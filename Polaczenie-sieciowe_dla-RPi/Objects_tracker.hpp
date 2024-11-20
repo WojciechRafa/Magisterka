@@ -41,7 +41,7 @@ private:
 
     Verified_object* get_closed_object(const cv::Vec3d& position, double size);
 
-    sf::Color get_random_color();
+    static sf::Color get_random_color();
 };
 
 

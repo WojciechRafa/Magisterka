@@ -31,6 +31,9 @@ cv::Vec3d Projection_image_calculator::compute_3D_line(const cv::Mat& intrinsicM
 Projection_image_calculator::Projection_image_calculator(
                                                          Axes axis_a_,
                                                          Axes axis_b_,
+
+                                                         Configs::computers_enum computer_type_,
+
                                                          sf::Vector2f window_pos_,
                                                          sf::Vector2f window_size_,
                                                          sf::Vector2f zero_point_pos_,
@@ -39,7 +42,7 @@ Projection_image_calculator::Projection_image_calculator(
                                                          std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* received_parameters_,
 
                                                         Rays_intersection_analyzer* rays_intersection_analyzer_ptr_):
-        Rays_source(rays_intersection_analyzer_ptr_),
+        Rays_source(rays_intersection_analyzer_ptr_, computer_type_),
         axis_a(axis_a_),
         axis_b(axis_b_),
         window_pos(window_pos_),
@@ -50,7 +53,7 @@ Projection_image_calculator::Projection_image_calculator(
         received_parameters(received_parameters_){
 
     auto local_hw = Configs::local_computer;
-    auto local_hw_folder_name = Configs::hw_folder_folders_name[local_hw];
+    auto local_hw_folder_name = Configs::hw_folders_name[local_hw];
     std::string main_folder = "../Hw_params/" + local_hw_folder_name;
     internal_matrix = load_camera_matrix(main_folder + "/Camera_internal_parameters.csv");
     external_matrix = load_camera_matrix(main_folder + "/Camera_external_parameters.csv");

@@ -4,7 +4,8 @@
 
 #include "Objects_tracker.hpp"
 #include "Configs.hpp"
-#include "Image_Analysis/Projection_image_calculator.hpp"
+#include "main_functions.hpp"
+#include <random>
 
 
 void Objects_tracker::update() {
@@ -91,12 +92,9 @@ Objects_tracker::Verified_object *Objects_tracker::get_closed_object(const cv::V
     double min_distance = -1;
 
     for(auto& object: verified_object_list){
-        double size_proportion = object.size / size;
 
-        if(size_proportion > Configs::Object_tracker::max_size_proportion or
-           size_proportion < 1 / Configs::Object_tracker::max_size_proportion){
+        if(not is_in_limit(object.size, size, Configs::Object_tracker::max_size_proportion))
             continue;
-        }
 
         double distance = cv::norm(object.position_list.back() - position);
 
@@ -113,13 +111,15 @@ Objects_tracker::Verified_object *Objects_tracker::get_closed_object(const cv::V
 }
 
 sf::Color Objects_tracker::get_random_color() {
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<> distrib(0, 255);
 
-    int red = std::rand() % 256;
-    int green = std::rand() % 256;
-    int blue = std::rand() % 256;
+    sf::Uint8 red = distrib(gen);
+    sf::Uint8 green = distrib(gen);
+    sf::Uint8 blue = distrib(gen);
 
-    return sf::Color(red, green, blue);
+    return {red, green, blue};
 }
 
 std::map<sf::Time, std::vector<std::pair<cv::Vec3d, double>>>&

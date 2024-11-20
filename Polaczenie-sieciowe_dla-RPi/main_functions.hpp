@@ -51,31 +51,6 @@ inline void resize_shape(sf::Vector2u target_size, sf::Shape* shape) {
     shape->setScale(convert_vector);
 }
 
-//inline cv::Mat load_camera_matrix(const std::string& filePath) {
-//    cv::Mat result = cv::Mat::zeros(3, 3, CV_64F);
-//    std::ifstream file(filePath);
-//
-//    if (file.is_open()) {
-//        std::string line;
-//        int row = 0;
-//        while (std::getline(file, line) && row < 3) {
-//            std::stringstream lineStream(line);
-//            std::string cell;
-//            int col = 0;
-//            while (std::getline(lineStream, cell, ',') && col < 3) {
-//                result.at<double>(row, col) = std::stof(cell);
-//                auto temporary = std::stof(cell);
-//                col++;
-//            }
-//            row++;
-//        }
-//        file.close();
-//    } else {
-//        std::cerr << "File  "<< filePath << " can't be open" << filePath << std::endl;
-//    }
-//    return result;
-//}
-
 inline cv::Mat load_camera_matrix(const std::string& filePath) {
     std::ifstream file(filePath);
     if (!file.is_open()) {
@@ -116,6 +91,14 @@ inline cv::Mat load_camera_matrix(const std::string& filePath) {
     }
 
     return mat;
+}
+
+inline bool is_in_limit(double value_a, double value_b,const double limit){
+    if(limit < 1.0)
+        std::cerr<<"Get wrong limit const\n";
+    double ratio = value_a / value_b;
+
+    return ratio <= limit and ratio >= (1 / limit);
 }
 
 #endif //SR_1_1_MAIN_FUNCTIONS_HPP

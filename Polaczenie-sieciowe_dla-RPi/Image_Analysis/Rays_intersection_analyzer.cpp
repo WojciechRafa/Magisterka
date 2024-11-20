@@ -6,6 +6,7 @@
 #include <opencv2/calib3d.hpp>
 #include "Rays_intersection_analyzer.hpp"
 #include "../Rays_source.hpp"
+#include "../main_functions.hpp"
 
 Rays_intersection_analyzer::Rays_intersection_analyzer() = default;
 
@@ -72,7 +73,7 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
     result_pos = {};
 
     auto first_source = first_frame_params->source_ptr;
-    auto second_source = first_frame_params->source_ptr;
+    auto second_source = second_frame_params->source_ptr;
 
     cv::Mat camera_matrix_first = first_source->get_internal_matrix() * first_source->get_external_matrix();
     cv::Mat camera_matrix_second = second_source->get_internal_matrix() * second_source->get_external_matrix();
@@ -111,7 +112,6 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
         auto time_end = clock.getElapsedTime();
 
         time_sum += (time_end - time_begin);
-//        std::cout<<"Measure time : "<<(time_end - time_begin).asMilliseconds()<<" ms, "<< first_2d_centroid_vectors.size() <<" parameters"<<std::endl;
 
         for (int i = 0; i < points_4D.cols; i++){
             cv::Mat interpolated_pos_mat = points_4D.col(i);
@@ -128,17 +128,25 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
                                                                        second_2d_bb_pos_vectors[i],
                                                                        second_2d_bb_size_vectors[i]);
             double estimated_size;
-            bool size_comparison_is_correct = check_size_comparison(estimated_size,
-                                                                        interpolated_pos_mat,
-                                                                        first_source->get_external_matrix(),
-                                                                        first_source->get_internal_matrix(),
-                                                                        first_2d_bb_size_vectors[i],
-                                                                        second_source->get_external_matrix(),
-                                                                        second_source->get_internal_matrix(),
-                                                                        second_2d_bb_size_vectors[i]);
+            bool size_comparison_is_correct = check_size_comparison(
+                    estimated_size,
+                    interpolated_pos_mat,
+                    *first_source,
+                    first_2d_bb_size_vectors[i],
+                    *second_source,
+                    second_2d_bb_size_vectors[i]
+                    );
+            // test can be miss
+            bool is_2d_correct_or_miss = not Configs::is_in_2d_field_tested or
+                                        (projection_2d_is_correct_first and projection_2d_is_correct_second);
 
-            if(projection_2d_is_correct_first and projection_2d_is_correct_second and size_comparison_is_correct){
-                result_pos.emplace_back(interpolated_pos_mat.at<double>(0, 0), interpolated_pos_mat.at<double>(1, 0), interpolated_pos_mat.at<double>(2, 0));
+            bool is_3d_size_correct_or_miss = not Configs::is_3d_size_correct_test or
+                                              size_comparison_is_correct;
+
+            if(is_2d_correct_or_miss and is_3d_size_correct_or_miss){
+                result_pos.emplace_back(interpolated_pos_mat.at<double>(0, 0),
+                                        interpolated_pos_mat.at<double>(1, 0),
+                                        interpolated_pos_mat.at<double>(2, 0));
                 result_size.push_back(estimated_size);
             }
 
@@ -159,19 +167,15 @@ bool Rays_intersection_analyzer::check_2d_projection(const cv::Mat& position,
             projection_2d_pos[0] < bb_size_2d[0] and projection_2d_pos[1] < bb_size_2d[1];
 }
 
-bool Rays_intersection_analyzer::check_size_comparison( double& estimated_size,
-                                                        const cv::Mat &position_mat,
-                                                        const cv::Mat &first_outside_matrix,
-                                                        const cv::Mat &first_inside_matrix,
-                                                        cv::Vec2d first_bb_size_2d,
-                                                        const cv::Mat &second_outside_matrix,
-                                                        const cv::Mat &second_inside_matrix,
-                                                        cv::Vec2d second_bb_size_2d) {
-    double first_focal_x = first_inside_matrix.at<double>(0, 0);
-    double first_focal_y = first_inside_matrix.at<double>(1, 1);
+bool Rays_intersection_analyzer::check_size_comparison(   double& estimated_size,
+                                                                 const cv::Mat &position_mat,
+                                                                 Rays_source first_ray_source,
+                                                                 const cv::Vec2d& first_bb_size_2d,
+                                                                 Rays_source& second_ray_source,
+                                                                 const cv::Vec2d& second_bb_size_2d) {
 
-    double second_focal_x = second_inside_matrix.at<double>(0, 0);
-    double second_focal_y = second_inside_matrix.at<double>(1, 1);
+    auto& first_outside_matrix = first_ray_source.get_external_matrix();
+    auto& second_outside_matrix = second_ray_source.get_external_matrix();
 
     cv::Vec3d first_pos(first_outside_matrix.at<double>(0, 3),
                         first_outside_matrix.at<double>(1, 3),
@@ -188,22 +192,34 @@ bool Rays_intersection_analyzer::check_size_comparison( double& estimated_size,
     double first_distance = cv::norm(position - first_pos);
     double second_distance = cv::norm(position - second_pos);
 
-    cv::Vec2d first_size_vec = cv::Vec2d(first_bb_size_2d[0] * first_focal_x * first_distance,  // TODO,
-                                       first_bb_size_2d[1] * first_focal_y * first_distance);
-    double first_size_norm = cv::norm(first_size_vec);
+    double first_size_norm = get_estimated_3d_size(first_bb_size_2d, first_distance, first_ray_source);
 
-    cv::Vec2d second_size_vec = cv::Vec2d(second_bb_size_2d[0] * second_focal_x * second_distance,
-                                          second_bb_size_2d[1] * second_focal_y * second_distance);
-    double second_size_norm = cv::norm(second_size_vec);
-
-    double size_comparison = first_size_norm / second_size_norm;
+    double second_size_norm = get_estimated_3d_size(second_bb_size_2d, second_distance, second_ray_source);
 
     estimated_size = (first_size_norm + second_size_norm) / 2;
 
-    return size_comparison < Configs::max_intersection_size_comparison or
-            1 / size_comparison > Configs::max_intersection_size_comparison;
+    return is_in_limit(first_size_norm, second_size_norm, Configs::max_intersection_size_comparison);
 }
 
 void Rays_intersection_analyzer::set_objects_tracker_ptr(Objects_tracker *objects_tracker_) {
     objects_tracker_ptr = objects_tracker_;
+}
+
+double Rays_intersection_analyzer::get_estimated_3d_size(cv::Vec2d size_2d, double distance_3d, Rays_source &rays_source) {
+    double focal_x = rays_source.get_internal_matrix().at<double>(0, 0);
+    double focal_y = rays_source.get_internal_matrix().at<double>(1, 1);
+
+    // x_o = x_mm_max * x_p / x_p_max
+    cv::Vec2d absolute_2d_size;
+    absolute_2d_size[0] = rays_source.get_camera_params()->camera_size_mm[0] /
+                                (static_cast<double >(rays_source.get_camera_params()->camera_size_pixels[0]) / size_2d[0]);
+    absolute_2d_size[1] = rays_source.get_camera_params()->camera_size_mm[1] /
+                                (static_cast<double >(rays_source.get_camera_params()->camera_size_pixels[1]) / size_2d[1]);
+
+    // X_c = Z_c * x_o / f
+    cv::Vec2d absolute_3d_size;
+    absolute_3d_size[0] =  distance_3d * absolute_2d_size[0] / focal_x;
+    absolute_3d_size[1] =  distance_3d * absolute_2d_size[1] / focal_y;
+
+    return cv::norm(absolute_3d_size);
 }

@@ -27,6 +27,9 @@ System::System():
     projection_calculator(
                           Axes::z,
                           Axes::x,
+
+                          Configs::computers_enum::dell,
+
                           projections_window.getPosition(),
                           Configs::GUI_layout::default_small_window_size,
                           Configs::GUI_layout::default_small_window_size * 0.5f,
