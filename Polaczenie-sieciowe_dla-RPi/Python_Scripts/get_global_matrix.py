@@ -12,6 +12,8 @@ square_size = 40.0 # mm
 display_points = True
 display_time = 2000
 
+result_by_device_folder = "Result_by_device"
+by_device_matrix_name = "Camera_external_parameters"
 
 internal_cameras_matrix_folder = "Internal_camera_matrices"
 external_cameras_matrix_folder = "External_camera_matrices"
@@ -93,6 +95,9 @@ def main():
         print(external_matrix)
 
         np.save(external_cameras_matrix_folder + "/{}.npy".format(camera_name), external_matrix)
+
+        np.savetxt(result_by_device_folder + "/" + camera_name + "/{}.csv".format(by_device_matrix_name),
+                   external_matrix[:3, :], delimiter=',', fmt='%f')
 
         # TODO fix xlsx generation
         # pd.DataFrame(external_matrix).to_excel(external_cameras_matrix_folder + "/{}.xlsx".format(external_matrix), index=False, header=False)

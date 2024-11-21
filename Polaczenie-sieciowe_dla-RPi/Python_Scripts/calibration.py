@@ -8,7 +8,10 @@ criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
 p_x = 7
 p_y = 9
-
+camera_name = "Dell"
+# camera_name = "Hp"
+# camera_name = "IPhone"
+display_points: bool = False
 square_size = 20.0 # mm
 
 # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(p_x,5,0)
@@ -21,14 +24,11 @@ objp *= square_size
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
-Chosen_camera = "Dell"
-# Chosen_camera = "Hp"
-# Chosen_camera = "IPhone"
-display_points: bool = False
-
-images = glob.glob('Calibration_Images/{}/*.png'.format(Chosen_camera), recursive=True)
+images = glob.glob('Calibration_Images/{}/*.png'.format(camera_name), recursive=True)
 cameras_matrix_folder = "Internal_camera_matrices"
 distortion_folder = "Distortion_vectors"
+result_by_device_folder = "Result_by_device"
+by_device_matrix_name = "Camera_internal_parameters"
 
 idx_list = []
 
@@ -66,11 +66,13 @@ newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
 
 cv.destroyAllWindows()
 
-np.save(cameras_matrix_folder + "/{}.npy".format(Chosen_camera), newcameramtx)
-pd.DataFrame(newcameramtx).to_excel(cameras_matrix_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
-np.savetxt(cameras_matrix_folder + "/{}.csv".format(Chosen_camera), newcameramtx, delimiter=',', fmt='%f')
+np.save(cameras_matrix_folder + "/{}.npy".format(camera_name), newcameramtx)
+pd.DataFrame(newcameramtx).to_excel(cameras_matrix_folder + "/{}.xlsx".format(camera_name), index=False, header=False)
+np.savetxt(cameras_matrix_folder + "/{}.csv".format(camera_name), newcameramtx, delimiter=',', fmt='%f')
 
-np.save(distortion_folder + "/{}.npy".format(Chosen_camera), dist)
-pd.DataFrame(dist).to_excel(distortion_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
-np.savetxt(distortion_folder + "/{}.csv".format(Chosen_camera), dist, delimiter=',', fmt='%f')
+np.savetxt(result_by_device_folder + "/" + camera_name + "/{}.csv".format(by_device_matrix_name), newcameramtx, delimiter=',', fmt='%f')
+
+np.save(distortion_folder + "/{}.npy".format(camera_name), dist)
+pd.DataFrame(dist).to_excel(distortion_folder + "/{}.xlsx".format(camera_name), index=False, header=False)
+np.savetxt(distortion_folder + "/{}.csv".format(camera_name), dist, delimiter=',', fmt='%f')
 pass
