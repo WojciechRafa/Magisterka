@@ -4,9 +4,15 @@ import pandas as pd
 
 p_x = 7
 p_y = 9
+# camera_name = "Hp"
 camera_name = "Hp"
-square_size = 2.0 # 2 cm
+square_size = 40.0 # mm
 
+display_points = True
+display_time = 2000
+
+result_by_device_folder = "Result_by_device"
+by_device_matrix_name = "Camera_external_parameters"
 
 internal_cameras_matrix_folder = "Internal_camera_matrices"
 external_cameras_matrix_folder = "External_camera_matrices"
@@ -65,6 +71,11 @@ def main():
     corners_refined = cv.cornerSubPix(gray, corners, (11, 11), (-1, -1),
                                        criteria=(cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001))
 
+    if display_points:
+        cv.drawChessboardCorners(gray, (p_y, p_x), corners_refined, found_chess)
+        cv.imshow('img', gray)
+        cv.waitKey(display_time)
+
     internal_matrix = np.load(internal_cameras_matrix_folder + "/" + camera_name + ".npy")
     distraction_vector = np.load(distortion_folder + "/" + camera_name + ".npy")
 
@@ -83,6 +94,9 @@ def main():
         print(external_matrix)
 
         np.save(external_cameras_matrix_folder + "/{}.npy".format(camera_name), external_matrix)
+
+        np.savetxt(result_by_device_folder + "/" + camera_name + "/{}.csv".format(by_device_matrix_name),
+                   external_matrix[:3, :], delimiter=',', fmt='%f')
 
         # TODO fix xlsx generation
         # pd.DataFrame(external_matrix).to_excel(external_cameras_matrix_folder + "/{}.xlsx".format(external_matrix), index=False, header=False)
