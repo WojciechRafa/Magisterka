@@ -4,7 +4,6 @@ import pandas as pd
 
 p_x = 7
 p_y = 9
-# camera_name = "Hp"
 camera_name = "Hp"
 square_size = 40.0 # mm
 

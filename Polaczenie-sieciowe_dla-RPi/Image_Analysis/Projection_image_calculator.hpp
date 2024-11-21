@@ -25,7 +25,6 @@ public:
 
     void set_parameters(std::shared_ptr<Binarization::Binarized_parameters> parameters_);
 
-
     void set_additional_drawable_ptr(std::vector<std::unique_ptr<sf::Drawable>>* additional_graphic_);
 
 private:

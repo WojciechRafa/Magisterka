@@ -7,6 +7,7 @@
 
 #include <opencv2/opencv.hpp>
 #include "../Time_Object.hpp"
+#include "../Network/Sended_struct.hpp"
 
 class Binarization: public Time_Object{
 public:
@@ -26,6 +27,7 @@ public:
     void set_reference_image();
     void set_parameters(std::shared_ptr<Binarized_parameters> parameters_);
 
+    void set_sent_parameters_ptr(Sent_parameters* sent_parameters_);
 private:
     bool is_relative;
 
@@ -38,6 +40,8 @@ private:
     std::unique_ptr<cv::Mat> reference_image = nullptr;
 
     std::shared_ptr<Binarized_parameters> parameters = nullptr;
+
+    Sent_parameters* sent_parameters;
 
     void absolute_update();
     void relative_update();

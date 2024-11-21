@@ -69,7 +69,7 @@ private:
             std::make_shared<Binarization::Binarized_parameters>();
 
     std::vector<std::unique_ptr<sf::Drawable>> projections = std::vector<std::unique_ptr<sf::Drawable>>();
-
+    Sent_parameters sent_parameters = {};
 
     Projection_image_calculator projection_calculator;
 

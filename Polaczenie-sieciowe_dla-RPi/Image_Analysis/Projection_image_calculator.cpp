@@ -136,9 +136,6 @@ void Projection_image_calculator::update() {
             box_dir_3D_end = compute_3D_line(internal_matrix, static_cast<cv::Point2d>(box_pos + box_size));
             centroid_dir_3D = compute_3D_line(internal_matrix, centroid);
 
-
-//            to_send.emplace_back(box_dir_3D_begin, box_dir_3D_end, centroid_dir_3D);
-
             float line_thickness = 0.5;
 
             if(output_window_size != sf::Vector2f(0, 0) and window_pos != sf::Vector2f(0, 0)) {

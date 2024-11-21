@@ -39,6 +39,7 @@ System::System():
     binarization.set_binarized_image(binarized_picture);
 
     binarization.set_parameters(bin_parameters);
+    binarization.set_sent_parameters_ptr(&sent_parameters);
 
     projection_calculator.set_parameters(bin_parameters);
     projection_calculator.set_additional_drawable_ptr(&projections);
@@ -74,6 +75,7 @@ bool System::update() {
         connection_state = Connection_State::both_wait_to_pernamant_connect;
 
         parameter_sender = std::make_unique<Parameter_sender>(port, remote_ip_address);
+        parameter_sender->set_sent_parameters_ptr(&sent_parameters);
 
         std::cout<<"Procedura zawiązywania polaczenia przez Broadcast zakonczona !"<<std::endl;
         broadcast_connector = nullptr;
