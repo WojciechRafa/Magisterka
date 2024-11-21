@@ -5,8 +5,7 @@ import pandas as pd
 p_x = 7
 p_y = 9
 camera_name = "Hp"
-square_size = 2.0 # 2 cm
-
+square_size = 40.0 # mm
 
 internal_cameras_matrix_folder = "Internal_camera_matrices"
 external_cameras_matrix_folder = "External_camera_matrices"

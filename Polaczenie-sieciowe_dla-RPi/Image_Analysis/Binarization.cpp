@@ -94,6 +94,28 @@ void Binarization::absolute_update() {
         parameters->numb_labels = cv::connectedComponentsWithStats(*binarized_image_result, labels, parameters->stats, parameters->centroids);
         parameters->numb_labels --; // first label is background, so it should be missed.
         parameters->main_time = image_with_main_time->first;
+
+
+        // parameters to sent
+        if(sent_parameters != nullptr)
+        {
+            sent_parameters->main_time = image_with_main_time->first;
+            sent_parameters->data.clear();
+
+            for(int i = 1; i < parameters->numb_labels; i++)
+            {
+                cv::Point2i box_pos(parameters->stats.at<int>(i, cv::CC_STAT_LEFT),
+                    parameters->stats.at<int>(i, cv::CC_STAT_TOP));
+                cv::Point2i box_size(parameters->stats.at<int>(i, cv::CC_STAT_WIDTH),
+                                     parameters->stats.at<int>(i, cv::CC_STAT_HEIGHT));
+
+                cv::Point2d centroid(parameters->centroids.at<double>(i, 0), parameters->centroids.at<double>(i, 1));
+
+                sent_parameters->data.emplace_back( static_cast<cv::Point2d>(box_pos),
+                                                    static_cast<cv::Point2d>(box_size),
+                                                    centroid);
+            }
+        }
     }
 }
 
@@ -101,4 +123,9 @@ void Binarization::set_reference_image() {
     if(image_with_main_time != nullptr and not Configs::is_binarization_relative) {
         reference_image = std::make_unique<cv::Mat>(image_with_main_time->second.clone());
     }
+}
+
+void Binarization::set_sent_parameters_ptr(Sent_parameters* sent_parameters_)
+{
+    sent_parameters = sent_parameters_;
 }

@@ -9,9 +9,13 @@ criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 p_x = 7
 p_y = 9
 
+square_size = 20   # mm
+
 # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(p_x,5,0)
 objp = np.zeros((p_x*p_y,3), np.float32)
 objp[:, :2] = np.mgrid[0:p_y, 0:p_x].T.reshape(-1,2)
+
+objp*=square_size
 
 # Arrays to store object points and image points from all the images.
 objpoints = [] # 3d point in real world space
@@ -63,10 +67,10 @@ newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
 cv.destroyAllWindows()
 
 np.save(cameras_matrix_folder + "/{}.npy".format(Chosen_camera), newcameramtx)
-pd.DataFrame(newcameramtx).to_excel(cameras_matrix_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
+# pd.DataFrame(newcameramtx).to_excel(cameras_matrix_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
 np.savetxt(cameras_matrix_folder + "/{}.csv".format(Chosen_camera), newcameramtx, delimiter=',', fmt='%f')
 
 np.save(distortion_folder + "/{}.npy".format(Chosen_camera), dist)
-pd.DataFrame(dist).to_excel(distortion_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
+# pd.DataFrame(dist).to_excel(distortion_folder + "/{}.xlsx".format(Chosen_camera), index=False, header=False)
 np.savetxt(distortion_folder + "/{}.csv".format(Chosen_camera), dist, delimiter=',', fmt='%f')
 pass
