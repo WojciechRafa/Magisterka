@@ -75,7 +75,6 @@ void read_packet(sf::Time& time,
     packet >> time_int;
     time = sf::microseconds(time_int);
 
-    std::cout<<"Recived time : " << time.asMicroseconds() << " s " <<std::endl;
     packet >> elements_amount;
 
     data.clear();

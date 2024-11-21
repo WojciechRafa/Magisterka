@@ -29,14 +29,14 @@ private:
     std::vector<std::tuple<sf::Time, Rays_source*, Rays_source*>> already_checked_intersections;
     Objects_tracker* objects_tracker_ptr = nullptr;
 
-    static bool check_2d_projection(const cv::Mat& position,
+    static bool check_2d_projection(const cv::Mat& position_normalized,
                              const cv::Mat& outside_matrix,
-                             const cv::Mat& inside_matrix,
+                             const cv::Mat& inside_matrix_wide,
                              cv::Vec2d bb_pos_2d,
                              cv::Vec2d bb_size_2d);
 
     static bool check_size_comparison(  double& estimated_size,
-                                        const cv::Mat &position_mat,
+                                        const cv::Mat &position_normalized,
                                         Rays_source first_ray_source,
                                         const cv::Vec2d& first_bb_size_2d,
                                         Rays_source& second_ray_source,

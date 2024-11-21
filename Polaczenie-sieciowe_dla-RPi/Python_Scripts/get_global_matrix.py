@@ -2,10 +2,12 @@ import cv2 as cv
 import numpy as np
 import pandas as pd
 
+from calibration import square_size
+
 p_x = 7
 p_y = 9
 camera_name = "Dell"
-square_size = 2.0 # 2 cm
+square_size = 40.0 # mm
 
 display_points = True
 display_time = 2000

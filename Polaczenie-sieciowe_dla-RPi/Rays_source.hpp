@@ -23,7 +23,6 @@ public:
 
     Configs::camera_parameters_struct* get_camera_params();
 protected:
-    void set_rays_intersection_analyzer(Rays_intersection_analyzer* rays_intersection_analyzer_ptr_);
     Rays_intersection_analyzer* rays_intersection_analyzer_ptr = nullptr;
     cv::Mat internal_matrix;
     cv::Mat external_matrix;

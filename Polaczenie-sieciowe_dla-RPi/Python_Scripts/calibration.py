@@ -9,9 +9,13 @@ criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 p_x = 7
 p_y = 9
 
+square_size = 20.0 # mm
+
 # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(p_x,5,0)
 objp = np.zeros((p_x*p_y,3), np.float32)
 objp[:, :2] = np.mgrid[0:p_y, 0:p_x].T.reshape(-1,2)
+
+objp *= square_size
 
 # Arrays to store object points and image points from all the images.
 objpoints = [] # 3d point in real world space
@@ -56,7 +60,7 @@ for idx, fname in enumerate(images):
             cv.waitKey(100)
     cv.destroyAllWindows()
 
-ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
+ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, (w, h), None, None)
 
 newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
 

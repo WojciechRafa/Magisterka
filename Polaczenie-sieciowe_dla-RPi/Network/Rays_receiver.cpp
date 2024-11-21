@@ -45,9 +45,6 @@ void Rays_receiver::update() {
                 auto new_frame_parameter = std::make_shared<Frame_parameters>(rays_time, this, rays_data);
                 rays_intersection_analyzer_ptr->add_projection(new_frame_parameter);
             }
-            std::cout<<"Data recive\n";
-            std::cout<<"Rozmiar pakietu " << received_packet.getDataSize() << std::endl;
-
         }
         last_update_time = clock.getElapsedTime();
     }

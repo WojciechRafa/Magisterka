@@ -33,7 +33,7 @@ namespace Configs{
     static const sf::Time default_update_time = sf::milliseconds(50);
 
     static const sf::Time camera_update_period = sf::milliseconds(50);
-    static const sf::Time max_camera_update_period_error = sf::milliseconds(30);
+    static const sf::Time max_camera_update_period_error = sf::milliseconds(20);
 
     static const sf::Time main_loop_time = sf::milliseconds(1);
     static const double max_intersection_size_comparison = 10;
@@ -151,7 +151,7 @@ namespace Configs{
                 {
                     3.2, 2.4    //mm
                     },{
-                    1920, 1080
+                    640, 480
                     }
                 }
             },
@@ -159,11 +159,23 @@ namespace Configs{
                 {
                     3.2, 2.4    //mm
                     },{
-                    1920, 1080
+                    640, 480
                     }
                 }
             }
     };
+
+    static cv::Vec2d millimeter_to_pixel(computers_enum computer_type, const cv::Vec2d& position_millimeter) {
+        double pixel_to_millimeter_ratio_x = static_cast<double>(camera_params[computer_type].camera_size_pixels[0])
+                                             / camera_params[computer_type].camera_size_mm[0];
+        double pixel_to_millimeter_ratio_y = static_cast<double>(camera_params[computer_type].camera_size_pixels[1])
+                                             / camera_params[computer_type].camera_size_mm[1];
+
+        return {
+                pixel_to_millimeter_ratio_x * position_millimeter[0],
+                pixel_to_millimeter_ratio_y * position_millimeter[1]
+        };
+    }
 
     namespace Object_tracker{
         static const double max_size_proportion = 2;
