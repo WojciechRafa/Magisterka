@@ -28,6 +28,8 @@ void Rays_intersection_analyzer::add_projection(const std::shared_ptr<Frame_para
 
 
 void Rays_intersection_analyzer::update() {
+    result_pos.clear();
+    result_size.clear();
 
     for (auto &time_and_parameters_ptr: objets_parameters_list_by_time) {
         auto &list_of_parameters = time_and_parameters_ptr.second;
@@ -46,9 +48,6 @@ void Rays_intersection_analyzer::update() {
                     // element was already checked
                     continue;
                 }
-
-                std::vector<cv::Vec3d> result_pos;
-                std::vector<double> result_size;
 
                 calculate_intersections(result_pos, result_size,
                                         first_parameter.get(), second_parameter.get());
@@ -69,8 +68,6 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
                                                          std::vector<double> &result_size,
                                                          Frame_parameters* first_frame_params,
                                                          Frame_parameters* second_frame_params) {
-    result_pos = {};
-
     auto first_source = first_frame_params->source_ptr;
     auto second_source = second_frame_params->source_ptr;
 
@@ -162,8 +159,8 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
                                         interpolated_pos_norm.at<double>(1, 0),
                                         interpolated_pos_norm.at<double>(2, 0));
                 result_size.push_back(estimated_size);
+//                std::cout<<"element was found"<< result_pos.back()<<std::endl;
             }
-
         }
     }
 }
@@ -179,8 +176,10 @@ bool Rays_intersection_analyzer::check_2d_projection(const cv::Mat& position_nor
     cv::Vec2d projection_2d_pos_pixels = millimeter_to_pixel(Configs::computers_enum::dell, projection_2d_pos);
     cv::Vec2d projection_2d_pos_pixels_norm = millimeter_to_pixel(Configs::computers_enum::dell, projection_2d_pos_normalized);
 
+    cv::Vec2d bb_end = bb_pos_2d + bb_size_2d;
+
     return  projection_2d_pos_normalized[0] > bb_pos_2d[0]  and projection_2d_pos_normalized[1] > bb_pos_2d[1] and
-            projection_2d_pos_normalized[0] < bb_size_2d[0] and projection_2d_pos_normalized[1] < bb_size_2d[1];
+            projection_2d_pos_normalized[0] < bb_end[0] and projection_2d_pos_normalized[1] < bb_end[1];
 }
 
 bool Rays_intersection_analyzer::check_size_comparison(   double& estimated_size,

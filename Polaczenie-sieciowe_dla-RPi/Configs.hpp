@@ -39,7 +39,8 @@ namespace Configs{
     static const double max_intersection_size_comparison = 10;
 
     static const bool is_binarization_relative = false;
-    static const int binarization_threshold = 25;
+    static const int binarization_threshold = 20;
+    static const int binarization_kernal_size = 6;
 
     static const bool is_in_2d_field_tested = true;
     static const bool is_3d_size_correct_test = true;
@@ -90,30 +91,30 @@ namespace Configs{
                 {{560, 410},
                  {GUI_layout::main_button_field.left, 370},
 
-                 {3000, 3000},  // mm
-                 {1500, 1500},
+                 {6000, 6000},  // mm
+                 {3000, 3000},
 
                  {Axes::z, Axes::x}
                  },
                 {{570, 410},
                  {600, 370},
 
+                 {6000, 6000},  // mm
                  {3000, 3000},
-                 {1500, 1500},
 
                  {Axes::z, Axes::y}
                 }
         };
 
-        static const sf::Time displayed_time = sf::milliseconds(2000);
-        static const cv::Vec2d size_meters = cv::Vec2d(20, 10);
-        static const cv::Vec2d zero_point_meters = cv::Vec2d(10, 5);
+        static const sf::Time displayed_time = sf::milliseconds(3000);
+//        static const cv::Vec2d size_meters = cv::Vec2d(20, 10);
+//        static const cv::Vec2d zero_point_meters = cv::Vec2d(10, 5);
 
         static const float detection_radius_ratio = 0.000001;
         static const sf::Color detection_default_circle_color = sf::Color::Magenta;
         static const float detection_outline_thickness = 1.5;
 
-        static const float position_ratio = 8;
+//        static const float position_ratio = 1;
 
 //        static Axes first_axle = Axes::x;
 //        static Axes second_axle = Axes::y;
@@ -179,9 +180,9 @@ namespace Configs{
 
     namespace Object_tracker{
         static const double max_size_proportion = 2;
-        static const double max_distance = 10;
+        static const double max_distance_mm = 100;
         static const int min_detect_number = 3;
-        static const sf::Time remove_time = sf::seconds(1);
+        static const sf::Time remove_time = sf::seconds(5);
     }
 }
 

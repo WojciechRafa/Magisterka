@@ -29,6 +29,9 @@ private:
     std::vector<std::tuple<sf::Time, Rays_source*, Rays_source*>> already_checked_intersections;
     Objects_tracker* objects_tracker_ptr = nullptr;
 
+    std::vector<cv::Vec3d> result_pos;
+    std::vector<double> result_size;
+
     static bool check_2d_projection(const cv::Mat& position_normalized,
                              const cv::Mat& outside_matrix,
                              const cv::Mat& inside_matrix_wide,

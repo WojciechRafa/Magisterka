@@ -45,9 +45,12 @@ System::System():
     detected_objects_displayer_list.reserve(Configs::Big_windows_parameters::displayed_big_window_list.size());
     for(auto& big_window_parameters: Configs::Big_windows_parameters::displayed_big_window_list){
         detected_objects_windows.emplace_back(big_window_parameters.window_pos, big_window_parameters.window_size);
-        detected_objects_displayer_list.emplace_back(big_window_parameters.axes,
-                                                     big_window_parameters.area_size,
-                                                     big_window_parameters.area_zero_point,
+//        detected_objects_displayer_list.emplace_back(big_window_parameters.axes,
+//                                                     big_window_parameters.area_size,
+//                                                     big_window_parameters.area_zero_point,
+//                                                     &objects_tracker,
+//                                                     &detected_objects_windows.back());
+        detected_objects_displayer_list.emplace_back(big_window_parameters,
                                                      &objects_tracker,
                                                      &detected_objects_windows.back());
     }

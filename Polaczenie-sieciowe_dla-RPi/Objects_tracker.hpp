@@ -32,10 +32,13 @@ public:
 
     std::string get_name() override{return "Verified_object Tracker";};
 
-    sf::Vector2f get_position_of_detected_object_on_main_window(bool& is_in_board, double first_dimension, double second_dimension);
+//    sf::Vector2f get_position_of_detected_object_on_main_window(bool& is_in_board,
+//                                                                Configs::Big_windows_parameters::Displayed_window_configs,
+//                                                                double first_dim_3d,
+//                                                                double second_dim_3d);
 private:
     std::map<sf::Time, std::vector<std::pair<cv::Vec3d, double>>> triangulated_objets;
-    Small_window* small_window_ptr = nullptr;
+//    Small_window* small_window_ptr = nullptr;
 
     std::vector<Verified_object> verified_object_list;
 

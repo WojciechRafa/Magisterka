@@ -7,21 +7,37 @@
 #include <utility>
 
 
-Detected_objects_displayer::Detected_objects_displayer(std::pair<Axes, Axes> axes_, cv::Vec2d area_size_, cv::Vec2d zero_point_,
-                                                       Objects_tracker *objects_tracker_ptr_,
-                                                       Small_window *small_window_ptr_):
-                                                       axes(std::move(axes_)),
-                                                       area_size(area_size_),
-                                                       zero_point(zero_point_),
-                                                       objects_tracker_ptr(objects_tracker_ptr_),
-                                                       small_window_ptr(small_window_ptr_),
-                                                       reference_lines(sf::Lines)
-                                                       {
+//Detected_objects_displayer::Detected_objects_displayer(std::pair<Axes, Axes> axes_, cv::Vec2d area_size_, cv::Vec2d zero_point_,
+//                                                       Objects_tracker *objects_tracker_ptr_,
+//                                                       Small_window *small_window_ptr_):
+//                                                       axes(std::move(axes_)),
+//                                                       area_size(area_size_),
+//                                                       zero_point(zero_point_),
+//                                                       objects_tracker_ptr(objects_tracker_ptr_),
+//                                                       small_window_ptr(small_window_ptr_),
+//                                                       reference_lines(sf::Lines)
+//                                                       {
+//    if(small_window_ptr != nullptr)
+//        small_window_ptr->set_additional_graphic(&all_graphics);
+//
+//    create_grid();
+//                                                       }
+
+Detected_objects_displayer::Detected_objects_displayer(
+        Configs::Big_windows_parameters::Displayed_window_configs &config_,
+        Objects_tracker *objects_tracker_ptr_,
+        Small_window *small_window_ptr_):
+
+        config(config_),
+        objects_tracker_ptr(objects_tracker_ptr_),
+        small_window_ptr(small_window_ptr_),
+        reference_lines(sf::Lines)
+{
     if(small_window_ptr != nullptr)
         small_window_ptr->set_additional_graphic(&all_graphics);
 
     create_grid();
-                                                       }
+}
 
 void Detected_objects_displayer::update() {
     if(Configs::Big_windows_parameters::is_displayed_verified_only){
@@ -47,7 +63,7 @@ void Detected_objects_displayer::update_triangulated_object() {
 
     detection_graphics.clear();
 
-    std::pair<int, int> axis_nr = {get_axi_nr(axes.first), get_axi_nr(axes.second)};
+    std::pair<int, int> axis_nr = {get_axi_nr(config.axes.first), get_axi_nr(config.axes.first)};
 
     for(auto& objects_in_chosen_moment: objects_tracker_ptr->get_all_triangulated_object()){
         for(auto& object: objects_in_chosen_moment.second){
@@ -56,11 +72,16 @@ void Detected_objects_displayer::update_triangulated_object() {
             auto second_dim_len = pos_3d[axis_nr.second];
 
             bool is_in_board;
-            sf::Vector2f pos = objects_tracker_ptr->get_position_of_detected_object_on_main_window(is_in_board,
-                                                                                                   first_dim_len,
-                                                                                                   second_dim_len);
+//            sf::Vector2f pos = objects_tracker_ptr->get_position_of_detected_object_on_main_window(is_in_board,
+//                                                                                                   first_dim_len,
+//                                                                                                   second_dim_len);
+            sf::Vector2f pos = get_position_of_detected_object_on_window(is_in_board,
+                                                                         first_dim_len,
+                                                                         second_dim_len);
             if(not is_in_board)
                 continue;
+
+//            std::cout<<"is in board "<<first_dim_len<<" "<<second_dim_len<<std::endl;
 
             float size;
             if(Configs::Big_windows_parameters::is_const_size){
@@ -80,16 +101,20 @@ void Detected_objects_displayer::update_verified_object() {
 
     detection_graphics.clear();
 
-    std::pair<int, int> axis_nr = {get_axi_nr(axes.first), get_axi_nr(axes.second)};
+    std::pair<int, int> axis_nr = {get_axi_nr(config.axes.first), get_axi_nr(config.axes.second)};
 
     for(auto& object: objects_tracker_ptr->get_all_verified_object()){
-        cv::Vec3d pos_3d = object.size;
+        cv::Vec3d pos_3d = object.position_list.back();
         auto first_dim_len = pos_3d[axis_nr.first];
         auto second_dim_len = pos_3d[axis_nr.second];
+
         bool is_in_board;
-        sf::Vector2f pos = objects_tracker_ptr->get_position_of_detected_object_on_main_window(is_in_board,
-                                                                                               first_dim_len,
-                                                                                               second_dim_len);
+//        sf::Vector2f pos = objects_tracker_ptr->get_position_of_detected_object_on_main_window(is_in_board,
+//                                                                                               first_dim_len,
+//                                                                                               second_dim_len);
+        sf::Vector2f pos = get_position_of_detected_object_on_window(is_in_board,
+                                                                     first_dim_len,
+                                                                     second_dim_len);
         if(not is_in_board)
             continue;
 
@@ -122,8 +147,8 @@ void Detected_objects_displayer::create_grid() {
 
     sf::FloatRect bounds = small_window_ptr->getGlobalBounds();
 
-    float window_interval_x = bounds.width  / (static_cast<float>(area_size[0]) / Configs::Big_windows_parameters::grid_span);
-    float window_interval_y = bounds.height / (static_cast<float>(area_size[1]) / Configs::Big_windows_parameters::grid_span);
+    float window_interval_x = bounds.width  / (static_cast<float>(config.area_size[0]) / Configs::Big_windows_parameters::grid_span);
+    float window_interval_y = bounds.height / (static_cast<float>(config.area_size[1]) / Configs::Big_windows_parameters::grid_span);
 
     int number_of_line_pair_x = static_cast<int>(0.5 * bounds.width / window_interval_x);
     int number_of_line_pair_y = static_cast<int>(0.5 * bounds.height / window_interval_y);
@@ -156,4 +181,29 @@ void Detected_objects_displayer::create_grid() {
         reference_lines.append(sf::Vertex(sf::Vector2f(bounds.left + bounds.width, pos_y), line_color));
 
     }
+}
+
+sf::Vector2f Detected_objects_displayer::get_position_of_detected_object_on_window(bool &is_in_board,
+                                                                                   double first_dim_3d,
+                                                                                   double second_dim_3d) {
+    first_dim_3d += config.area_zero_point[0];
+    second_dim_3d += config.area_zero_point[1];
+
+    is_in_board = first_dim_3d < config.area_size[0] and
+                  second_dim_3d < config.area_size[1] and
+                  first_dim_3d > 0 and second_dim_3d > 0;
+
+    if(not is_in_board or small_window_ptr == nullptr){
+        return {-1, -1};
+    }
+
+    sf::Vector2f result = sf::Vector2f(static_cast<float>(first_dim_3d /  config.area_size[0]),
+                                       static_cast<float>(second_dim_3d / config.area_size[1]));
+
+    result.x *= config.window_size.x;
+    result.y *= config.window_size.y;
+
+    result += config.window_pos;
+
+    return result;
 }

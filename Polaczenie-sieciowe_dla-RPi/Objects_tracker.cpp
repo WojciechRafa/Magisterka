@@ -13,6 +13,9 @@ void Objects_tracker::update() {
     std::vector<sf::Time> time_to_remove_list;
     for(auto& objet: triangulated_objets){
         if(clock.getElapsedTime() > (objet.first + Configs::Big_windows_parameters::displayed_time)){
+//            std::cout<<"Actual time "<<clock.getElapsedTime().asMilliseconds()<<std::endl;
+//            std::cout<<"objet "<<objet.first.asMilliseconds()<<std::endl;
+//            std::cout<<"objet + display "<<(objet.first + Configs::Big_windows_parameters::displayed_time).asMilliseconds()<<std::endl;
             time_to_remove_list.push_back(objet.first);
         }
     }
@@ -40,7 +43,7 @@ void Objects_tracker::add_detection(sf::Time time, std::vector<cv::Vec3d>& pos_v
     if(pos_vector.size() != size_vector.size()){
         throw std::runtime_error("pos_vector.size() != size_vector.size()");
     }
-    std::cout<<"Add projection"<<std::endl;
+//    std::cout<<"Add projection"<<std::endl;
     for(size_t i = 0; i < pos_vector.size(); i++){
         triangulated_objets[time].emplace_back(pos_vector[i], size_vector[i]);
 
@@ -61,31 +64,31 @@ void Objects_tracker::add_detection(sf::Time time, std::vector<cv::Vec3d>& pos_v
     }
 }
 
-sf::Vector2f
-Objects_tracker::get_position_of_detected_object_on_main_window(bool& is_in_board, double first_dimension, double second_dimension) {
-    first_dimension *= Configs::Big_windows_parameters::position_ratio;
-    second_dimension *= Configs::Big_windows_parameters::position_ratio;
-
-    first_dimension += Configs::Big_windows_parameters::zero_point_meters[0];
-    second_dimension += Configs::Big_windows_parameters::zero_point_meters[1];
-
-    is_in_board = first_dimension < Configs::Big_windows_parameters::size_meters[0] and
-                  second_dimension < Configs::Big_windows_parameters::size_meters[1] and
-                  first_dimension > 0 and second_dimension > 0;
-
-    if(not is_in_board or small_window_ptr == nullptr){
-        return {-1, -1};
-    }
-
-    sf::Vector2f result = sf::Vector2f(static_cast<float>(first_dimension / Configs::Big_windows_parameters::size_meters[0]),
-                                       static_cast<float>(second_dimension / Configs::Big_windows_parameters::size_meters[1]));
-
-    result.x *= small_window_ptr->getSize().x;
-    result.y *= small_window_ptr->getSize().y;
-
-    result += small_window_ptr->getPosition();
-    return result;
-}
+//sf::Vector2f
+//Objects_tracker::get_position_of_detected_object_on_main_window(bool& is_in_board, double first_dimension, double second_dimension) {
+////    first_dimension *= Configs::Big_windows_parameters::position_ratio;
+////    second_dimension *= Configs::Big_windows_parameters::position_ratio;
+//
+//    first_dimension += Configs::Big_windows_parameters::zero_point_meters[0];
+//    second_dimension += Configs::Big_windows_parameters::zero_point_meters[1];
+//
+//    is_in_board = first_dimension < Configs::Big_windows_parameters::size_meters[0] and
+//                  second_dimension < Configs::Big_windows_parameters::size_meters[1] and
+//                  first_dimension > 0 and second_dimension > 0;
+//
+//    if(not is_in_board or small_window_ptr == nullptr){
+//        return {-1, -1};
+//    }
+//
+//    sf::Vector2f result = sf::Vector2f(static_cast<float>(first_dimension / Configs::Big_windows_parameters::size_meters[0]),
+//                                       static_cast<float>(second_dimension / Configs::Big_windows_parameters::size_meters[1]));
+//
+//    result.x *= small_window_ptr->getSize().x;
+//    result.y *= small_window_ptr->getSize().y;
+//
+//    result += small_window_ptr->getPosition();
+//    return result;
+//}
 
 Objects_tracker::Verified_object *Objects_tracker::get_closed_object(const cv::Vec3d& position, double size) {
     Objects_tracker::Verified_object * closet_object_ptr = nullptr;
@@ -98,7 +101,7 @@ Objects_tracker::Verified_object *Objects_tracker::get_closed_object(const cv::V
 
         double distance = cv::norm(object.position_list.back() - position);
 
-        if(distance > Configs::Object_tracker::max_distance){
+        if(distance > Configs::Object_tracker::max_distance_mm){
             continue;
         }
 
