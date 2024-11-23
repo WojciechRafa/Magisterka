@@ -39,3 +39,9 @@
 /.run/
 /Archiwum/
 /Python_Scripts/Calibration_Images/*
+/Hw_params/
+/Python_Scripts/Calibration_Images/
+/Python_Scripts/Distortion_vectors/
+/Python_Scripts/External_camera_matrices/
+/Python_Scripts/Internal_camera_matrices/
+/Python_Scripts/Result_by_device/
