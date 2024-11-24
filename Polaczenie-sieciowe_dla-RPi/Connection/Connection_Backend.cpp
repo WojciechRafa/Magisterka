@@ -105,7 +105,7 @@ bool Connection_Backend::start_connection_custom_data() {
 bool Connection_Backend::start_connection_axes_ratio() {
     if(connection_state == Connection_State::another_IP_knowed or
        connection_state == Connection_State::only_custom_data_work){
-        rays_receiver = std::make_unique<Rays_receiver>(port, remote_ip, rays_intersection_analyzer_ptr);
+        rays_receiver = std::make_unique<Parameters_receiver>(port, remote_ip, rays_intersection_analyzer_ptr);
 
         if(remote_ip != sf::IpAddress::None) {
 

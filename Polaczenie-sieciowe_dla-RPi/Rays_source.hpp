@@ -21,14 +21,14 @@ public:
     cv::Mat& get_internal_matrix();
     cv::Mat& get_external_matrix();
 
-    Configs::camera_parameters_struct* get_camera_params();
+    Configs::camera_parameters* get_camera_params();
 protected:
     Rays_intersection_analyzer* rays_intersection_analyzer_ptr = nullptr;
     cv::Mat internal_matrix;
     cv::Mat external_matrix;
 
     Configs::computers_enum computer_type;
-    Configs::camera_parameters_struct camera_params;
+    Configs::camera_parameters camera_params;
 };
 
 #endif //MAGISTERKA_RAYS_SOURCE_HPP

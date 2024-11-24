@@ -18,6 +18,6 @@ cv::Mat &Rays_source::get_internal_matrix() {
     return internal_matrix;
 }
 
-Configs::camera_parameters_struct *Rays_source::get_camera_params() {
+Configs::camera_parameters *Rays_source::get_camera_params() {
     return &camera_params;
 }

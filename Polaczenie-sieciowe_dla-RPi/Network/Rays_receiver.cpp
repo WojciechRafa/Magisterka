@@ -2,11 +2,11 @@
 // Created by wpr on 24.08.24.
 //
 
-#include "Rays_receiver.hpp"
+#include "Parameters_receiver.hpp"
 #include "sended_struct.hpp"
 #include "../main_functions.hpp"
 
-Rays_receiver::Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, Rays_intersection_analyzer* rays_intersection_analyzer):
+Parameters_receiver::Parameters_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_, Rays_intersection_analyzer* rays_intersection_analyzer):
     Rays_source(rays_intersection_analyzer, Configs::computers_enum::hp),
     Permanent_Connector(port_, remote_dev_ip_){
 
@@ -17,7 +17,7 @@ Rays_receiver::Rays_receiver(unsigned short port_, sf::IpAddress remote_dev_ip_,
     external_matrix = load_camera_matrix(main_folder + "/Camera_external_parameters.csv");
 }
 
-void Rays_receiver::update() {
+void Parameters_receiver::update() {
     if(mode == Permanent_Connector::p_connector_mode::establish_connection){
         Permanent_Connector::update();
         if(get_mode() == Permanent_Connector::p_connector_mode::permanent_communication){
@@ -50,7 +50,7 @@ void Rays_receiver::update() {
     }
 }
 
-bool Rays_receiver::try_to_exchange_time() {
+bool Parameters_receiver::try_to_exchange_time() {
     sf::Packet sended_packet;
     auto sent_time = clock.getElapsedTime();
     sended_packet << sent_time.asMicroseconds();

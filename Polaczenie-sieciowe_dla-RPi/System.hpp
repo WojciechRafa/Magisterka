@@ -16,7 +16,7 @@
 #include "Image_Analysis/Binarization.hpp"
 #include "Image_Analysis/Projection_image_calculator.hpp"
 #include "Image_Analysis/Rays_intersection_analyzer.hpp"
-#include "GUI/Detected_objects_displayer.hpp"
+#include "GUI/Detected_objects_display.hpp"
 
 class System {
 public:
@@ -61,7 +61,7 @@ private:
     Projection_image_calculator projection_calculator;
     Rays_intersection_analyzer rays_intersection_analyzer;
     Objects_tracker objects_tracker;
-    std::vector<Detected_objects_displayer> detected_objects_displayer_list;
+    std::vector<Detected_objects_display> detected_objects_displayer_list;
 
     sf::Clock& clock;
 };

@@ -142,12 +142,12 @@ namespace Configs{
             {computers_enum::hp, "Hp"},
     };
 
-    struct camera_parameters_struct{
+    struct camera_parameters{
         const cv::Vec2d camera_size_mm;
         const cv::Vec2i camera_size_pixels;
     };
 
-    static std::map<computers_enum, camera_parameters_struct> camera_params{
+    static std::map<computers_enum, camera_parameters> camera_params{
             {computers_enum::dell,{
                 {
                     3.2, 2.4    //mm

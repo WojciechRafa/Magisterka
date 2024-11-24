@@ -2,12 +2,12 @@
 // Created by wpr on 15.11.24.
 //
 
-#include "Detected_objects_displayer.hpp"
+#include "Detected_objects_display.hpp"
 
 #include <utility>
 
 
-//Detected_objects_displayer::Detected_objects_displayer(std::pair<Axes, Axes> axes_, cv::Vec2d area_size_, cv::Vec2d zero_point_,
+//Detected_objects_display::Detected_objects_display(std::pair<Axes, Axes> axes_, cv::Vec2d area_size_, cv::Vec2d zero_point_,
 //                                                       Objects_tracker *objects_tracker_ptr_,
 //                                                       Small_window *small_window_ptr_):
 //                                                       axes(std::move(axes_)),
@@ -23,7 +23,7 @@
 //    create_grid();
 //                                                       }
 
-Detected_objects_displayer::Detected_objects_displayer(
+Detected_objects_display::Detected_objects_display(
         Configs::Big_windows_parameters::Displayed_window_configs &config_,
         Objects_tracker *objects_tracker_ptr_,
         Small_window *small_window_ptr_):
@@ -39,7 +39,7 @@ Detected_objects_displayer::Detected_objects_displayer(
     create_grid();
 }
 
-void Detected_objects_displayer::update() {
+void Detected_objects_display::update() {
     if(Configs::Big_windows_parameters::is_displayed_verified_only){
         update_verified_object();
     } else{
@@ -57,7 +57,7 @@ void Detected_objects_displayer::update() {
     last_update_time = clock.getElapsedTime();
 }
 
-void Detected_objects_displayer::update_triangulated_object() {
+void Detected_objects_display::update_triangulated_object() {
     if(small_window_ptr == nullptr or objects_tracker_ptr == nullptr)
         return;
 
@@ -95,7 +95,7 @@ void Detected_objects_displayer::update_triangulated_object() {
     }
 }
 
-void Detected_objects_displayer::update_verified_object() {
+void Detected_objects_display::update_verified_object() {
     if(small_window_ptr == nullptr or objects_tracker_ptr == nullptr)
         return;
 
@@ -128,7 +128,7 @@ void Detected_objects_displayer::update_verified_object() {
     }
 }
 
-void Detected_objects_displayer::add_detection_graphic(sf::Vector2f pos, float size, sf::Color color) {
+void Detected_objects_display::add_detection_graphic(sf::Vector2f pos, float size, sf::Color color) {
     auto new_circle = std::make_unique<sf::CircleShape>(size);
 
     new_circle->setOrigin(new_circle->getRadius(), new_circle->getRadius());
@@ -141,7 +141,7 @@ void Detected_objects_displayer::add_detection_graphic(sf::Vector2f pos, float s
     detection_graphics.emplace_back(std::move(new_circle));
 }
 
-void Detected_objects_displayer::create_grid() {
+void Detected_objects_display::create_grid() {
     if(small_window_ptr == nullptr)
         return;
 
@@ -183,9 +183,9 @@ void Detected_objects_displayer::create_grid() {
     }
 }
 
-sf::Vector2f Detected_objects_displayer::get_position_of_detected_object_on_window(bool &is_in_board,
-                                                                                   double first_dim_3d,
-                                                                                   double second_dim_3d) {
+sf::Vector2f Detected_objects_display::get_position_of_detected_object_on_window(bool &is_in_board,
+                                                                                 double first_dim_3d,
+                                                                                 double second_dim_3d) {
     first_dim_3d += config.area_zero_point[0];
     second_dim_3d += config.area_zero_point[1];
 

@@ -9,7 +9,7 @@
 #include "../Network/Broadcast_Connector.hpp"
 #include "../Network/Image_Receiver.hpp"
 #include "../Network/Custom_Data_IO.hpp"
-#include "../Network/Rays_receiver.hpp"
+#include "../Network/Parameters_receiver.hpp"
 #include "../Image_Analysis/Rays_intersection_analyzer.hpp"
 
 #include <SFML/Network.hpp>
@@ -75,7 +75,7 @@ private:
     std::unique_ptr<Broadcast_Connector> broadcast_connector = nullptr;
     std::unique_ptr<Image_Receiver> image_receiver = nullptr;
     std::unique_ptr<Custom_Data_IO> custom_data_io = nullptr;
-    std::unique_ptr<Rays_receiver> rays_receiver = nullptr;
+    std::unique_ptr<Parameters_receiver> rays_receiver = nullptr;
 
     Connection_State connection_state = Connection_State::primary;
 

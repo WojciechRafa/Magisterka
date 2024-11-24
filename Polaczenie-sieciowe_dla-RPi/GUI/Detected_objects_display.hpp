@@ -2,23 +2,23 @@
 // Created by wpr on 15.11.24.
 //
 
-#ifndef MAGISTERKA_DETECTED_OBJECTS_DISPLAYER_HPP
-#define MAGISTERKA_DETECTED_OBJECTS_DISPLAYER_HPP
+#ifndef MAGISTERKA_DETECTED_OBJECTS_DISPLAY_HPP
+#define MAGISTERKA_DETECTED_OBJECTS_DISPLAY_HPP
 
 #include "../Time_Object.hpp"
 #include "../Objects_tracker.hpp"
 
-class Detected_objects_displayer: public Time_Object{
+class Detected_objects_display: public Time_Object{
 public:
-//    Detected_objects_displayer( std::pair<Axes, Axes>axes_,
+//    Detected_objects_display( std::pair<Axes, Axes>axes_,
 //                                cv::Vec2d area_size_,
 //                                cv::Vec2d zero_point_,
 //                                Objects_tracker* objects_tracker_ptr_ = nullptr,
 //                                Small_window* small_window_ptr = nullptr);
 
-    Detected_objects_displayer( Configs::Big_windows_parameters::Displayed_window_configs& config_ ,
-                                Objects_tracker* objects_tracker_ptr_ = nullptr,
-                                Small_window* small_window_ptr_ = nullptr);
+    Detected_objects_display(Configs::Big_windows_parameters::Displayed_window_configs& config_ ,
+                             Objects_tracker* objects_tracker_ptr_ = nullptr,
+                             Small_window* small_window_ptr_ = nullptr);
 
     void update() override;
 private:
@@ -48,4 +48,4 @@ private:
 };
 
 
-#endif //MAGISTERKA_DETECTED_OBJECTS_DISPLAYER_HPP
+#endif //MAGISTERKA_DETECTED_OBJECTS_DISPLAY_HPP
