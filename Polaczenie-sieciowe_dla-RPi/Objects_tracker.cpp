@@ -28,6 +28,10 @@ void Objects_tracker::update() {
     for(auto& object: verified_object_list){
         //is displayed
         object.is_displayed = object.position_list.size() >= Configs::Object_tracker::min_detect_number;
+        if(object.is_displayed){
+            auto last_pos = object.position_list.back();
+            std::cout<<"Displayed object position: "<<last_pos[0]<<"\t"<<last_pos[1]<<"\t"<<last_pos[2]<<std::endl;
+        }
     }
     verified_object_list.erase(
             std::remove_if(verified_object_list.begin(), verified_object_list.end(),
