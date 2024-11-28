@@ -1,6 +1,12 @@
 import cv2 as cv
 import numpy as np
-import pandas as pd
+
+def draw(img, corners, imgpts):
+    corner = tuple(corners[0].ravel())
+    img = cv.line(img, corner, tuple(imgpts[0].ravel()), (255,0,0), 5)
+    img = cv.line(img, corner, tuple(imgpts[1].ravel()), (0,255,0), 5)
+    img = cv.line(img, corner, tuple(imgpts[2].ravel()), (0,0,255), 5)
+    return img
 
 p_x = 7
 p_y = 9
@@ -8,7 +14,7 @@ camera_name = "Hp"
 square_size = 40.0 # mm
 
 display_points = True
-display_time = 2000
+display_time = 1500
 display_time_2 = 2000
 
 result_by_device_folder = "Result_by_device"
@@ -79,9 +85,7 @@ def main():
     internal_matrix = np.load(internal_cameras_matrix_folder + "/" + camera_name + ".npy")
     distraction_vector = np.load(distortion_folder + "/" + camera_name + ".npy")
 
-    # corners_undistorted = cv.undistortPoints(corners_refined, internal_matrix, distraction_vector)
-    # ret, rvec, tvec = cv.solvePnP(objp, corners_undistorted, internal_matrix, None)
-    ret, rvec, tvec = cv.solvePnP(objp, corners_refined, internal_matrix, distraction_vector, flags=cv.SOLVEPNP_EPNP)
+    ret, rvec, tvec = cv.solvePnP(objp, corners_refined, internal_matrix, distraction_vector, flags=cv.SOLVEPNP_ITERATIVE)
 
     if ret:
         print("Macierz rotacji:\n", rvec)
@@ -115,6 +119,8 @@ def main():
         imgpts, jac = cv.projectPoints(axis, rvec, tvec, internal_matrix, distraction_vector)
         img = cv.drawContours(img, [imgpts[:4].astype(int)], -1, (0, 255, 0), 3)
         cv.imshow('Axes', img)
+        cv.imwrite("axes.png", img)
+        cv.waitKey(display_time_2)
 
 if __name__ == '__main__':
     main()
