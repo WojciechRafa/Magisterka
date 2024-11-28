@@ -11,6 +11,7 @@ square_size = 40.0 # mm
 
 display_points = True
 display_time = 2000
+display_time_2 = 2000
 
 result_by_device_folder = "Result_by_device"
 by_device_matrix_name = "Camera_external_parameters"
@@ -80,9 +81,18 @@ def main():
     internal_matrix = np.load(internal_cameras_matrix_folder + "/" + camera_name + ".npy")
     distraction_vector = np.load(distortion_folder + "/" + camera_name + ".npy")
 
-    ret, rvec, tvec = cv.solvePnP(objp, corners_refined, internal_matrix, distraction_vector)
+    # corners_undistorted = cv.undistortPoints(corners_refined, internal_matrix, distraction_vector)
+    # ret, rvec, tvec = cv.solvePnP(objp, corners_undistorted, internal_matrix, None)
+    ret, rvec, tvec = cv.solvePnP(objp, corners_refined, internal_matrix, distraction_vector, flags=cv.SOLVEPNP_EPNP)
 
     if ret:
+        print("Macierz rotacji:\n", rvec)
+        rotation_matrix, _ = cv.Rodrigues(rvec)
+        angles = cv.decomposeProjectionMatrix(np.hstack((rotation_matrix, np.zeros((3, 1)))))[-1]
+        print("Kąty Eulera (XYZ):\n", angles.flatten() )
+        # print("Kąt w stopniach:\n", rvec * (180 / np.pi))
+        print("Macierz transformacji:\n", tvec)
+
         # Convert rotation vector to rotation matrix
         rotation_matrix, _ = cv.Rodrigues(rvec)
 
@@ -102,6 +112,11 @@ def main():
         # TODO fix xlsx generation
         # pd.DataFrame(external_matrix).to_excel(external_cameras_matrix_folder + "/{}.xlsx".format(external_matrix), index=False, header=False)
         np.savetxt(external_cameras_matrix_folder + "/{}.csv".format(camera_name), external_matrix, delimiter=',', fmt='%f')
+
+        axis = np.float32([[0, 0, 0], [50, 0, 0], [0, 50, 0], [0, 0, -50]])
+        imgpts, jac = cv.projectPoints(axis, rvec, tvec, internal_matrix, distraction_vector)
+        img = cv.drawContours(img, [imgpts[:4].astype(int)], -1, (0, 255, 0), 3)
+        cv.imshow('Axes', img)
 
 if __name__ == '__main__':
     main()

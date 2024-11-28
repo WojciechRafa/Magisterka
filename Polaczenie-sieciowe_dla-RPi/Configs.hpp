@@ -91,18 +91,18 @@ namespace Configs{
                 {{560, 410},
                  {GUI_layout::main_button_field.left, 370},
 
-                 {6000, 6000},  // mm
-                 {3000, 3000},
+                 {4000, 4000},  // mm
+                 {2000, 2000},
 
-                 {Axes::z, Axes::x}
+                 {Axes::z, Axes::y}
                  },
                 {{570, 410},
                  {600, 370},
 
-                 {6000, 6000},  // mm
-                 {3000, 3000},
+                 {4000, 4000},  // mm
+                 {2000, 2000},
 
-                 {Axes::z, Axes::y}
+                 {Axes::x, Axes::y}
                 }
         };
 
@@ -124,7 +124,7 @@ namespace Configs{
 
         static const bool is_displayed_verified_only = true;
 
-        static const float grid_span = 500;    // mm
+        static const float grid_span = 200;    // mm
         static const sf::Color grid_span_zero_point_color = sf::Color::Red;
         static const sf::Color grid_span_default_color(120, 120, 120);
     }
