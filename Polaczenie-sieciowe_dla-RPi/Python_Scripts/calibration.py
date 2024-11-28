@@ -12,11 +12,12 @@ camera_name = "Dell"
 # camera_name = "Hp"
 # camera_name = "IPhone"
 display_points: bool = False
-square_size = 20.0 # mm
+square_size = 40.0 # mm
+# square_size = 1
 
 # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(p_x,5,0)
 objp = np.zeros((p_x*p_y,3), np.float32)
-objp[:, :2] = np.mgrid[0:p_y, 0:p_x].T.reshape(-1,2)
+objp[:, :2] = np.mgrid[0:p_x, 0:p_y].T.reshape(-1,2)
 
 objp *= square_size
 
@@ -35,6 +36,11 @@ idx_list = []
 h:int = -1
 w:int = -1
 
+def show_progress(current, total, bar_length=40):
+    progress = current / total
+    bar = "#" * int(progress * bar_length) + "-" * (bar_length - int(progress * bar_length))
+    print(f"\r[{bar}] {progress * 100:.2f}%", end="")
+
 for idx, fname in enumerate(images):
     img = cv.imread(fname)
 
@@ -47,6 +53,7 @@ for idx, fname in enumerate(images):
     # Find the chess board corners
     found_chess, corners = cv.findChessboardCorners(gray, (p_x, p_y), None)
 
+    show_progress(idx, len(images))
     # If found, add object points, image points (after refining them)
     if found_chess:
         objpoints.append(objp)
@@ -62,8 +69,9 @@ for idx, fname in enumerate(images):
 
 ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, (w, h), None, None)
 
-newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
+print(f"\nŚredni błąd reprojekcji: {ret}")
 
+newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
 cv.destroyAllWindows()
 
 np.save(cameras_matrix_folder + "/{}.npy".format(camera_name), newcameramtx)
