@@ -6,11 +6,6 @@
 #include "../Configs.hpp"
 
 void get_binary_diff(cv:: Mat& frame_1, cv:: Mat& frame_2, cv::Mat& result){
-    if(frame_1.empty() or frame_2.empty()) {
-        result = cv::Mat();
-        return;
-    }
-
     cv::Mat diff, gray_diff;
 
     cv::absdiff(frame_1, frame_2, diff);
@@ -57,7 +52,7 @@ void Binarization::relative_update() {
         cv::Mat and_result;
         cv::bitwise_and(threshold_diff_1, threshold_diff_2, and_result);
 
-        int kernelSize = 5;  // Can be adjusted
+        int kernelSize = Configs::binarization_kernal_size;  // Can be adjusted
         cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(kernelSize, kernelSize));
 
         cv::Mat openedImage;
@@ -68,7 +63,6 @@ void Binarization::relative_update() {
 
         parameters->numb_labels = cv::connectedComponentsWithStats(*binarized_image_result, labels, parameters->stats, parameters->centroids);
         parameters->numb_labels --; // first label is background, so it should be missed.
-        parameters->main_time = image_with_main_time->first;
     }
     if (image_m1 != nullptr)
         image_m2 = std::move(image_m1);
@@ -76,7 +70,7 @@ void Binarization::relative_update() {
 }
 
 void Binarization::absolute_update() {
-    if(reference_image == nullptr and image_with_main_time != nullptr and not image_with_main_time->second.empty()){
+    if(reference_image == nullptr and image_with_main_time != nullptr){
         reference_image = std::make_unique<cv::Mat>(image_with_main_time->second.clone());
     }else if(image_with_main_time != nullptr and not image_with_main_time->second.empty()){
         cv::Mat threshold_diff;

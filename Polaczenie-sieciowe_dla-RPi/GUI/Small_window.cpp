@@ -60,15 +60,6 @@ void Small_window::update() {
 
             setTexture(&texture);
 
-//            std::cout << "Rows: " << image_cv_ptr->rows << std::endl;
-//            std::cout << "Cols: " << image_cv_ptr->cols << std::endl;
-//            std::cout << "Size: " << image_cv_ptr->size() << std::endl;
-//            std::cout << "Channels: " << image_cv_ptr->channels() << std::endl;
-//            std::cout << "Type: " << getMatType(*image_cv_ptr) << std::endl;
-//            std::cout << "Step: " << image_cv_ptr->step << " bytes" << std::endl;
-//            std::cout << "Element Size: " << image_cv_ptr->elemSize() << " bytes" << std::endl;
-//            std::cout << "Is empty: " << std::boolalpha << image_cv_ptr->empty() << std::endl;
-
             last_update_time = clock.getElapsedTime();
             return;
         }

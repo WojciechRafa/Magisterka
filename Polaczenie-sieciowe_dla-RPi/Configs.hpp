@@ -30,16 +30,18 @@ static int get_axi_nr(Axes axis) {
 }
 
 namespace Configs{
-    static sf::Time default_update_time = sf::milliseconds(50);
+    static const sf::Time default_update_time = sf::milliseconds(50);
 
-    static sf::Time camera_update_period = sf::milliseconds(50);
-    static sf::Time max_camera_update_period_error = sf::milliseconds(5);
+    static const sf::Time camera_update_period = sf::milliseconds(50);
+    static const sf::Time max_camera_update_period_error = sf::milliseconds(20);
 
-    static sf::Time main_loop_time = sf::milliseconds(1);
+    static const sf::Time main_loop_time = sf::milliseconds(1);
+
+    static const bool is_binarization_relative = false;
+    static const int binarization_threshold = 20;
+    static const int binarization_kernal_size = 6;
 
 
-    static bool is_binarization_relative = false;
-    static int binarization_threshold = 50;
 
     namespace GUI_layout{
         static const sf::Vector2f default_small_window_size = sf::Vector2f(550, 350);
@@ -66,9 +68,9 @@ namespace Configs{
         hp
     };
 
-    static computers_enum this_computer = computers_enum::hp;
+    static const computers_enum local_computer = computers_enum::hp;
 
-    static std::map<computers_enum, std::string> hw_folder_folders_name{
+    static std::map<computers_enum, std::string> hw_folders_name{
             {computers_enum::dell, "Dell"},
             {computers_enum::hp, "Hp"},
     };

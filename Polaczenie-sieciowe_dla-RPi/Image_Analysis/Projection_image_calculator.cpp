@@ -40,8 +40,9 @@ Projection_image_calculator::Projection_image_calculator(
         output_window_size(window_size_),
         output_zero_point_pos(zero_point_pos_){
 
-    auto local_hw = Configs::this_computer;
-    auto local_hw_folder_name = Configs::hw_folder_folders_name[local_hw];
+
+    auto local_hw = Configs::local_computer;
+    auto local_hw_folder_name = Configs::hw_folders_name[local_hw];
     std::string main_folder = "../Hw_params/" + local_hw_folder_name;
     internal_matrix = load_camera_matrix(main_folder + "/Camera_internal_parameters.csv");
 
@@ -55,7 +56,7 @@ Projection_image_calculator::Projection_image_calculator(
                              -output_zero_point_pos.x + output_window_size.x);
 
     corners_angle[3] = atan2( output_zero_point_pos.y - output_window_size.y,
-                              -output_zero_point_pos.x);
+                             -output_zero_point_pos.x);
 }
 
 sf::Vector2f Projection_image_calculator::find_intersection(double axis_a_value, double axis_b_value){
@@ -64,13 +65,13 @@ sf::Vector2f Projection_image_calculator::find_intersection(double axis_a_value,
     sf::Vector2f intersection;
 
     if(angle <= corners_angle[0] and angle > corners_angle[1]){
-        if(axis_a_value != 0){
-            double tg = axis_b_value / axis_a_value;
-            intersection = sf::Vector2f(- output_zero_point_pos.y / (float) tg, 0);
-        }
-        else{
-            intersection = sf::Vector2f(output_zero_point_pos.y, 0);
-        }
+         if(axis_a_value != 0){
+             double tg = axis_b_value / axis_a_value;
+             intersection = sf::Vector2f(- output_zero_point_pos.y / (float) tg, 0);
+         }
+         else{
+             intersection = sf::Vector2f(output_zero_point_pos.y, 0);
+         }
     }else if(angle <= corners_angle[1] and angle > corners_angle[2]){
         float relative_a_direction = output_window_size.x - output_zero_point_pos.x;
         double tg = axis_b_value / axis_a_value;
