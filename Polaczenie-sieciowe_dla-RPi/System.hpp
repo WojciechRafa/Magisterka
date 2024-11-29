@@ -39,11 +39,8 @@ private:
     sf::IpAddress remote_ip_address = sf::IpAddress::None;
 
     std::unique_ptr<Broadcast_Connector> broadcast_connector = nullptr;
-    // std::unique_ptr<Image_Sender> image_sender = nullptr;
-    // std::unique_ptr<Custom_Data_IO> custom_data_io = nullptr;
     std::unique_ptr<Parameter_sender> parameter_sender = nullptr;
 
-//    void configure_custom_data();
     // graphic:
     sf::RenderWindow window;
     sf::Event event{};

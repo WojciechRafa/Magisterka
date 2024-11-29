@@ -31,12 +31,6 @@ graphic_warehouse(graphic_warehouse_)
 
     );
 
-//    auto new_connection = Button(sf::Vector2f(110, 10),
-//                                 main_menu.getPosition(),
-//                                 sf::Vector2f(80, 80),
-//                                 Button::Button_Message::create_new_screen,
-//                                 graphic_warehouse.get_texture("Plus")
-
     auto reference_image_button = Button(sf::Vector2f(110, 10),
                                          main_menu.getPosition(),
                                          sf::Vector2f(80, 80),

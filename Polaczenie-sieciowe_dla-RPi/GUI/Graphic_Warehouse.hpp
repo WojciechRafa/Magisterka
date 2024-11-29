@@ -9,7 +9,7 @@
 #ifndef INZYNIERKA_GRAPHIC_WAREHOUSE_HPP
 #define INZYNIERKA_GRAPHIC_WAREHOUSE_HPP
 
-// magazyn otwiera tylko pliki z listy file_name_list z dopiskiem .png
+// open only ".png" files
 class Graphic_Warehouse {
 public:
     explicit Graphic_Warehouse(std::string folder_path);

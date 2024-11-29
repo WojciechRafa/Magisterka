@@ -6,8 +6,6 @@
 Image_Sender::Image_Sender(unsigned short port_, sf::IpAddress remote_dev_ip_):
 Permanent_Connector(port_, remote_dev_ip_)
 {
-    // nieaktualne -> funkcja jest wywoływana dwukrotnie ponieważ za pierwszym razem wynik jest błędny
-//    camera.measure_operation_time_compress();
     compress_time = camera.measure_operation_time_compress();
 }
 
@@ -57,7 +55,6 @@ void Image_Sender::update_pernament_communication_mode() {
     if(need_update_recive()){
         sf::Packet packet;
 
-        // test
         setBlocking(false);
         auto status = receive(packet);
         setBlocking(true);
@@ -100,7 +97,6 @@ bool Image_Sender::try_send_new_image() {
 
 
         if (send_status == sf::Socket::Done) {
-            // Prawidłowo wysłano zdjęcie
             last_sended_frame_number++;
             manage_sender_mode();
         }
@@ -142,7 +138,7 @@ bool Image_Sender::is_complex_image_management_method_used() {
 }
 
 void Image_Sender::manage_sender_mode() {
-    // aktualizacja czasu
+    // time update
     last_img_send_time.push_back(clock.getElapsedTime().asMicroseconds());
 
     if(last_img_send_time.size() > number_of_remembered_samples){
@@ -204,10 +200,9 @@ bool Image_Sender::manage_time_simple(sf::Int64 average_cycle_time) {
 }
 
 bool Image_Sender::manage_time_complex(sf::Int64 average_cycle_time) {
-//    metoda ta zmienia również tryb pracy pomiędzy skompresowanym i nie skompesowanym,
-//    z tego powodu wykorzystana zostanie funkcja manage_time_simple
-//    ponieważ nie można jednocześnie wprowadzać dwóch zmian, jeżeli funkcja zwróci true, nie są wprowadzane
-//    dalesz zmiany
+    // this method also changes the mode between compressed and uncompressed,
+    // for this reason the manage_time_simple function will be used
+    // because you can't make two changes at the same time, if the function returns true, no further changes are made
     bool is_simple_manage_used = manage_time_simple(average_cycle_time);
 
     if(is_simple_manage_used){

@@ -16,7 +16,6 @@ Small_window::Small_window(sf::Vector2f pos_,
 {
     setPosition(pos_);
     setSize(size);
-//    setColor(background_color);
     setFillColor(background_color);
     setOutlineColor(outline_color);
     setOutlineThickness(outline_thickness);

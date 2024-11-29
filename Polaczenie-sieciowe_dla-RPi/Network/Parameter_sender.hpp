@@ -14,7 +14,6 @@ class Parameter_sender: public Permanent_Connector{
 public:
     Parameter_sender(unsigned short port_, sf::IpAddress remote_dev_ip_);
     void update() override;
-//    void set_sent_parameters_ptr(std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* objets_parameter_list_ptr_);
     void set_sent_parameters_ptr(Sent_parameters* sent_parameters_ptr_);
 
     void set_update_period(sf::Int64 update_period_microsecond_);

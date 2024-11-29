@@ -17,11 +17,11 @@ public:
             sf::RenderWindow& window_,
             Graphic_Warehouse& graphic_warehouse_,
             sf::Time update_period_ = sf::milliseconds(50)
-            ); // w konstruktorze znajduje się międzyinnymi konfiguracja ekranu
+            );
 
     void update() override;
 
-    // uwaga ! funkcja po wykonaniu zmienia actual button mesage na nothing
+    // after call button mesage is nothing
     Button::Button_Message get_and_delate_actual_button_mesage();
 
     void add_time_object_to_update(Time_Object * time_object_to_update_);

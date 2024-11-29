@@ -46,10 +46,6 @@ void Parameter_sender::update() {
     std::cout<<last_update_time.asMicroseconds() - time_begin<< " microseconds \n";
 }
 
-//void Parameter_sender::set_vectors_list_ptr(std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>* vectors_list_) {
-//    vectors_list_ptr = vectors_list_;
-//}
-
 bool Parameter_sender::try_to_exchange_time() {
     sf::Packet received_packet;
 

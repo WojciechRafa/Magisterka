@@ -14,10 +14,6 @@ public:
         establish_connection,
         permanent_communication
     };
-//    bool need_update() override {
-//        std::cout<<"Elo Parameter_sender need_update"<<std::endl;
-//        return clock.getElapsedTime().asMicroseconds() - last_update_time > update_period;
-//    };
 	Permanent_Connector(unsigned short port_, sf::IpAddress remote_dev_ip_);
 
     Permanent_Connector::p_connector_mode get_mode();

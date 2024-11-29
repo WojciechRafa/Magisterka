@@ -23,7 +23,6 @@ void Broadcast_Connector::update(){
         sf::Socket::Status status = udp_socket.receive(packet_received, remote_dev_ip, port);
         write_comunicate_sockte_status(status);
         static int itr = 0;
-//        std::cout<<itr<<std::endl;
         itr++;
 
         std::cout << "Status polaczenia  "<< udp_socket.getLocalPort() <<" "<<port<< " "<< udp_socket.isBlocking() << " "<< remote_dev_ip.toString()<<std::endl;
@@ -44,14 +43,14 @@ void Broadcast_Connector::update(){
         std::cout << "Wyslano:"<< std::endl;
         std::cout << remote_dev_ip.toString()<< std::endl;
         std::cout << sf::IpAddress::getLocalAddress().toString()<< std::endl;
-        // Wysłanie wiadmości
+        // Message sent
         sf::Packet sended_packet;
         sended_packet << ip_message_sended;
 
         udp_socket.send(sended_packet, remote_dev_ip, port);
         std::cout << "Wyslano potwierdzenie"<< std::endl;
 
-        // Odbieranie wiadomości
+        // Reciv message
         sf::Packet received_packet;
         sf::IpAddress sender_ip;
         if (udp_socket.receive(received_packet, sender_ip, port) == sf::Socket::Done) {

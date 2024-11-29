@@ -10,7 +10,6 @@
 #include <list>
 #include <memory>
 #include "Configs.hpp"
-// klasa będzie wykorzystywana do obsługi wszystkich obiektów które muszą być aktualizowane w regularnych okresach czas
 
 class Time_Object {
 public:
@@ -22,13 +21,12 @@ public:
     Time_Object& operator=(Time_Object&&) noexcept = default;
 
 
-    virtual void update() = 0; // Aktualizować last_update_time
+    virtual void update() = 0;
     static std::list<Time_Object*>* get_all_time_objects_pointers();
     static void update_all_time_objets();
 
-    virtual bool need_update(); // wiele instancji może nadpisywać tą funkcję
+    virtual bool need_update();
 protected:
-    // WAŻNE ! Aktualizować last update time !
     sf::Time update_period;
 
     static sf::Clock clock;

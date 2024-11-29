@@ -66,7 +66,6 @@ bool System::update() {
     Time_Object::update_all_time_objets();
 
 
-        // ST - short time
     if(connection_state == Connection_State::broadcast_listen and
        broadcast_connector != nullptr and
        broadcast_connector->get_mode() == Broadcast_Connector::b_connector_mode::connection_confirmed){
