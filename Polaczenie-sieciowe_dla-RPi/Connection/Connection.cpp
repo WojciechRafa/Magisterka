@@ -45,7 +45,7 @@ std::vector<std::vector<std::unique_ptr<sf::Drawable>>> *Connection::get_additio
 
 
 Button::Button_Message Connection::update_frontend_st(sf::Vector2i mouse_pos_relative_to_window) {
-    //wyświetlanie danych na ekranie
+    //display data on screen
     for(auto& message : backend.get_recived_message_list()) {
         if (message.is_int)
             frontend.custom_data_update_variable_by_name_int(message.name, message.data_int);
@@ -53,7 +53,7 @@ Button::Button_Message Connection::update_frontend_st(sf::Vector2i mouse_pos_rel
             frontend.custom_data_update_variable_by_name_float(message.name, message.data_float);
 
     }
-    // usunięcie zaznaczenia aktywności połączenia po zakończeniu trybu broadcast
+    // remove activity afet broadcast connection
     static bool was_backend_mode_last_time_broadcast = false;
     if(was_backend_mode_last_time_broadcast and backend.get_connection_state() != Connection_Backend::Connection_State::broadcast){
         frontend.set_button_mode(Button::Button_Message::broadcast_ip_process, false);
@@ -73,7 +73,7 @@ Button::Button_Message Connection::update_backend_st() {
     }else if(message == Button::Button_Message::conection_establish_camera_view){
         backend.start_connection_camera_view();
         frontend.set_button_mode(Button::Button_Message::broadcast_ip_process, false);
-        frontend.set_button_mode(Button::Button_Message::set_camera_mode_x1, true); // tryb domyślny
+        frontend.set_button_mode(Button::Button_Message::set_camera_mode_x1, true); // defaul mode
 
     } else if(message == Button::Button_Message::conection_establish_custom_data){
         backend.start_connection_custom_data();
@@ -113,15 +113,3 @@ void Connection::update_image() {
         frontend.update_image(*backend.get_image());
     }
 }
-//std::vector<Time_Object *> Connection::get_time_objects() {
-//    std::vector<Time_Object *> backed_time_objets = backend.get_time_object_list();
-//    std::vector<Time_Object *> frontend_time_objets = frontend.get_time_object_list();
-//
-//    std::vector<Time_Object *> all_time_objects(backed_time_objets.size() + frontend_time_objets.size());
-//
-//    std::copy(backed_time_objets.begin(), backed_time_objets.end(), all_time_objects.begin());
-//    std::copy(frontend_time_objets.begin(), frontend_time_objets.end(), all_time_objects.begin() + backed_time_objets.size());
-//
-//    return all_time_objects;
-//}
-

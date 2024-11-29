@@ -45,11 +45,7 @@ System::System():
     detected_objects_displayer_list.reserve(Configs::Big_windows_parameters::displayed_big_window_list.size());
     for(auto& big_window_parameters: Configs::Big_windows_parameters::displayed_big_window_list){
         detected_objects_windows.emplace_back(big_window_parameters.window_pos, big_window_parameters.window_size);
-//        detected_objects_displayer_list.emplace_back(big_window_parameters.axes,
-//                                                     big_window_parameters.area_size,
-//                                                     big_window_parameters.area_zero_point,
-//                                                     &objects_tracker,
-//                                                     &detected_objects_windows.back());
+
         detected_objects_displayer_list.emplace_back(big_window_parameters,
                                                      &objects_tracker,
                                                      &detected_objects_windows.back());
@@ -67,6 +63,7 @@ System::System():
 
     projection_calculator.set_parameters(bin_parameters);
     projection_calculator.set_additional_drawable_ptr(&projections);
+    projection_calculator.set_rays_intersection_anaylyzer_ptr(&rays_intersection_analyzer);
 
     if(Configs::GUI_layout::is_projection_calculator_displayed)
         projections_window.set_additional_graphic(&projections);
@@ -96,7 +93,6 @@ bool System::update() {
     last_update_time = clock.getElapsedTime();
     Time_Object::update_all_time_objets();
 
-    //aktualizcaj nieczasowa (st - short time, skrót występujący w nazwach funkcji aby odróżnić je od update() który może zajmować pewien czas)
     auto connection_to_remove = connection_list.end(); // end - odpowednil null-a
     for(auto it = connection_list.begin(); it != connection_list.end(); it++){
         auto status = it->get()->update_backend_st();
@@ -144,37 +140,6 @@ bool System::execute_button_message(Button::Button_Message message) {
                         Configs::GUI_layout::first_connection_button_field.getPosition()
                         );
 
-                // bez kamery
-//                auto connection = std::make_unique<Connection>(
-//                        // przyciski
-//                        std::move(button_field),
-//                        // dane
-//                        sf::Vector2f(10, 230),
-//                        sf::Vector2f(200, 100),
-//                        15,
-//                        sf::Color::Magenta,
-//                        message_list_displayed,
-//                        message_list_sended,
-//
-//                        graphic_warehouse,
-//                        50238
-//                );
-
-//                // bez danych liczbowych
-//                auto connection = std::make_unique<Connection>(
-//                        // przyciski
-//                        create_button_field_to_connection_with_camera_and_custom_data(),
-//                        // dane
-//                        message_list_displayed,
-//                        message_list_sended,
-////                        kamera
-//                        sf::Vector2f(10, 230),
-//                        sf::Vector2f(1000, 600),
-//                        graphic_warehouse,
-//                        50238
-//                );
-
-
                 auto connection = std::make_unique<Connection>(
                         // przyciski
                         std::move(button_field),
@@ -193,11 +158,6 @@ bool System::execute_button_message(Button::Button_Message message) {
 
 
                 connection_list.push_back(std::move(connection));
-
-            // usunięcie zaznaczenia przycisku
-
-
-
             }
             return false;
 

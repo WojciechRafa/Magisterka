@@ -127,45 +127,41 @@ std::unique_ptr<sf::RectangleShape>  Projection_image_calculator::get_ray(sf::Ve
     return line;
 }
 
-//int Projection_image_calculator::get_axi_nr(Axes axis) {
-//    switch (axis) {
-//        case Axes::x:
-//            return 0;
-//        case Axes::y:
-//            return 1;
-//        case Axes::z:
-//            return 2;
-//        default:
-//            return -1;
-//    }
-//}
-
-
 void Projection_image_calculator::update() {
     drawable_list->clear();
 
 
     if(parameters != nullptr and not are_rays_from_slave){
+        local_parameters.clear();
+        if(rays_intersection_analyzer != nullptr) {
+            frame_parameters->time = parameters->main_time;
+            frame_parameters->objets.clear();
+        }
 
         for(int i = 1; i < parameters->numb_labels; i++){ // label have number "0";
+            cv::Vec2i box_pos(parameters->stats.at<int>(i, cv::CC_STAT_LEFT),
+                                parameters->stats.at<int>(i, cv::CC_STAT_TOP));
+            cv::Vec2i box_size(parameters->stats.at<int>(i, cv::CC_STAT_WIDTH),
+                                 parameters->stats.at<int>(i, cv::CC_STAT_HEIGHT));
 
+            cv::Vec2d centroid(parameters->centroids.at<double>(i, 0), parameters->centroids.at<double>(i, 1));
+
+            // send to rays intersetcion
+            if(rays_intersection_analyzer != nullptr){
+                frame_parameters->objets.emplace_back(static_cast<cv::Vec2d>(box_pos),
+                                                static_cast<cv::Vec2d>(box_size),
+                                                static_cast<cv::Vec2d>(centroid));
+            }
+
+
+            // 3D
             cv::Vec3d box_dir_3D_begin;
             cv::Vec3d box_dir_3D_end;
             cv::Vec3d centroid_dir_3D;
 
-            cv::Point2i box_pos(parameters->stats.at<int>(i, cv::CC_STAT_LEFT),
-                                parameters->stats.at<int>(i, cv::CC_STAT_TOP));
-            cv::Point2i box_size(parameters->stats.at<int>(i, cv::CC_STAT_WIDTH),
-                                 parameters->stats.at<int>(i, cv::CC_STAT_HEIGHT));
-
-            cv::Point2d centroid(parameters->centroids.at<double>(i, 0), parameters->centroids.at<double>(i, 1));
-
             box_dir_3D_begin = compute_3D_line(internal_matrix, static_cast<cv::Point2d>(box_pos));
             box_dir_3D_end = compute_3D_line(internal_matrix, static_cast<cv::Point2d>(box_pos + box_size));
-            centroid_dir_3D = compute_3D_line(internal_matrix, centroid);
-
-
-//            to_send.emplace_back(box_dir_3D_begin, box_dir_3D_end, centroid_dir_3D);
+            centroid_dir_3D = compute_3D_line(internal_matrix, static_cast<cv::Point2d>(centroid));
 
             float line_thickness = 0.5;
 
@@ -194,6 +190,9 @@ void Projection_image_calculator::update() {
                 drawable_list->push_back(std::move(center_ray));
 
             }
+        }
+        if(rays_intersection_analyzer != nullptr){
+            rays_intersection_analyzer->add_projection(frame_parameters);
         }
 
     }else if(received_parameters != nullptr and are_rays_from_slave){
@@ -254,4 +253,13 @@ cv::Vec3d Projection_image_calculator::multiple_internal(cv::Vec2d &image_params
     double Z = 1.0;
 
     return {X, Y, Z};
+}
+
+void Projection_image_calculator::set_rays_intersection_anaylyzer_ptr(
+        Rays_intersection_analyzer *rays_intersection_analyzer_) {
+    rays_intersection_analyzer = rays_intersection_analyzer_;
+
+    frame_parameters = std::make_shared<Frame_parameters>(sf::microseconds(std::numeric_limits<int64_t>::min()),
+                                                          this,
+                                                          local_parameters);
 }

@@ -7,6 +7,7 @@
 
 #include <opencv2/opencv.hpp>
 #include "../Time_Object.hpp"
+#include "Rays_intersection_analyzer.hpp"
 
 class Binarization: public Time_Object{
 public:

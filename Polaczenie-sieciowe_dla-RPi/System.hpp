@@ -25,7 +25,7 @@ public:
     bool update();
 private:
     sf::Time update_period;
-    bool execute_button_message(Button::Button_Message message); // zwraca informacje o tym czy należy zamknąć program
+    bool execute_button_message(Button::Button_Message message);
 
     sf::RenderWindow window;
 
@@ -50,7 +50,6 @@ private:
     Small_window binarized_picture_window;
     Small_window projections_window;
 
-//    Small_window objects_tracker_window;
     std::vector<Small_window> detected_objects_windows;
 
     std::shared_ptr<Binarization::Binarized_parameters> bin_parameters =

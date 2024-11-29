@@ -9,7 +9,6 @@
 #include <list>
 #include <memory>
 #include "Configs.hpp"
-// klasa będzie wykorzystywana do obsługi wszystkich obiektów które muszą być aktualizowane w regularnych okresach czas
 
 class Time_Object {
 public:

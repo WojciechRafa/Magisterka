@@ -21,8 +21,6 @@ public:
     void set_objects_tracker_ptr(Objects_tracker* objects_tracker_);
 
     void update();
-
-    std::string get_name() override{return "Rays Intersection Analyzer";};
 private:
     std::map<sf::Time, std::vector<std::shared_ptr<Frame_parameters>>> objets_parameters_list_by_time;
     std::map<Rays_source*, sf::Time> last_update_time_of_ray_source;

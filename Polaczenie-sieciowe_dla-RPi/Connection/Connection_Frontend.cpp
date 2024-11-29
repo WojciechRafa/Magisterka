@@ -98,16 +98,7 @@ Connection_Frontend::Connection_Frontend(std::unique_ptr<Buttons_Field> buttons_
                                          Graphic_Warehouse &graphic_warehouse):
                                          buttons_field(std::move(buttons_field_))
                                          {
-//                                             double m[3][3] = {{a, b, c}, {d, e, f}, {g, h, i}};
-//                                             Mat M = Mat(3, 3, CV_64F, m);
-
-                                             double internal_matrix_data[3][3] = {{1830.62342855404,0,954.637220812545}, {0,1800.20786426036,538.195879306262}, {0,0,1}};
-                                             cv::Mat internal_matrix = cv::Mat(3, 3, CV_64F, internal_matrix_data);
-
-                                             double external_matrix_data[3][4] = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
-                                             cv::Mat external_matrix = cv::Mat(3, 3, CV_64F, external_matrix_data);
-
-                                             add_projection(window_size, window_pos, zero_point_pos , axis_a, axis_b, received_parameters_, internal_matrix, external_matrix);
+                                             add_projection(window_size, window_pos, zero_point_pos , axis_a, axis_b, received_parameters_);
 
                                          }
 
@@ -141,7 +132,6 @@ std::vector<sf::Drawable*>& Connection_Frontend::get_figures_list() {
         auto list3 = custom_data_io_window->get_text_list();
         list1.insert(list1.end(), list3.begin(), list3.end());
     }
-//    projections_windows_list;
 
     for(auto& projection: projections_windows_list){
         list1.push_back(&projection);
@@ -156,7 +146,6 @@ std::vector<std::vector<std::unique_ptr<sf::Drawable>>> *Connection_Frontend::ge
 
 
 void Connection_Frontend::update_image(const sf::Image &new_image) {
-//    sf::Texture texture_local;
     if(camera_view != nullptr) {
         if (new_image.getSize().x > 0 and new_image.getSize().y > 0) {
             if (!texture.loadFromImage(new_image)) {
@@ -200,17 +189,10 @@ void Connection_Frontend::set_button_mode(Button::Button_Message button_type, bo
     buttons_field->set_button_mode(button_type, mode);
 }
 
-//void Connection_Frontend::set_axes_ratio(
-//        std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_) {
-//    detected_objets_2d = std::move(axes_ratio_);
-//}
-
 void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf::Vector2f zero_point_pos,
                                          Axes axis_a,
                                          Axes axis_b,
                                          std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* rays_ratio_,
-                                         cv::Mat internal_matrix,
-                                         cv::Mat external_matrix,
                                          sf::Color background_color,
                                          sf::Color outline_color, float outline_thickness, int update_time) {
 
@@ -233,38 +215,11 @@ void Connection_Frontend::add_projection(sf::Vector2f size, sf::Vector2f pos, sf
             true,
             rays_ratio_
     );
-//    new_projection_calculator.set_additional_drawable_ptr(&additional_graphic_list);
 
 
     new_projection_calculator.set_additional_drawable_ptr(&additional_graphic_of_small_window.back());
 
 
-//    projections_windows_list.emplace_back(bb_size, pos, background_color, outline_color, detection_outline_thickness, update_time);
-//    projection_calculators.emplace_back(
-//            axis_a,
-//            axis_b,
-//            pos,
-//            bb_size,
-//            bb_size * 0.5f
-//            );
-//    additional_graphic_of_small_window.emplace_back();
-//    auto additional_graphic_ptr = &additional_graphic_of_small_window.back();
-
-
     projections_windows_list.push_back(std::move(projections_window));
     projection_calculators.push_back(std::move(new_projection_calculator));
 }
-
-//std::vector<Time_Object *> Connection_Frontend::get_time_object_list() {
-//    std::vector<Time_Object *> all_time_objects;
-//
-//    for(auto& window: projections_windows_list){
-//        all_time_objects.push_back(& window);
-//    }
-//    for(auto& projection_calculator: projection_calculators){
-//        all_time_objects.push_back(& projection_calculator);
-//    }
-//
-//    return all_time_objects;
-//}
-

@@ -16,7 +16,6 @@ void Custom_Data_IO::update() {
         if(get_mode() == Permanent_Connector::p_connector_mode::permanent_communication){
             update_period = sf::milliseconds(50);
         }
-        // czas jest aktualziowany w Permanent_Connector::update();
     }else{
         // odbieranie
         sf::Packet received_packet;
@@ -30,7 +29,6 @@ void Custom_Data_IO::update() {
         auto status = send(sended_packet);
 
 
-        // testowe wysyłanie i wyświetlanie
         static sf::Int32 data_int = 0;
         static float  data_float = 0;
 

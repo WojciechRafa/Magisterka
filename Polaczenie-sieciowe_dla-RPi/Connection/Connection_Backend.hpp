@@ -42,7 +42,6 @@ public:
         axes_ratio_work
     };
 
-//    std::vector<Time_Object*> get_time_object_list();
 
     // funkcje zwracają true przy powodzeniu
     bool start_looking_for_another_device();
@@ -65,7 +64,6 @@ public:
     bool is_custom_data_work();
     bool is_custom_rays_receiver();
 
-//    void set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_);
 private:
     sf::IpAddress broadcast_ip;
     sf::IpAddress remote_ip = sf::IpAddress::None;

@@ -55,7 +55,6 @@ void Image_Receiver::update() {
         if(get_mode() == Permanent_Connector::p_connector_mode::permanent_communication){
             update_period = sf::milliseconds(50);
         }
-        // czas jest aktualziowany w Permanent_Connector::update();
     }else{
         bool is_image_received = receive_img();
         if(is_image_received){

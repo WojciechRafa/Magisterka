@@ -37,11 +37,12 @@ public:
            sf::Color outline_color_makred_and_active_ = sf::Color::Black
            );
 
-    Button_Message check_mouse_in_and_update_colors(sf::Vector2f mouse_pos, bool is_pressed); // pozycja myszy podawan jest względem Buttons_Field
+    // position is get by Buttons_Field
+    Button_Message check_mouse_in_and_update_colors(sf::Vector2f mouse_pos, bool is_pressed);
 
     bool is_makred() const;
     bool is_activeted() const;
-    Button_Message is_active_get_message() const; // zamiast true i false zwraca "message" lub nothing
+    Button_Message is_active_get_message() const; // return "message" ot nothing
     Button_Message get_message() const;
     void decactivate();
     void activate();

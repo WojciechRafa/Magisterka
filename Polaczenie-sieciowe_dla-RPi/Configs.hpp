@@ -39,8 +39,8 @@ namespace Configs{
     static const double max_intersection_size_comparison = 10;
 
     static const bool is_binarization_relative = false;
-    static const int binarization_threshold = 20;
-    static const int binarization_kernal_size = 6;
+    static const int binarization_threshold = 10;
+    static const int binarization_kernal_size = 5;
 
     static const bool is_in_2d_field_tested = true;
     static const bool is_3d_size_correct_test = true;
@@ -106,18 +106,11 @@ namespace Configs{
                 }
         };
 
-        static const sf::Time displayed_time = sf::milliseconds(3000);
-//        static const cv::Vec2d size_meters = cv::Vec2d(20, 10);
-//        static const cv::Vec2d zero_point_meters = cv::Vec2d(10, 5);
+        static const sf::Time displayed_time = sf::milliseconds(2000);
 
         static const float detection_radius_ratio = 0.000001;
         static const sf::Color detection_default_circle_color = sf::Color::Magenta;
         static const float detection_outline_thickness = 1.5;
-
-//        static const float position_ratio = 1;
-
-//        static Axes first_axle = Axes::x;
-//        static Axes second_axle = Axes::y;
 
         static const bool is_const_size = true;
         static const float default_object_size = 10;
@@ -182,7 +175,7 @@ namespace Configs{
         static const double max_size_proportion = 2;
         static const double max_distance_mm = 100;
         static const int min_detect_number = 3;
-        static const sf::Time remove_time = sf::seconds(5);
+        static const sf::Time remove_time = sf::seconds(6);
     }
 }
 

@@ -22,7 +22,26 @@ void Rays_intersection_analyzer::add_projection(const std::shared_ptr<Frame_para
         }
     }
     objets_parameters_list_by_time[new_params->time].push_back(new_params);
-    last_update_time_of_ray_source[new_params->source_ptr] = new_params->time;
+
+    if(new_params->time > last_update_time_of_ray_source[new_params->source_ptr]) {
+        last_update_time_of_ray_source[new_params->source_ptr] = new_params->time;
+
+        sf::Time last_time_all_source_actual = sf::microseconds(std::numeric_limits<int64_t>::min());
+        for(auto& last_update_element: last_update_time_of_ray_source){
+            if(last_update_time_of_ray_source[new_params->source_ptr] > last_time_all_source_actual)
+                last_time_all_source_actual = last_update_time_of_ray_source[new_params->source_ptr];
+        }
+
+        for (auto iter = objets_parameters_list_by_time.begin(); iter != objets_parameters_list_by_time.end(); ) {
+            sf::Time time_of_element = iter->first;
+            if (time_of_element < last_time_all_source_actual) {
+//                iter = objets_parameters_list_by_time.erase(iter);
+                ++iter;
+            } else {
+                ++iter;
+            }
+        }
+    }
 }
 
 
@@ -36,6 +55,9 @@ void Rays_intersection_analyzer::update() {
 
         for (auto &first_parameter: list_of_parameters) {
             for (auto &second_parameter: list_of_parameters) {
+                if(first_parameter.get() == second_parameter.get())
+                    continue;
+
                 auto checked_tuple = std::make_tuple(time_and_parameters_ptr.first, first_parameter->source_ptr,
                                                      second_parameter->source_ptr);
                 auto checked_tuple_reverse = std::make_tuple(time_and_parameters_ptr.first,
@@ -76,6 +98,9 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
 
     sf::Time time_sum = sf::seconds(0);
 
+    if(first_frame_params->objets.empty())
+        return;
+
     for(auto& objet_parameter_first: first_frame_params->objets){
 
         std::vector<cv::Vec2d> first_2d_centroid_vectors = {};
@@ -97,6 +122,10 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
             first_2d_bb_size_vectors.push_back(objet_parameter_first.bb_size);
             second_2d_bb_size_vectors.push_back(objet_parameter_second.bb_size);
         }
+
+        if(first_2d_centroid_vectors.empty())
+            return;
+
 
         cv::Mat points_4D;
         auto time_begin = clock.getElapsedTime();
@@ -159,7 +188,6 @@ void Rays_intersection_analyzer::calculate_intersections(std::vector<cv::Vec3d> 
                                         interpolated_pos_norm.at<double>(1, 0),
                                         interpolated_pos_norm.at<double>(2, 0));
                 result_size.push_back(estimated_size);
-//                std::cout<<"element was found"<< result_pos.back()<<std::endl;
             }
         }
     }

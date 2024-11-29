@@ -17,11 +17,10 @@ public:
             sf::RenderWindow& window_,
             Graphic_Warehouse& graphic_warehouse_,
             std::vector<std::unique_ptr<Connection>>& connection_list_
-    );// w konstruktorze znajduje się międzyinnymi konfiguracja ekranu
+    );
 
     void update() override;
 
-    // uwaga ! funkcja po wykonaniu zmienia actual button mesage na nothing
     Button::Button_Message get_and_delate_actual_button_mesage();
 
     void add_small_window_to_display(Small_window* small_window);
@@ -35,7 +34,6 @@ private:
     sf::RenderWindow& window;
     Graphic_Warehouse& graphic_warehouse;
 
-    // lista powinna być wykorzystywana tylko do aktualizacji grafiki
     const std::vector<std::unique_ptr<Connection>>& connection_list;
 
     Button::Button_Message actual_button_mesage = Button::Button_Message::nothing;

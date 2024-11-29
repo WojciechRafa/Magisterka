@@ -23,7 +23,6 @@ public:
         sf::Color background_color = sf::Color::White;
     };
 
-    // do wyświetlania potencjalnych punktow kamery
     Connection(
             std::unique_ptr<Buttons_Field> button_filed_,
 
@@ -43,11 +42,9 @@ public:
     std::vector<sf::Drawable*>&  get_figures_list();
     std::vector<std::vector<std::unique_ptr<sf::Drawable>>>* get_additional_graphic_lists();
 
-    //st - short time -  wykorzystywane
     Button::Button_Message update_backend_st();
     Button::Button_Message update_frontend_st(sf::Vector2i mouse_pos_relative_to_window);
 
-    // aktualizowane przy aktualizacji czasowej (dla optymalności)
     void update_image();
 private:
     Connection_Frontend frontend;

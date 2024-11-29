@@ -110,12 +110,6 @@ bool Connection_Backend::start_connection_axes_ratio() {
         if(remote_ip != sf::IpAddress::None) {
 
             connection_state = Connection_State::axes_ratio_work;
-//            if(connection_state == Connection_State::another_IP_knowed)
-//                connection_state = Connection_State::camera_view_connect_establishment_custom_data_not_work;
-//            else{
-//                connection_state = Connection_State::camera_view_connect_establishment_custom_data_work;
-//            }
-
             return true;
         }else{
             std::cout<<"Adres IP urządzenia zdalnego jest nieznany \n";

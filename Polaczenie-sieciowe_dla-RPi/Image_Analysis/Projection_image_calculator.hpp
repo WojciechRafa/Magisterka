@@ -10,6 +10,7 @@
 #include "Binarization.hpp"
 #include "../Time_Object.hpp"
 #include "../Rays_source.hpp"
+#include "Rays_intersection_analyzer.hpp"
 
 class Projection_image_calculator: public Time_Object, public Rays_source{
 public:
@@ -33,17 +34,17 @@ public:
 
     void set_parameters(std::shared_ptr<Binarization::Binarized_parameters> parameters_);
 
-
     void set_additional_drawable_ptr(std::vector<std::unique_ptr<sf::Drawable>>* additional_graphic_);
 
     std::string get_name() override{return "Project Image Calculator";};
+
+    void set_rays_intersection_anaylyzer_ptr(Rays_intersection_analyzer* rays_intersection_analyzer_);
 private:
     std::shared_ptr<Binarization::Binarized_parameters> parameters;
 
     Axes axis_a;
     Axes axis_b;
 
-//    std::vector<std::unique_ptr<sf::Shape>>* projections_list = nullptr;
     std::vector<std::unique_ptr<sf::Drawable>>* drawable_list = nullptr;
 
     static cv::Vec3d compute_3D_line(const cv::Mat& intrinsicMatrix, const cv::Point2d& imagePoint);
@@ -61,8 +62,12 @@ private:
 
     bool are_rays_from_slave = false;
     std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>*  received_parameters;
+    std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>  local_parameters;
 
     cv::Vec3d multiple_internal(cv::Vec2d& image_params);
+
+    Rays_intersection_analyzer* rays_intersection_analyzer = nullptr;
+    std::shared_ptr<Frame_parameters> frame_parameters;
 };
 
 

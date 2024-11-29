@@ -32,7 +32,6 @@ sf::IpAddress get_ip(sf::Packet& packet){
 }
 
 sf::Packet& operator >>(sf::Packet& packet, Image_and_number& Img_and_num){
-    // Obiekt pośredni
     std::string img_str;
 
     packet >>

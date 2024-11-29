@@ -16,7 +16,6 @@ public:
         sf::Int32 id;
         std::string name = "Nie nadano nazwy";
         bool is_int; // jeżeli false to float
-//        bool is_read_from_remote_device = true;
         sf::Int32 data_int = 0;
         float data_float = 0.0;
     };

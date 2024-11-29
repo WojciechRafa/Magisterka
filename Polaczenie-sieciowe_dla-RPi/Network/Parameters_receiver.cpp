@@ -31,7 +31,6 @@ void Parameters_receiver::update() {
                 std::cout<<"Time exchange correct\n";
             }
         }
-        // czas jest aktualziowany w Permanent_Connector::update();
     }else if(mode == Permanent_Connector::p_connector_mode::permanent_communication) {
         // odbieranie
         sf::Packet received_packet;

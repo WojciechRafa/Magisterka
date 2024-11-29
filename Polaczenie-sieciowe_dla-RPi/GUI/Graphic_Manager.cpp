@@ -64,7 +64,7 @@ void Graphic_Manager::update() {
             actual_button_mesage = button_field_status;
 
         if(actual_button_mesage == Button::Button_Message::create_new_connection_interface) {
-            button_field.set_button_mode(Button::Button_Message::create_new_connection_interface, false); // dla tego przycisku, wyświetlenie nie jest zapamiętywane
+            button_field.set_button_mode(Button::Button_Message::create_new_connection_interface, false);
         }
     }
 
@@ -72,7 +72,7 @@ void Graphic_Manager::update() {
         auto button_field_status =  connection->update_frontend_st(world_relative_to_world);
 
         if (button_field_status != Button::Button_Message::nothing) {
-            actual_button_mesage = button_field_status; // uwaga może dość do nadpisania
+            actual_button_mesage = button_field_status; // can be overwritten
         }
         connection->update_image();
     }
@@ -102,8 +102,6 @@ void Graphic_Manager::display() {
             }
         }
     }
-
-//    std::vector<sf::RectangleShape> small_wind_list;
 
     for(auto small_window: small_windows_ptrs){
         if(small_window != nullptr) {

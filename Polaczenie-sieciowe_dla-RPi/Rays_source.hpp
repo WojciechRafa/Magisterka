@@ -8,12 +8,6 @@
 #include <opencv2/core/mat.hpp>
 #include <utility>
 #include "Image_Analysis/Rays_intersection_analyzer.hpp"
-//class Frame_parameters;
-//
-//class Rays_intersection_analyzer{
-//public:
-//    void add_projection(std::unique_ptr<Frame_parameters> new_params);
-//};
 
 class Rays_source{
 public:

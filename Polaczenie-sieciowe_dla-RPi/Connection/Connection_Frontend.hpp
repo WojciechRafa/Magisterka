@@ -16,7 +16,7 @@
 
 class Connection_Frontend {
 public:
-    // konstruktor pełny
+    // original_full
     [[maybe_unused]] Connection_Frontend(
             std::unique_ptr<Buttons_Field> buttons_field_,
 
@@ -30,7 +30,7 @@ public:
             sf::Vector2f camera_view_size,
             Graphic_Warehouse& graphic_warehouse
             );
-    // konstruktor bez widoku z kamery
+    // without_camera
     [[maybe_unused]] Connection_Frontend(
             std::unique_ptr<Buttons_Field> buttons_field_,
 
@@ -43,7 +43,7 @@ public:
             Graphic_Warehouse& graphic_warehouse
     );
 
-    // konstruktor bez okna danych liczbowych
+    // without numeric data
     [[maybe_unused]] Connection_Frontend(
             std::unique_ptr<Buttons_Field> buttons_field_,
 
@@ -52,7 +52,7 @@ public:
             Graphic_Warehouse& graphic_warehouse
     );
 
-
+    // master thesis constructor
     [[maybe_unused]] Connection_Frontend(
             std::unique_ptr<Buttons_Field> buttons_field_,
 
@@ -69,10 +69,10 @@ public:
     std::vector<sf::Drawable*>& get_figures_list();
     std::vector<std::vector<std::unique_ptr<sf::Drawable>>>* get_additional_graphic_lists();
 
-    Button::Button_Message update_st(sf::Vector2i mouse_pos_relative_to_window);// zwraca informację o tym, czy połączenie ma być zakończone
-    void update_image(const sf::Image& new_image); // zwraca false przy braku nowego zdjęcia
+    Button::Button_Message update_st(sf::Vector2i mouse_pos_relative_to_window);
+    void update_image(const sf::Image& new_image); // get false if it isn't any new photo
 
-    // uwaga ! funkcja po wykonaniu zmienia actual button mesage na nothing
+    // after call, actual button essage is nothing
     Button::Button_Message get_and_delate_actual_button_mesage();
 
     bool custom_data_update_variable_by_name_int(const std::string& name, int value);
@@ -80,7 +80,6 @@ public:
 
     void set_button_mode(Button::Button_Message button_type, bool mode);
 
-//    void set_axes_ratio(std::shared_ptr<std::vector<std::tuple<cv::Vec3d, cv::Vec3d, cv::Vec3d>>> axes_ratio_);
 
     void add_projection(sf::Vector2f size_,
                         sf::Vector2f pos,
@@ -88,14 +87,11 @@ public:
                         Axes axis_a,
                         Axes axis_b,
                         std::vector<std::tuple<cv::Vec2d, cv::Vec2d, cv::Vec2d>>* detected_object_parameters_,
-                        cv::Mat internal_matrix,
-                        cv::Mat external_matrix,
                         sf::Color background_color= sf::Color::White,
                         sf::Color outline_color= sf::Color::Black,
                         float outline_thickness = 3,
                         int update_time = 50000);
 
-//    std::vector<Time_Object *> get_time_object_list();
 private:
 
     std::unique_ptr<Buttons_Field> buttons_field;

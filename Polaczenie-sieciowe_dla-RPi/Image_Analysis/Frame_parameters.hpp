@@ -42,5 +42,4 @@ public:
         }
     };
 };
-//auto frame_parameter = std::make_unique<Frame_parameters>();
 #endif //MAGISTERKA_FRAME_PARAMETERS_HPP

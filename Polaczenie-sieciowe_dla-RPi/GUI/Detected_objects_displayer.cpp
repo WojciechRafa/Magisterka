@@ -7,22 +7,6 @@
 #include <utility>
 
 
-//Detected_objects_display::Detected_objects_display(std::pair<Axes, Axes> axes_, cv::Vec2d area_size_, cv::Vec2d zero_point_,
-//                                                       Objects_tracker *objects_tracker_ptr_,
-//                                                       Small_window *small_window_ptr_):
-//                                                       axes(std::move(axes_)),
-//                                                       area_size(area_size_),
-//                                                       zero_point(zero_point_),
-//                                                       objects_tracker_ptr(objects_tracker_ptr_),
-//                                                       small_window_ptr(small_window_ptr_),
-//                                                       reference_lines(sf::Lines)
-//                                                       {
-//    if(small_window_ptr != nullptr)
-//        small_window_ptr->set_additional_graphic(&all_graphics);
-//
-//    create_grid();
-//                                                       }
-
 Detected_objects_display::Detected_objects_display(
         Configs::Big_windows_parameters::Displayed_window_configs &config_,
         Objects_tracker *objects_tracker_ptr_,
@@ -72,16 +56,11 @@ void Detected_objects_display::update_triangulated_object() {
             auto second_dim_len = pos_3d[axis_nr.second];
 
             bool is_in_board;
-//            sf::Vector2f pos = objects_tracker_ptr->get_position_of_detected_object_on_main_window(is_in_board,
-//                                                                                                   first_dim_len,
-//                                                                                                   second_dim_len);
             sf::Vector2f pos = get_position_of_detected_object_on_window(is_in_board,
                                                                          first_dim_len,
                                                                          second_dim_len);
             if(not is_in_board)
                 continue;
-
-//            std::cout<<"is in board "<<first_dim_len<<" "<<second_dim_len<<std::endl;
 
             float size;
             if(Configs::Big_windows_parameters::is_const_size){
@@ -109,9 +88,6 @@ void Detected_objects_display::update_verified_object() {
         auto second_dim_len = pos_3d[axis_nr.second];
 
         bool is_in_board;
-//        sf::Vector2f pos = objects_tracker_ptr->get_position_of_detected_object_on_main_window(is_in_board,
-//                                                                                               first_dim_len,
-//                                                                                               second_dim_len);
         sf::Vector2f pos = get_position_of_detected_object_on_window(is_in_board,
                                                                      first_dim_len,
                                                                      second_dim_len);

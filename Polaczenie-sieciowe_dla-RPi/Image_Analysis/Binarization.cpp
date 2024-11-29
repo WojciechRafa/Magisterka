@@ -76,7 +76,7 @@ void Binarization::absolute_update() {
 
         get_binary_diff(image_with_main_time->second, *reference_image, threshold_diff);
 
-        int kernelSize = 5;  // Can be adjusted
+        int kernelSize = Configs::binarization_kernal_size;;  // Can be adjusted
         cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(kernelSize, kernelSize));
 
         cv::Mat openedImage;
@@ -86,6 +86,7 @@ void Binarization::absolute_update() {
         cv::Mat labels;
         parameters->numb_labels = cv::connectedComponentsWithStats(*binarized_image_result, labels, parameters->stats, parameters->centroids);
         parameters->numb_labels --; // first label is background, so it should be missed.
+        parameters->main_time = image_with_main_time->first;
     }
 }
 

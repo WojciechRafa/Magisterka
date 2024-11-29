@@ -47,7 +47,7 @@ add_executable(Magisterka
         Image_Analysis/Binarization.hpp
         Image_Analysis/Projection_image_calculator.cpp
         Image_Analysis/Projection_image_calculator.hpp
-        Network/Rays_receiver.cpp
+        Network/Parameters_receiver.cpp
         Network/Parameters_receiver.hpp
         Image_Analysis/Rays_intersection_analyzer.cpp
         Image_Analysis/Rays_intersection_analyzer.hpp
